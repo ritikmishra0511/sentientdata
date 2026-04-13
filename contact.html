@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Get in Touch | SentientData</title>
+  <meta name="description" content="Have a project, collaboration, or just want to talk Data Science and ML? Reach out to Ritik Mishra via the contact form or social media." />
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .page-hero {
+      padding: calc(var(--nav-height) + 80px) 0 60px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero h1 { margin: 12px 0 16px; }
+    .page-hero p  { font-size: 1.05rem; max-width: 560px; margin: 0 auto; }
+
+    /* Main layout */
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 48px; align-items: start;
+    }
+
+    /* Info Side */
+    .contact-info h2 { font-size: 1.5rem; margin-bottom: 16px; }
+    .contact-info > p { font-size: 0.95rem; line-height: 1.8; margin-bottom: 32px; }
+
+    .contact-methods { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+    .contact-method {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); padding: 18px 22px;
+      transition: var(--transition); backdrop-filter: blur(10px);
+    }
+    .contact-method:hover { border-color: rgba(0,212,255,0.25); box-shadow: var(--shadow-neon-both); transform: translateX(4px); }
+    .method-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gradient-btn); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; flex-shrink: 0;
+      color: #fff;
+    }
+    .method-label { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
+    .method-value { font-size: 0.92rem; color: var(--text-primary); }
+
+    /* Social Links Grid */
+    .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .social-card {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius); padding: 14px 16px;
+      transition: var(--transition); backdrop-filter: blur(10px);
+    }
+    .social-card:hover { border-color: rgba(0,212,255,0.25); box-shadow: var(--shadow-neon-both); transform: translateY(-3px); color: var(--text-primary); }
+    .social-card i { font-size: 1.2rem; color: var(--neon-blue); }
+    .social-card-name { font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-primary); }
+    .social-card-handle { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Form */
+    .contact-form-wrap {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-xl); padding: 36px;
+      backdrop-filter: blur(10px); position: sticky; top: 90px;
+    }
+    .contact-form-wrap h2 { font-size: 1.3rem; margin-bottom: 6px; }
+    .contact-form-wrap > p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .subject-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .subject-chip {
+      font-family: var(--font-heading); font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px;
+      border-radius: 50px; border: 1px solid var(--border-card);
+      background: var(--bg-card); color: var(--text-muted);
+      cursor: pointer; transition: var(--transition);
+    }
+    .subject-chip:hover, .subject-chip.active {
+      background: var(--neon-blue-dim); border-color: rgba(0,212,255,0.4); color: var(--neon-blue);
+    }
+
+    .char-count { text-align: right; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-family: var(--font-heading); }
+
+    /* Success State */
+    .form-success {
+      text-align: center; padding: 40px 20px; display: none;
+    }
+    .form-success .success-icon { font-size: 4rem; margin-bottom: 16px; animation: floatY 3s ease-in-out infinite; }
+    .form-success h3 { font-size: 1.3rem; color: var(--text-primary); margin-bottom: 10px; }
+    .form-success p { font-size: 0.92rem; color: var(--text-secondary); }
+
+    /* FAQ */
+    .faq-section { padding: 80px 0; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .faq-item {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); overflow: hidden;
+      backdrop-filter: blur(10px); transition: var(--transition);
+    }
+    .faq-item:hover { border-color: rgba(0,212,255,0.2); }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 22px; cursor: pointer;
+      font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--text-primary);
+      transition: var(--transition); gap: 12px;
+    }
+    .faq-q:hover { color: var(--neon-blue); }
+    .faq-q i { color: var(--neon-blue); transition: transform 0.3s ease; flex-shrink: 0; }
+    .faq-item.open .faq-q i { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;
+      padding: 0 22px;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 22px 20px; }
+
+    /* Availability card */
+    .availability-card {
+      background: linear-gradient(135deg, rgba(16,185,129,0.07), rgba(0,212,255,0.05));
+      border: 1px solid rgba(16,185,129,0.2); border-radius: var(--border-radius-lg);
+      padding: 20px 24px; display: flex; align-items: center; gap: 14px;
+      margin-bottom: 28px;
+    }
+    .avail-dot { width: 10px; height: 10px; border-radius: 50%; background: #10b981; animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+    .avail-text p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+    .avail-text strong { font-family: var(--font-heading); font-size: 0.82rem; color: #10b981; }
+
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+      .contact-form-wrap { position: static; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+      .social-grid { grid-template-columns: 1fr; }
+      .contact-form-wrap { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars-layer" id="stars"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">⬡ SentientData</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html" class="active nav-cta">Contact Me</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="glow-orb glow-blue"   style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+    <div class="glow-orb glow-purple" style="width:400px;height:400px;bottom:-80px;left:-80px;"></div>
+    <div class="container">
+      <div class="section-tag">Get In Touch</div>
+      <h1>Let's <span class="gradient-text">Connect</span></h1>
+      <p>I'm always open to projects, collaborations, feedback, or just a good conversation about Data Science and AI.</p>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:20px;">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- Left: Info -->
+        <div class="contact-info">
+          <h2><span class="gradient-text">Say hello.</span> 👋</h2>
+          <p>Whether you have a project idea, a collaboration proposal, want to talk about ML, or just want to connect — my inbox is always open. I try to reply within 24 hours.</p>
+
+          <!-- Availability -->
+          <div class="availability-card">
+            <div class="avail-dot"></div>
+            <div class="avail-text">
+              <strong>Currently Available</strong>
+              <p>Open to internships, freelance projects, and collaborations.</p>
+            </div>
+          </div>
+
+          <!-- Contact Methods -->
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="method-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <div class="method-label">Email</div>
+                <div class="method-value">ritik@sentientdata.xyz</div>
+              </div>
+            </div>
+            <div class="contact-method">
+              <div class="method-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <div class="method-label">Location</div>
+                <div class="method-value">India 🇮🇳 — Open to Remote</div>
+              </div>
+            </div>
+            <div class="contact-method">
+              <div class="method-icon"><i class="fa-solid fa-clock"></i></div>
+              <div>
+                <div class="method-label">Response Time</div>
+                <div class="method-value">Usually within 24 hours</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="footer-heading" style="margin-bottom:14px;">Find me on</div>
+          <div class="social-grid">
+            <a href="https://github.com/" class="social-card" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github"></i>
+              <div>
+                <div class="social-card-name">GitHub</div>
+                <div class="social-card-handle">@ritikmishra</div>
+              </div>
+            </a>
+            <a href="https://linkedin.com/" class="social-card" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin" style="color:#0077b5;"></i>
+              <div>
+                <div class="social-card-name">LinkedIn</div>
+                <div class="social-card-handle">Ritik Mishra</div>
+              </div>
+            </a>
+            <a href="https://twitter.com/" class="social-card" target="_blank" rel="noopener">
+              <i class="fa-brands fa-twitter" style="color:#1da1f2;"></i>
+              <div>
+                <div class="social-card-name">Twitter / X</div>
+                <div class="social-card-handle">@ritikmishra</div>
+              </div>
+            </a>
+            <a href="https://hashnode.com/" class="social-card" target="_blank" rel="noopener">
+              <i class="fa-solid fa-blog" style="color:#2962ff;"></i>
+              <div>
+                <div class="social-card-name">Hashnode</div>
+                <div class="social-card-handle">@ritikmishra</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="contact-form-wrap">
+          <h2>Send a message <span class="gradient-text">✉️</span></h2>
+          <p>Fill out the form and I'll get back to you as soon as possible.</p>
+
+          <!-- Form (Formspree) -->
+          <!-- ⚙️ REPLACE YOUR_FORMSPREE_ID below with your actual Formspree form ID -->
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" novalidate>
+
+            <!-- Subject chips -->
+            <div class="form-group">
+              <label class="form-label">What's this about?</label>
+              <div class="subject-chips" id="subjectChips">
+                <button type="button" class="subject-chip active" data-subject="General Hello">👋 General Hello</button>
+                <button type="button" class="subject-chip" data-subject="Collaboration">🤝 Collaboration</button>
+                <button type="button" class="subject-chip" data-subject="Freelance Project">💼 Freelance Project</button>
+                <button type="button" class="subject-chip" data-subject="ML Consulting">🤖 ML Help</button>
+                <button type="button" class="subject-chip" data-subject="Blog or Course">📝 Blog/Course</button>
+                <button type="button" class="subject-chip" data-subject="Startup Partnership">🚀 Startup Partnership</button>
+              </div>
+              <input type="hidden" name="_subject" id="hiddenSubject" value="General Hello" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="contactName">Your Name *</label>
+                <input class="form-control" type="text" id="contactName" name="name" placeholder="Jane Smith" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactEmail">Your Email *</label>
+                <input class="form-control" type="email" id="contactEmail" name="email" placeholder="jane@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactCompany">Company / University (optional)</label>
+              <input class="form-control" type="text" id="contactCompany" name="company" placeholder="OpenAI / MIT" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactMessage">Your Message *</label>
+              <textarea class="form-control" id="contactMessage" name="message" rows="5" maxlength="1000" placeholder="What's on your mind? The more detail, the better 🙂" required></textarea>
+              <div class="char-count"><span id="charCount">0</span> / 1000</div>
+            </div>
+
+            <!-- Honeypot (bot trap) -->
+            <input type="text" name="_gotcha" style="display:none;" />
+            <input type="hidden" name="_next" value="https://sentientdata.xyz/contact.html?success=true" />
+
+            <div id="formError"></div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+
+            <p style="text-align:center;font-size:0.78rem;color:var(--text-muted);margin-top:14px;">
+              Powered by <a href="https://formspree.io" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:underline;">Formspree</a> · No spam, ever.
+            </p>
+          </form>
+
+          <!-- Success State -->
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon">🎉</div>
+            <h3 class="gradient-text">Message Sent!</h3>
+            <p>Thanks for reaching out. I'll get back to you within 24 hours. In the meantime, feel free to check out <a href="blog.html">my blog</a> or <a href="courses.html">the courses</a>.</p>
+            <button class="btn btn-outline" style="margin-top:24px;" onclick="resetForm()">Send Another →</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Quick answers to common questions. If yours isn't here, just send me a message!</p>
+      </div>
+      <div class="faq-grid" id="faqGrid">
+
+        <div class="faq-item">
+          <div class="faq-q">Are you open to freelance / consulting work?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Yes! I'm open to freelance data science and ML projects. I can help with EDA, model building, NLP tasks, and data pipelines. Reach out with your project scope and timeline.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Can we collaborate on a blog or YouTube video?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Absolutely. I enjoy technical collaborations — co-authoring articles, guest posts, podcast appearances, or YouTube collab videos around Data Science and ML topics. Let's talk!</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Are the courses really free?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">The core Data Science and starter ML courses are completely free with a free account. Advanced courses (Deep Learning, MLOps, LLMs) will come with a Pro tier. Core content will always remain free.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How long do you take to reply?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">I try to respond to all messages within 24 hours on weekdays. For urgent matters, tagging me on Twitter/X usually gets a faster response.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Can I use your blog content or code for my projects?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Yes. All blog posts and code samples are free to use for learning and personal projects. For commercial use or redistribution, please mention the original source and reach out first.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Are you looking for internships or jobs?<i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Currently, yes! I'm actively looking for Data Science and ML internship opportunities. If you're hiring or know of relevant roles, I'd love to hear from you. Please drop me a message via the form.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="nav-logo">⬡ SentientData</div>
+          <p>Always up for a great conversation about Data, AI, and building things. Let's connect.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigate</div>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Connect</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
+            <li><a href="https://linkedin.com/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+            <li><a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i> Twitter/X</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Ritik Mishra · sentientdata.xyz</p>
+        <div class="social-links">
+          <a href="https://github.com/" class="social-link" target="_blank"><i class="fa-brands fa-github"></i></a>
+          <a href="https://linkedin.com/" class="social-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="https://twitter.com/" class="social-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scrolltop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script>
+  // ── Stars ──
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 140; i++) {
+    const s = document.createElement('div'); s.className = 'star';
+    const size = Math.random() < 0.1 ? 2 : 1;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${3+Math.random()*5}s;--delay:${Math.random()*6}s;--op:${0.3+Math.random()*0.7};`;
+    starsEl.appendChild(s);
+  }
+
+  // ── Navbar ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+    document.getElementById('scrolltop').classList.toggle('visible', window.scrollY > 400);
+  });
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.getElementById('navToggle').classList.toggle('open');
+  });
+  document.getElementById('scrolltop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+  // ── Subject Chips ──
+  document.getElementById('subjectChips').addEventListener('click', e => {
+    const chip = e.target.closest('.subject-chip');
+    if (!chip) return;
+    document.querySelectorAll('.subject-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    document.getElementById('hiddenSubject').value = chip.dataset.subject;
+  });
+
+  // ── Char count ──
+  document.getElementById('contactMessage').addEventListener('input', e => {
+    document.getElementById('charCount').textContent = e.target.value.length;
+  });
+
+  // ── Form submit ──
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('contactName').value.trim();
+    const email   = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const formspreeId = 'YOUR_FORMSPREE_ID';
+
+    if (!name || !email || !message) {
+      document.getElementById('formError').innerHTML = `<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> Please fill in all required fields.</div>`;
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
+
+    // If formspree ID is placeholder, simulate success
+    if (formspreeId === 'YOUR_FORMSPREE_ID') {
+      setTimeout(() => { showSuccess(); }, 1200);
+      return;
+    }
+
+    try {
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (resp.ok) {
+        showSuccess();
+      } else {
+        const data = await resp.json();
+        document.getElementById('formError').innerHTML = `<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i> ${data.error || 'Something went wrong. Please try again.'}</div>`;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+      }
+    } catch(err) {
+      document.getElementById('formError').innerHTML = `<div class="alert alert-error"><i class="fa-solid fa-triangle-exclamation"></i> Network error. Please try again later.</div>`;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+    }
+  });
+
+  function showSuccess() {
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  function resetForm() {
+    document.getElementById('contactForm').style.display = 'block';
+    document.getElementById('formSuccess').style.display = 'none';
+    document.getElementById('contactForm').reset();
+    document.getElementById('charCount').textContent = '0';
+    document.getElementById('formError').innerHTML = '';
+    document.getElementById('hiddenSubject').value = 'General Hello';
+    document.querySelectorAll('.subject-chip').forEach((c,i) => c.classList.toggle('active', i===0));
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+  }
+
+  // ── FAQ Accordion ──
+  document.getElementById('faqGrid').addEventListener('click', e => {
+    const q = e.target.closest('.faq-q');
+    if (!q) return;
+    const item = q.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+
+  // ── Check for ?success=true (Formspree redirect) ──
+  if (new URLSearchParams(window.location.search).get('success') === 'true') {
+    showSuccess();
+    history.replaceState({}, '', window.location.pathname);
+  }
+</script>
+</body>
+</html>

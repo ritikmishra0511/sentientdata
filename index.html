@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ritik Mishra — Data Scientist & ML Engineer | SentientData</title>
+  <meta name="description" content="Portfolio of Ritik Mishra — CS student, aspiring Data Scientist & ML Engineer. Turning raw data into intelligence, one model at a time." />
+  <meta property="og:title" content="Ritik Mishra — SentientData.xyz" />
+  <meta property="og:description" content="Data Scientist · ML Engineer · Startup Founder in the Making" />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── PAGE-SPECIFIC STYLES ── */
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; padding-top: var(--nav-height);
+      overflow: hidden;
+    }
+    .hero-content {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center; width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-heading); font-size: 0.7rem;
+      font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--neon-blue); background: var(--neon-blue-dim);
+      border: 1px solid rgba(0,212,255,0.3);
+      padding: 8px 20px; border-radius: 50px; margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .hero-badge .blink {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--neon-blue); animation: pulse 1.5s ease-in-out infinite;
+    }
+    .hero-name {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.05;
+      animation: fadeInUp 0.7s ease 0.1s forwards; opacity: 0;
+    }
+    .hero-role {
+      font-family: var(--font-heading); font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 500; letter-spacing: 0.08em;
+      margin: 12px 0 20px;
+      animation: fadeInUp 0.7s ease 0.2s forwards; opacity: 0;
+    }
+    .hero-desc {
+      font-size: 1.05rem; line-height: 1.8;
+      color: var(--text-secondary); max-width: 520px; margin-bottom: 36px;
+      animation: fadeInUp 0.7s ease 0.3s forwards; opacity: 0;
+    }
+    .hero-buttons {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      animation: fadeInUp 0.7s ease 0.4s forwards; opacity: 0;
+    }
+    .hero-stats {
+      display: flex; gap: 32px; margin-top: 48px;
+      animation: fadeInUp 0.7s ease 0.5s forwards; opacity: 0;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: left; }
+    .stat-number {
+      font-family: var(--font-heading); font-size: 2rem;
+      font-weight: 800; background: var(--gradient-accent);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* Hero Visual */
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      animation: fadeIn 1s ease 0.4s forwards; opacity: 0;
+    }
+    .avatar-wrapper {
+      position: relative; width: 300px; height: 300px;
+    }
+    .avatar-ring {
+      position: absolute; inset: -20px; border-radius: 50%;
+      border: 2px solid transparent;
+      background: var(--gradient-accent) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out; mask-composite: exclude;
+      animation: spin 8s linear infinite;
+    }
+    .avatar-ring-2 {
+      position: absolute; inset: -36px; border-radius: 50%;
+      border: 1px solid rgba(168,85,247,0.3);
+      animation: spin 12s linear infinite reverse;
+    }
+    .avatar-core {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+      border: 2px solid var(--border-card);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 4.5rem; font-weight: 900;
+      animation: glow 4s ease-in-out infinite;
+      position: relative; overflow: hidden;
+    }
+    .avatar-core::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.15), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(168,85,247,0.12), transparent 60%);
+    }
+    .avatar-initials { position: relative; z-index: 1; }
+    .orbit-dot {
+      position: absolute; width: 12px; height: 12px; border-radius: 50%;
+      top: 50%; left: 50%; transform-origin: 0 0;
+    }
+    .orbit-dot-1 {
+      background: var(--neon-blue); box-shadow: 0 0 12px var(--neon-blue);
+      animation: orbit1 4s linear infinite;
+    }
+    .orbit-dot-2 {
+      background: var(--neon-purple); box-shadow: 0 0 12px var(--neon-purple);
+      animation: orbit2 6s linear infinite reverse;
+    }
+    @keyframes orbit1 {
+      0%   { transform: translateX(170px) translateY(-6px); }
+      25%  { transform: translateX(6px) translateY(170px); }
+      50%  { transform: translateX(-170px) translateY(-6px); }
+      75%  { transform: translateX(6px) translateY(-170px); }
+      100% { transform: translateX(170px) translateY(-6px); }
+    }
+    @keyframes orbit2 {
+      0%   { transform: translateX(200px) translateY(-6px); }
+      25%  { transform: translateX(6px) translateY(200px); }
+      50%  { transform: translateX(-200px) translateY(-6px); }
+      75%  { transform: translateX(6px) translateY(-200px); }
+      100% { transform: translateX(200px) translateY(-6px); }
+    }
+    .floating-tag {
+      position: absolute; background: var(--bg-card);
+      border: 1px solid var(--border-card); border-radius: var(--border-radius);
+      padding: 8px 14px; backdrop-filter: blur(10px);
+      font-size: 0.78rem; color: var(--text-primary);
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap; font-family: var(--font-heading);
+      font-weight: 600; letter-spacing: 0.05em;
+      box-shadow: var(--shadow-md);
+    }
+    .floating-tag i { color: var(--neon-blue); }
+    .ft-1 { top: 20px; right: -40px; animation: floatY 5s ease-in-out infinite; }
+    .ft-2 { bottom: 30px; left: -50px; animation: floatY 7s ease-in-out infinite 1.5s; }
+    .ft-3 { top: 50%; right: -60px; animation: floatY 6s ease-in-out infinite 0.8s; }
+
+    .scroll-indicator {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      animation: fadeIn 1s ease 1s forwards; opacity: 0;
+    }
+    .scroll-indicator span { font-family: var(--font-heading); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+    .scroll-mouse { width: 22px; height: 36px; border: 2px solid var(--border-card); border-radius: 12px; display: flex; justify-content: center; padding-top: 7px; }
+    .scroll-wheel { width: 3px; height: 8px; border-radius: 2px; background: var(--neon-blue); animation: scrollWheel 1.8s ease-in-out infinite; }
+    @keyframes scrollWheel { 0%,100% { opacity: 1; transform: translateY(0); } 50% { opacity: 0; transform: translateY(10px); } }
+
+    /* Skills */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .skill-card {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); padding: 24px 20px;
+      text-align: center; transition: var(--transition);
+      backdrop-filter: blur(10px); position: relative; overflow: hidden;
+    }
+    .skill-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gradient-card); opacity: 0; transition: var(--transition);
+    }
+    .skill-card:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-4px); box-shadow: var(--shadow-neon-both); }
+    .skill-card:hover::before { opacity: 1; }
+    .skill-icon {
+      font-size: 2rem; margin-bottom: 12px;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .skill-name { font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 8px; }
+    .skill-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .skill-fill { height: 100%; background: var(--gradient-accent); border-radius: 2px; width: 0; transition: width 1s ease 0.3s; }
+    .skill-card.visible .skill-fill { width: var(--level, 80%); }
+
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); padding: 28px;
+      transition: var(--transition); position: relative; overflow: hidden;
+      backdrop-filter: blur(10px); display: flex; flex-direction: column;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--gradient-accent); transform: scaleX(0);
+      transition: transform 0.4s ease; transform-origin: left;
+    }
+    .project-card:hover { background: var(--bg-card-hover); border-color: rgba(0,212,255,0.22); box-shadow: var(--shadow-neon-both); transform: translateY(-6px); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-phase { margin-bottom: 16px; }
+    .project-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .project-title { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; color: var(--text-primary); margin-bottom: 10px; }
+    .project-desc { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .project-tag { font-size: 0.65rem; font-family: var(--font-heading); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 50px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-card); }
+    .project-links { display: flex; gap: 10px; margin-top: auto; }
+
+    /* Journey Timeline */
+    .journey-section { padding: 100px 0; background: linear-gradient(to bottom, transparent, rgba(0,212,255,0.02), transparent); }
+    .journey-timeline { position: relative; max-width: 760px; margin: 0 auto; padding: 20px 0; }
+    .journey-timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple)); transform: translateX(-50%); }
+    .journey-item { display: flex; align-items: center; gap: 32px; margin-bottom: 48px; position: relative; }
+    .journey-item:nth-child(even) { flex-direction: row-reverse; }
+    .journey-content { flex: 1; }
+    .journey-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--border-radius-lg); padding: 24px; backdrop-filter: blur(10px); transition: var(--transition); }
+    .journey-card:hover { border-color: rgba(0,212,255,0.25); box-shadow: var(--shadow-neon-both); }
+    .journey-node { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-btn); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: var(--shadow-neon-both); z-index: 1; }
+    .journey-title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .journey-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+    .journey-year { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; color: var(--neon-purple); margin-bottom: 8px; }
+
+    /* Blog Teaser */
+    .blog-teaser { background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(168,85,247,0.04)); border: 1px solid var(--border-card); border-radius: var(--border-radius-xl); padding: 64px; text-align: center; position: relative; overflow: hidden; }
+    .blog-teaser::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(0,212,255,0.05), transparent 60%); pointer-events: none; }
+
+    /* Tech Stack Marquee */
+    .marquee-section { padding: 40px 0; overflow: hidden; border-top: 1px solid var(--border-card); border-bottom: 1px solid var(--border-card); background: rgba(255,255,255,0.01); }
+    .marquee-track { display: flex; gap: 48px; animation: marquee 20s linear infinite; white-space: nowrap; }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); transition: var(--transition); }
+    .marquee-item:hover { color: var(--neon-blue); }
+    .marquee-item i { color: var(--neon-blue); font-size: 1rem; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: 1fr; gap: 48px; text-align: center; }
+      .hero-buttons { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-visual { order: -1; }
+      .avatar-wrapper { width: 220px; height: 220px; }
+      .ft-1,.ft-2,.ft-3 { display: none; }
+      .journey-timeline::before { left: 20px; }
+      .journey-item { flex-direction: row !important; }
+      .journey-node { left: 20px; }
+    }
+    @media (max-width: 600px) {
+      .blog-teaser { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Stars -->
+  <div class="stars-layer" id="stars"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">⬡ SentientData</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="contact.html" class="nav-cta">Contact Me</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero section" id="home">
+    <div class="glow-orb glow-blue" style="width:600px;height:600px;top:-150px;left:-200px;"></div>
+    <div class="glow-orb glow-purple" style="width:500px;height:500px;bottom:-100px;right:-150px;"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="blink"></span>
+            Available for Opportunities
+          </div>
+          <h1 class="hero-name">Hi, I'm <span class="gradient-text">Ritik Mishra</span> 🤖</h1>
+          <p class="hero-role gradient-text">Data Scientist · ML Engineer · Founder in the Making</p>
+          <p class="hero-desc">
+            I turn chaotic data into powerful intelligence. CS student on a mission to master Data Science, engineer production-grade ML systems — and eventually build a startup that makes AI accessible to everyone.
+          </p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-rocket"></i> View My Work
+            </a>
+            <a href="blog.html" class="btn btn-outline btn-lg">
+              <i class="fa-solid fa-feather"></i> Read My Blog
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">4+</div>
+              <div class="stat-label">ML Projects</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">∞</div>
+              <div class="stat-label">Coffee Consumed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">1</div>
+              <div class="stat-label">Big Dream</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="avatar-wrapper">
+            <div class="avatar-ring"></div>
+            <div class="avatar-ring-2"></div>
+            <div class="orbit-dot orbit-dot-1"></div>
+            <div class="orbit-dot orbit-dot-2"></div>
+            <div class="avatar-core">
+              <span class="avatar-initials gradient-text">RM</span>
+            </div>
+            <div class="floating-tag ft-1"><i class="fa-brands fa-python"></i> Python</div>
+            <div class="floating-tag ft-2"><i class="fa-solid fa-brain"></i> ML / AI</div>
+            <div class="floating-tag ft-3"><i class="fa-solid fa-database"></i> SQL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    </div>
+  </section>
+
+  <!-- Tech Stack Marquee -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item"><i class="fa-brands fa-python"></i>Python</span>
+      <span class="marquee-item"><i class="fa-solid fa-table"></i>Pandas</span>
+      <span class="marquee-item"><i class="fa-solid fa-chart-bar"></i>Matplotlib</span>
+      <span class="marquee-item"><i class="fa-solid fa-robot"></i>Scikit-learn</span>
+      <span class="marquee-item"><i class="fa-solid fa-fire"></i>PyTorch</span>
+      <span class="marquee-item"><i class="fa-solid fa-n"></i>NumPy</span>
+      <span class="marquee-item"><i class="fa-solid fa-database"></i>SQL</span>
+      <span class="marquee-item"><i class="fa-solid fa-bolt"></i>FastAPI</span>
+      <span class="marquee-item"><i class="fa-brands fa-docker"></i>Docker</span>
+      <span class="marquee-item"><i class="fa-brands fa-git-alt"></i>Git</span>
+      <span class="marquee-item"><i class="fa-solid fa-cloud"></i>Supabase</span>
+      <span class="marquee-item"><i class="fa-solid fa-chart-line"></i>Tableau</span>
+      <!-- duplicate for seamless loop -->
+      <span class="marquee-item"><i class="fa-brands fa-python"></i>Python</span>
+      <span class="marquee-item"><i class="fa-solid fa-table"></i>Pandas</span>
+      <span class="marquee-item"><i class="fa-solid fa-chart-bar"></i>Matplotlib</span>
+      <span class="marquee-item"><i class="fa-solid fa-robot"></i>Scikit-learn</span>
+      <span class="marquee-item"><i class="fa-solid fa-fire"></i>PyTorch</span>
+      <span class="marquee-item"><i class="fa-solid fa-n"></i>NumPy</span>
+      <span class="marquee-item"><i class="fa-solid fa-database"></i>SQL</span>
+      <span class="marquee-item"><i class="fa-solid fa-bolt"></i>FastAPI</span>
+      <span class="marquee-item"><i class="fa-brands fa-docker"></i>Docker</span>
+      <span class="marquee-item"><i class="fa-brands fa-git-alt"></i>Git</span>
+      <span class="marquee-item"><i class="fa-solid fa-cloud"></i>Supabase</span>
+      <span class="marquee-item"><i class="fa-solid fa-chart-line"></i>Tableau</span>
+    </div>
+  </div>
+
+  <!-- Skills Section -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Arsenal</div>
+        <h2 class="section-title">Skills & Technologies</h2>
+        <p class="section-subtitle">Tools I wield to extract intelligence from data, engineer scalable models, and build AI products.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card" style="--level:92%">
+          <div class="skill-icon"><i class="fa-brands fa-python"></i></div>
+          <div class="skill-name">Python</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:85%">
+          <div class="skill-icon"><i class="fa-solid fa-chart-bar"></i></div>
+          <div class="skill-name">Data Analysis</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:80%">
+          <div class="skill-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="skill-name">Machine Learning</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:72%">
+          <div class="skill-icon"><i class="fa-solid fa-brain"></i></div>
+          <div class="skill-name">Deep Learning</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:78%">
+          <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
+          <div class="skill-name">SQL & Databases</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:70%">
+          <div class="skill-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="skill-name">MLOps / Deployment</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:75%">
+          <div class="skill-icon"><i class="fa-solid fa-language"></i></div>
+          <div class="skill-name">NLP</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-card" style="--level:68%">
+          <div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="skill-name">Data Visualization</div>
+          <div class="skill-bar"><div class="skill-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey Section -->
+  <section class="journey-section section" id="journey">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">The Roadmap</div>
+        <h2 class="section-title">My Journey</h2>
+        <p class="section-subtitle">From curious student to Data Scientist, ML Engineer, and one day — Startup Founder.</p>
+      </div>
+      <div class="journey-timeline">
+        <div class="journey-item">
+          <div class="journey-content">
+            <div class="journey-card">
+              <div class="journey-year">Now · Phase 01</div>
+              <div class="journey-title">Data Science Foundations 📊</div>
+              <div class="journey-desc">Mastering Python for data analysis, statistical thinking, EDA, and visualization. Learning to ask the right questions and find patterns in raw data.</div>
+            </div>
+          </div>
+          <div class="journey-node">📊</div>
+          <div style="flex:1"></div>
+        </div>
+        <div class="journey-item">
+          <div style="flex:1"></div>
+          <div class="journey-node">🤖</div>
+          <div class="journey-content">
+            <div class="journey-card">
+              <div class="journey-year">Next · Phase 02</div>
+              <div class="journey-title">ML & AI Engineering 🤖</div>
+              <div class="journey-desc">Building and deploying production-grade machine learning models. FastAPI, Docker, model monitoring, A/B testing — turning notebooks into real systems.</div>
+            </div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-content">
+            <div class="journey-card">
+              <div class="journey-year">Vision · Phase 03</div>
+              <div class="journey-title">AI Startup Founder 🚀</div>
+              <div class="journey-desc">Launch an AI-powered product that democratizes data-driven decision making for small businesses. The domain sentientdata.xyz is just the beginning.</div>
+            </div>
+          </div>
+          <div class="journey-node">🚀</div>
+          <div style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Portfolio</div>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">Each project reflects a step in my learning journey — from EDA to ML Engineering to AI Product Vision.</p>
+      </div>
+      <div class="projects-grid">
+
+        <!-- Project 1 -->
+        <div class="project-card">
+          <div class="project-phase"><span class="badge badge-blue">Phase 01 · Data Science</span></div>
+          <div class="project-icon">🌍</div>
+          <h3 class="project-title">Global Salary Insights: EDA Deep-Dive</h3>
+          <p class="project-desc">A thorough exploratory data analysis of global tech & data science salaries by role, country, and experience. Uncovered compensation trends using Pandas, Seaborn, and Plotly.</p>
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">Pandas</span>
+            <span class="project-tag">Seaborn</span>
+            <span class="project-tag">Plotly</span>
+            <span class="project-tag">EDA</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-outline btn-sm"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="#" class="btn btn-outline-purple btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Notebook</a>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+          <div class="project-phase"><span class="badge badge-blue">Phase 01 → 02 · ML</span></div>
+          <div class="project-icon">💳</div>
+          <h3 class="project-title">Customer Churn Predictor</h3>
+          <p class="project-desc">Built an XGBoost classification model to predict customer churn for a telecom dataset. Achieved 91% AUC-ROC with feature engineering, SHAP explainability, and hyperparameter tuning via Optuna.</p>
+          <div class="project-tags">
+            <span class="project-tag">XGBoost</span>
+            <span class="project-tag">SHAP</span>
+            <span class="project-tag">Optuna</span>
+            <span class="project-tag">Scikit-learn</span>
+            <span class="project-tag">Classification</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-outline btn-sm"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="#" class="btn btn-outline-purple btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card">
+          <div class="project-phase"><span class="badge badge-purple">Phase 02 · ML Engineering</span></div>
+          <div class="project-icon">🧠</div>
+          <h3 class="project-title">SentimentScope — Twitter NLP API</h3>
+          <p class="project-desc">Fine-tuned a DistilBERT model on Twitter data for 3-class sentiment analysis (positive, negative, neutral). Served as a REST API via FastAPI with Docker containerization and a live demo UI.</p>
+          <div class="project-tags">
+            <span class="project-tag">HuggingFace</span>
+            <span class="project-tag">FastAPI</span>
+            <span class="project-tag">Docker</span>
+            <span class="project-tag">NLP</span>
+            <span class="project-tag">DistilBERT</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="btn btn-outline btn-sm"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="#" class="btn btn-outline-purple btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live API</a>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card" style="border-color: rgba(168,85,247,0.2);">
+          <div class="project-phase"><span class="badge badge-purple">Phase 03 · Startup Vision</span></div>
+          <div class="project-icon">⬡</div>
+          <h3 class="project-title">SentientAI — AI Business Intelligence</h3>
+          <p class="project-desc">Startup concept: an AI-powered platform that gives small businesses access to predictive analytics, automated reporting, and actionable insights — no data scientists required. This entire site is the MVP.</p>
+          <div class="project-tags">
+            <span class="project-tag">Product</span>
+            <span class="project-tag">GenAI</span>
+            <span class="project-tag">Supabase</span>
+            <span class="project-tag">LLMs</span>
+            <span class="project-tag">Startup</span>
+          </div>
+          <div class="project-links">
+            <a href="courses.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-rocket"></i> Explore Vision</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Teaser -->
+  <section class="section" id="blog">
+    <div class="container">
+      <div class="blog-teaser">
+        <div class="glow-orb glow-blue" style="width:400px;height:400px;top:-100px;left:-100px;"></div>
+        <div class="glow-orb glow-purple" style="width:300px;height:300px;bottom:-80px;right:-80px;"></div>
+        <div class="section-tag">The Blog</div>
+        <h2 style="margin: 14px 0 16px; font-size: clamp(1.6rem,4vw,2.8rem);">
+          I Write About <span class="gradient-text">Data & AI</span>
+        </h2>
+        <p style="font-size:1.05rem;color:var(--text-secondary);max-width:560px;margin:0 auto 32px;">
+          Deep dives, tutorials, paper breakdowns, and honest learnings from my journey into Data Science and Machine Learning. Powered by Hashnode.
+        </p>
+        <a href="blog.html" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-feather-pointed"></i> Read the Blog
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="nav-logo">⬡ SentientData</div>
+          <p>Data Scientist in training. ML Engineer in the making. Startup founder by obsession. Based on the internet — building the future one model at a time.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigate</div>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Connect</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
+            <li><a href="https://linkedin.com/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+            <li><a href="https://twitter.com/" target="_blank"><i class="fa-brands fa-twitter"></i> Twitter/X</a></li>
+            <li><a href="https://hashnode.com/" target="_blank"><i class="fa-solid fa-blog"></i> Hashnode</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Ritik Mishra · sentientdata.xyz · Built with ❤️ &amp; ☕</p>
+        <div class="social-links">
+          <a href="https://github.com/" class="social-link" target="_blank"><i class="fa-brands fa-github"></i></a>
+          <a href="https://linkedin.com/" class="social-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="https://twitter.com/" class="social-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+          <a href="https://hashnode.com/" class="social-link" target="_blank"><i class="fa-solid fa-blog"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to top -->
+  <button class="scroll-top" id="scrolltop" aria-label="Scroll to top">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <script>
+    // ── Stars ──
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 160; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() < 0.1 ? 2 : 1;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        top:${Math.random()*100}%; left:${Math.random()*100}%;
+        --dur:${3+Math.random()*5}s;
+        --delay:${Math.random()*6}s;
+        --op:${0.3+Math.random()*0.7};
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // ── Navbar scroll ──
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+      document.getElementById('scrolltop').classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // ── Mobile nav ──
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+      toggle.classList.toggle('open');
+    });
+
+    // ── Scroll top ──
+    document.getElementById('scrolltop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+    // ── Skill bars on scroll ──
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.skill-card').forEach(c => skillObserver.observe(c));
+
+    // ── Smooth anchor scroll ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>

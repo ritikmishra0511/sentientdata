@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses — Learn Data Science & ML | SentientData</title>
+  <meta name="description" content="Free and premium courses on Data Science, Machine Learning, and AI Engineering by Ritik Mishra. Sign in to unlock your learning journey." />
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .page-hero {
+      padding: calc(var(--nav-height) + 80px) 0 60px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero h1 { margin: 12px 0 16px; }
+    .page-hero p  { font-size: 1.05rem; max-width: 560px; margin: 0 auto; }
+
+    /* Auth Banner */
+    .auth-banner {
+      background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(168,85,247,0.07));
+      border: 1px solid rgba(0,212,255,0.2); border-radius: var(--border-radius-xl);
+      padding: 24px 32px; display: flex; align-items: center;
+      justify-content: space-between; gap: 20px; margin-bottom: 48px;
+      flex-wrap: wrap; backdrop-filter: blur(10px);
+    }
+    .auth-banner-text { display: flex; align-items: center; gap: 14px; }
+    .auth-banner-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--gradient-btn); display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .auth-banner h3 { font-size: 1rem; color: var(--text-primary); margin-bottom: 2px; }
+    .auth-banner p  { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+    .auth-banner-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* User Bar (shown when logged in) */
+    .user-bar {
+      background: linear-gradient(135deg, rgba(16,185,129,0.07), rgba(0,212,255,0.07));
+      border: 1px solid rgba(16,185,129,0.25); border-radius: var(--border-radius-xl);
+      padding: 20px 28px; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px; margin-bottom: 48px; flex-wrap: wrap;
+    }
+    .user-info { display: flex; align-items: center; gap: 14px; }
+    .user-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gradient-btn); display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-heading); font-size: 1rem;
+      font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .user-name { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+    .user-email { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Course Track Tabs */
+    .track-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+    .track-tab {
+      font-family: var(--font-heading); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 22px;
+      border-radius: 50px; border: 1px solid var(--border-card);
+      background: var(--bg-card); color: var(--text-secondary);
+      cursor: pointer; transition: var(--transition);
+    }
+    .track-tab:hover, .track-tab.active {
+      background: var(--gradient-btn); color: #fff;
+      border-color: transparent; box-shadow: var(--shadow-neon-both);
+    }
+
+    /* Courses Grid */
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+
+    .course-card {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); overflow: hidden;
+      transition: var(--transition); position: relative;
+      display: flex; flex-direction: column; backdrop-filter: blur(10px);
+    }
+    .course-card:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-5px); box-shadow: var(--shadow-neon-both); }
+    .course-thumb {
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative; overflow: hidden;
+    }
+    .course-thumb-free  { background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(16,185,129,0.08)); }
+    .course-thumb-pro   { background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(0,212,255,0.08)); }
+    .course-badge-overlay {
+      position: absolute; top: 14px; right: 14px;
+      font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px;
+      border-radius: 50px;
+    }
+    .free  { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .pro   { background: var(--neon-purple-dim); color: var(--neon-purple); border: 1px solid rgba(168,85,247,0.3); }
+    .locked-overlay {
+      position: absolute; inset: 0; background: rgba(4,4,15,0.7);
+      backdropfilter: blur(4px); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      pointer-events: none;
+    }
+    .locked-overlay i { font-size: 1.8rem; color: var(--neon-purple); }
+    .locked-overlay span { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+
+    .course-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .course-level { font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neon-blue); margin-bottom: 8px; }
+    .course-title { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; line-height: 1.4; }
+    .course-desc  { font-size: 0.87rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
+    .course-meta  { display: flex; gap: 16px; margin: 16px 0; font-size: 0.8rem; color: var(--text-muted); }
+    .course-meta span { display: flex; align-items: center; gap: 5px; }
+    .course-footer { border-top: 1px solid var(--border-card); padding-top: 16px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .course-modules { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-heading); }
+
+    /* Progress bar */
+    .progress-container { margin: 12px 0; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; font-family: var(--font-heading); }
+    .progress-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--gradient-accent); border-radius: 2px; transition: width 1s ease; }
+
+    /* Auth Modal */
+    .auth-tab-wrap { display: flex; gap: 4px; margin-bottom: 28px; background: rgba(255,255,255,0.04); border-radius: var(--border-radius); padding: 4px; }
+    .auth-tab { flex: 1; padding: 10px; text-align: center; font-family: var(--font-heading); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: var(--border-radius-sm); cursor: pointer; transition: var(--transition); color: var(--text-muted); background: none; border: none; }
+    .auth-tab.active { background: var(--gradient-btn); color: #fff; }
+
+    .divider-or { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: var(--border-card); }
+    .divider-or span { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-heading); }
+
+    /* Stats strip */
+    .stats-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 60px; }
+    .stat-strip-card {
+      background: var(--bg-card); border: 1px solid var(--border-card);
+      border-radius: var(--border-radius-lg); padding: 24px; text-align: center;
+      transition: var(--transition); backdrop-filter: blur(10px);
+    }
+    .stat-strip-card:hover { border-color: rgba(0,212,255,0.2); box-shadow: var(--shadow-neon-both); }
+    .stat-strip-number { font-family: var(--font-heading); font-size: 2rem; font-weight: 800; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-strip-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+
+    @media (max-width: 600px) {
+      .auth-banner { flex-direction: column; align-items: flex-start; }
+      .user-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars-layer" id="stars"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">⬡ SentientData</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="courses.html" class="active">Courses</a></li>
+        <li><a href="contact.html" class="nav-cta">Contact Me</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="glow-orb glow-blue"   style="width:500px;height:500px;top:-150px;left:-100px;"></div>
+    <div class="glow-orb glow-purple" style="width:400px;height:400px;bottom:-100px;right:-100px;"></div>
+    <div class="container">
+      <div class="section-tag">Learning Hub</div>
+      <h1>Courses & <span class="gradient-text">Learning Paths</span></h1>
+      <p>Free and premium self-paced courses to take you from Data Science fundamentals to ML Engineering and beyond.</p>
+    </div>
+  </div>
+
+  <main style="padding-bottom: 80px; position:relative; z-index:1;">
+    <div class="container">
+
+      <!-- Stats Strip -->
+      <div class="stats-strip">
+        <div class="stat-strip-card">
+          <div class="stat-strip-number">8+</div>
+          <div class="stat-strip-label">Courses</div>
+        </div>
+        <div class="stat-strip-card">
+          <div class="stat-strip-number">3</div>
+          <div class="stat-strip-label">Learning Tracks</div>
+        </div>
+        <div class="stat-strip-card">
+          <div class="stat-strip-number">Free</div>
+          <div class="stat-strip-label">Core Content</div>
+        </div>
+        <div class="stat-strip-card">
+          <div class="stat-strip-number">∞</div>
+          <div class="stat-strip-label">Growth Potential</div>
+        </div>
+      </div>
+
+      <!-- Auth Banner / User Bar -->
+      <div id="authBanner" class="auth-banner">
+        <div class="auth-banner-text">
+          <div class="auth-banner-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div>
+            <h3>Sign in to track your progress</h3>
+            <p>Free account unlocks all starter courses and saves your learning progress.</p>
+          </div>
+        </div>
+        <div class="auth-banner-buttons">
+          <button class="btn btn-primary" onclick="openModal('signin')" id="signinBannerBtn">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+          </button>
+          <button class="btn btn-outline" onclick="openModal('signup')">
+            <i class="fa-solid fa-user-plus"></i> Create Account
+          </button>
+        </div>
+      </div>
+
+      <div id="userBar" class="user-bar" style="display:none;">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">R</div>
+          <div>
+            <div class="user-name" id="userName">Loading…</div>
+            <div class="user-email" id="userEmail"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:0.82rem;color:var(--text-muted);">Welcome back to your learning hub 👋</span>
+          <button class="btn btn-outline btn-sm" id="signoutBtn" onclick="handleSignOut()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Track Tabs -->
+      <div class="track-tabs" id="trackTabs">
+        <button class="track-tab active" data-track="all">All Courses</button>
+        <button class="track-tab" data-track="data-science">📊 Data Science</button>
+        <button class="track-tab" data-track="ml-engineering">🤖 ML Engineering</button>
+        <button class="track-tab" data-track="nlp">🧠 NLP & LLMs</button>
+        <button class="track-tab" data-track="startup">🚀 AI Startup</button>
+      </div>
+
+      <!-- Courses Grid -->
+      <div class="courses-grid" id="coursesGrid">
+        <!-- injected by JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <!-- Tabs -->
+      <div class="auth-tab-wrap">
+        <button class="auth-tab active" id="signinTab" onclick="switchAuthTab('signin')">Sign In</button>
+        <button class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <div id="signinForm">
+        <h2 style="font-size:1.3rem;margin-bottom:6px;">Welcome back 👋</h2>
+        <p style="margin-bottom:24px;font-size:0.9rem;">Sign in to continue your learning journey.</p>
+        <div class="form-group">
+          <label class="form-label" for="siEmail">Email Address</label>
+          <input class="form-control" type="email" id="siEmail" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="siPassword">Password</label>
+          <input class="form-control" type="password" id="siPassword" placeholder="Your password" />
+        </div>
+        <div id="siError"></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" onclick="handleSignIn()" id="signinSubmit">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+        <div class="divider-or"><span>or</span></div>
+        <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);">No account? <a href="#" onclick="switchAuthTab('signup')">Create one free →</a></p>
+      </div>
+
+      <!-- Sign Up Form -->
+      <div id="signupForm" style="display:none;">
+        <h2 style="font-size:1.3rem;margin-bottom:6px;">Join for free 🚀</h2>
+        <p style="margin-bottom:24px;font-size:0.9rem;">Create your account and start learning Data Science & ML today.</p>
+        <div class="form-group">
+          <label class="form-label" for="suName">Full Name</label>
+          <input class="form-control" type="text" id="suName" placeholder="Ritik Mishra" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="suEmail">Email Address</label>
+          <input class="form-control" type="email" id="suEmail" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="suPassword">Password</label>
+          <input class="form-control" type="password" id="suPassword" placeholder="Min. 8 characters" />
+        </div>
+        <div id="suError"></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" onclick="handleSignUp()" id="signupSubmit">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+        <div class="divider-or"><span>or</span></div>
+        <p style="text-align:center;font-size:0.85rem;color:var(--text-muted);">Already have an account? <a href="#" onclick="switchAuthTab('signin')">Sign in →</a></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="nav-logo">⬡ SentientData</div>
+          <p>Learn. Build. Ship. The only path to becoming a real ML Engineer.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigate</div>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Connect</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
+            <li><a href="https://linkedin.com/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
+            <li><a href="https://hashnode.com/" target="_blank"><i class="fa-solid fa-blog"></i> Hashnode</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Ritik Mishra · sentientdata.xyz</p>
+        <div class="social-links">
+          <a href="https://github.com/" class="social-link" target="_blank"><i class="fa-brands fa-github"></i></a>
+          <a href="https://linkedin.com/" class="social-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="https://twitter.com/" class="social-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scrolltop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script>
+  // ─────────────────────────────────────────────────────
+  // ⚙️  CONFIG — Replace with your actual Supabase creds
+  // ─────────────────────────────────────────────────────
+  const SUPABASE_URL      = 'YOUR_SUPABASE_URL';       // e.g. 'https://xxxx.supabase.co'
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';  // your public anon key
+
+  let supabase = null;
+  let currentUser = null;
+
+  // Init Supabase (safe: won't crash if creds are placeholders)
+  try {
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch(e) { console.warn('Supabase init failed:', e); }
+
+  // ── Stars ──
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 140; i++) {
+    const s = document.createElement('div'); s.className = 'star';
+    const size = Math.random() < 0.1 ? 2 : 1;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${3+Math.random()*5}s;--delay:${Math.random()*6}s;--op:${0.3+Math.random()*0.7};`;
+    starsEl.appendChild(s);
+  }
+
+  // ── Navbar ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+    document.getElementById('scrolltop').classList.toggle('visible', window.scrollY > 400);
+  });
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.getElementById('navToggle').classList.toggle('open');
+  });
+  document.getElementById('scrolltop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+  // ── Courses Data ──
+  const courses = [
+    {
+      id:1, track:'data-science', tier:'free', emoji:'📊', level:'Beginner',
+      title:'Data Science Fundamentals with Python',
+      desc:'Start your journey here. Learn Python for data analysis, Pandas, NumPy, data cleaning, and your first EDA project from scratch.',
+      modules:8, hours:6, progress:0,
+      topics:['Python Basics','Pandas','NumPy','Data Cleaning','EDA','Matplotlib']
+    },
+    {
+      id:2, track:'data-science', tier:'free', emoji:'📈', level:'Beginner → Intermediate',
+      title:'Statistical Thinking for Data Scientists',
+      desc:'Understand the statistics that underpin ML: probability, distributions, hypothesis testing, A/B testing, and regression basics.',
+      modules:6, hours:5, progress:0,
+      topics:['Probability','Distributions','CLT','Hypothesis Testing','Regression']
+    },
+    {
+      id:3, track:'ml-engineering', tier:'free', emoji:'🤖', level:'Intermediate',
+      title:'Machine Learning with Scikit-learn',
+      desc:'From regression to ensemble methods. Learn to build, evaluate, and tune ML models with the industry-standard Scikit-learn library.',
+      modules:10, hours:9, progress:0,
+      topics:['Linear Models','Decision Trees','XGBoost','Cross-Validation','SHAP','Optuna']
+    },
+    {
+      id:4, track:'ml-engineering', tier:'pro', emoji:'🔥', level:'Intermediate → Advanced',
+      title:'Deep Learning with PyTorch',
+      desc:'Build neural networks from scratch. CNNs, RNNs, Transformers, and training pipelines. Includes GPU acceleration and model checkpointing.',
+      modules:12, hours:15, progress:0,
+      topics:['Tensors','Backprop','CNNs','RNNs','Transformers','Training Loops']
+    },
+    {
+      id:5, track:'nlp', tier:'free', emoji:'🧠', level:'Intermediate',
+      title:'NLP Fundamentals: From Text to Features',
+      desc:'Text preprocessing, TF-IDF, word embeddings (Word2Vec, GloVe), and your first sentiment classifier. The foundation before LLMs.',
+      modules:7, hours:6, progress:0,
+      topics:['Tokenization','Embeddings','TF-IDF','Word2Vec','Naive Bayes','Evaluation']
+    },
+    {
+      id:6, track:'nlp', tier:'pro', emoji:'⚡', level:'Advanced',
+      title:'LLMs & Transformers in Practice',
+      desc:'Fine-tune BERT and GPT models with HuggingFace. Build RAG pipelines, prompt engineer LLMs, and deploy them via FastAPI.',
+      modules:10, hours:12, progress:0,
+      topics:['HuggingFace','Fine-tuning','RLHF','RAG','LangChain','FastAPI']
+    },
+    {
+      id:7, track:'ml-engineering', tier:'pro', emoji:'🛠️', level:'Advanced',
+      title:'MLOps: Ship ML to Production',
+      desc:'The full ML lifecycle: experiment tracking (MLflow), model registry, CI/CD for ML, Docker, Kubernetes basics, and monitoring drift.',
+      modules:9, hours:11, progress:0,
+      topics:['MLflow','Docker','CI/CD','Model Registry','Data Drift','FastAPI']
+    },
+    {
+      id:8, track:'startup', tier:'free', emoji:'🚀', level:'All Levels',
+      title:'Building an AI Product: From Idea to MVP',
+      desc:'How to validate an AI startup idea, find product-market fit, build an MVP with open-source tools, and get your first users. My personal playbook.',
+      modules:6, hours:4, progress:0,
+      topics:['Validation','MVP','Supabase','Vercel','Landing Page','Customer Discovery']
+    },
+  ];
+
+  let activeTrack = 'all';
+
+  function renderCourses() {
+    const grid = document.getElementById('coursesGrid');
+    const filtered = activeTrack === 'all' ? courses : courses.filter(c => c.track === activeTrack);
+    const isLoggedIn = !!currentUser;
+
+    grid.innerHTML = filtered.map(c => {
+      const isLocked = c.tier === 'pro' && !isLoggedIn;
+      const isFreeButNeedLogin = c.tier === 'free' && !isLoggedIn;
+      return `
+        <div class="course-card">
+          <div class="course-thumb course-thumb-${c.tier}" style="position:relative;">
+            <span style="font-size:3.5rem;">${c.emoji}</span>
+            <span class="course-badge-overlay ${c.tier}">${c.tier === 'free' ? 'Free' : 'Pro'}</span>
+            ${isLocked ? `<div class="locked-overlay"><i class="fa-solid fa-lock"></i><span>Unlock with Account</span></div>` : ''}
+          </div>
+          <div class="course-body">
+            <div class="course-level">${c.level}</div>
+            <h3 class="course-title">${c.title}</h3>
+            <p class="course-desc">${c.desc}</p>
+            <div class="course-meta">
+              <span><i class="fa-solid fa-layer-group"></i> ${c.modules} modules</span>
+              <span><i class="fa-regular fa-clock"></i> ~${c.hours}h</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              ${c.topics.map(t=>`<span class="badge badge-glass" style="font-size:0.62rem;">${t}</span>`).join('')}
+            </div>
+            ${isLoggedIn && c.progress > 0 ? `
+              <div class="progress-container">
+                <div class="progress-label"><span>Progress</span><span>${c.progress}%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${c.progress}%"></div></div>
+              </div>
+            ` : ''}
+            <div class="course-footer">
+              <span class="course-modules"><i class="fa-solid fa-book-open"></i> ${c.modules} Lessons</span>
+              ${isLocked
+                ? `<button class="btn btn-outline-purple btn-sm" onclick="openModal('signup')"><i class="fa-solid fa-lock"></i> Unlock</button>`
+                : isFreeButNeedLogin
+                  ? `<button class="btn btn-primary btn-sm" onclick="openModal('signin')"><i class="fa-solid fa-play"></i> Start Learning</button>`
+                  : `<button class="btn btn-primary btn-sm"><i class="fa-solid fa-play"></i> ${c.progress > 0 ? 'Continue' : 'Start'}</button>`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── Track Tabs ──
+  document.getElementById('trackTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.track-tab');
+    if (!tab) return;
+    document.querySelectorAll('.track-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeTrack = tab.dataset.track;
+    renderCourses();
+  });
+
+  // ── Auth Modal ──
+  function openModal(tab = 'signin') {
+    switchAuthTab(tab);
+    document.getElementById('authModal').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('authModal').classList.remove('active');
+    clearErrors();
+  }
+  document.getElementById('authModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('authModal')) closeModal();
+  });
+
+  function switchAuthTab(tab) {
+    document.getElementById('signinTab').classList.toggle('active', tab === 'signin');
+    document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+    document.getElementById('signinForm').style.display = tab === 'signin' ? 'block' : 'none';
+    document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+    clearErrors();
+  }
+
+  function showError(id, msg) {
+    document.getElementById(id).innerHTML = `<div class="alert alert-error"><i class="fa-solid fa-circle-exclamation"></i>${msg}</div>`;
+  }
+  function clearErrors() {
+    ['siError','suError'].forEach(id => { document.getElementById(id).innerHTML = ''; });
+  }
+
+  function setLoading(btnId, loading) {
+    const btn = document.getElementById(btnId);
+    btn.disabled = loading;
+    btn.innerHTML = loading
+      ? '<i class="fa-solid fa-spinner fa-spin"></i> Loading…'
+      : btnId === 'signinSubmit'
+        ? '<i class="fa-solid fa-right-to-bracket"></i> Sign In'
+        : '<i class="fa-solid fa-user-plus"></i> Create Account';
+  }
+
+  async function handleSignIn() {
+    const email = document.getElementById('siEmail').value.trim();
+    const pass  = document.getElementById('siPassword').value;
+    if (!email || !pass) return showError('siError', 'Please fill in all fields.');
+
+    if (!supabase) {
+      // Demo mode
+      simulateAuth(email);
+      return;
+    }
+
+    setLoading('signinSubmit', true);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    setLoading('signinSubmit', false);
+    if (error) return showError('siError', error.message);
+    onSignedIn(data.user);
+  }
+
+  async function handleSignUp() {
+    const name  = document.getElementById('suName').value.trim();
+    const email = document.getElementById('suEmail').value.trim();
+    const pass  = document.getElementById('suPassword').value;
+    if (!name || !email || !pass) return showError('suError', 'Please fill in all fields.');
+    if (pass.length < 8) return showError('suError', 'Password must be at least 8 characters.');
+
+    if (!supabase) {
+      simulateAuth(email, name);
+      return;
+    }
+
+    setLoading('signupSubmit', true);
+    const { data, error } = await supabase.auth.signUp({
+      email, password: pass,
+      options: { data: { full_name: name } }
+    });
+    setLoading('signupSubmit', false);
+    if (error) return showError('suError', error.message);
+    if (data.user && !data.session) {
+      document.getElementById('suError').innerHTML = `<div class="alert alert-info"><i class="fa-solid fa-envelope"></i> Check your email to confirm your account!</div>`;
+    } else {
+      onSignedIn(data.user);
+    }
+  }
+
+  function simulateAuth(email, name) {
+    // Demo mode when Supabase isn't configured yet
+    const mockUser = { email, user_metadata: { full_name: name || email.split('@')[0] } };
+    onSignedIn(mockUser);
+  }
+
+  function onSignedIn(user) {
+    currentUser = user;
+    closeModal();
+    updateUIForUser(user);
+    renderCourses();
+  }
+
+  async function handleSignOut() {
+    if (supabase) await supabase.auth.signOut();
+    currentUser = null;
+    document.getElementById('authBanner').style.display = '';
+    document.getElementById('userBar').style.display = 'none';
+    renderCourses();
+  }
+
+  function updateUIForUser(user) {
+    document.getElementById('authBanner').style.display = 'none';
+    document.getElementById('userBar').style.display = '';
+    const name  = user.user_metadata?.full_name || user.email.split('@')[0];
+    const email = user.email;
+    document.getElementById('userName').textContent = name;
+    document.getElementById('userEmail').textContent = email;
+    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+  }
+
+  // Check existing session on load
+  async function checkSession() {
+    if (!supabase) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) onSignedIn(session.user);
+  }
+
+  // ── Init ──
+  checkSession();
+  renderCourses();
+</script>
+</body>
+</html>
