@@ -3,787 +3,281 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ritik Mishra — Data Scientist & ML Engineer</title>
-  <meta name="description" content="Ritik Mishra is a CS student and aspiring Data Scientist & ML Engineer building intelligent systems and AI products." />
+  <title>Ritik Mishra — Cinematic Intelligence</title>
+  <meta name="description" content="Data Scientist & AI Architect. A study in precision." />
   <link rel="stylesheet" href="shared.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-/* ────────────────────────────────────────────
-   PAGE STYLES — index.html
-──────────────────────────────────────────── */
+    /* ── PAGE SPECIFIC SYLES ── */
+    
+    /* Smooth Scroll / Cinematic Baseline */
+    .lux-hero {
+      height: 100vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; background: url('assets/obsidian.png') center/cover no-repeat;
+      z-index: -1; 
+      /* parallax effect via transform added later in JS, but base is here */
+      transform: scale(1.05); filter: brightness(0.65);
+    }
+    .hero-bg::after {
+      content:''; position: absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%);
+    }
 
-/* ── HERO ── */
-.hero {
-  min-height: 100svh;
-  display: flex; align-items: center;
-  padding: calc(var(--nav-h) + 60px) 0 80px;
-  position: relative; overflow: hidden;
-}
-.hero-grid {
-  display: grid; grid-template-columns: 1fr 420px;
-  gap: 64px; align-items: center;
-}
+    .hero-content { width: 100%; }
+    .lux-huge-title { margin-bottom: 24px; max-width: 1100px; }
+    
+    /* Scroll Indicator */
+    .scroll-line {
+      position: absolute; bottom: 0; right: 40px; width: 1px; height: 160px; background: rgba(255,255,255,0.1); overflow: hidden;
+    }
+    .scroll-line-fill {
+      width: 100%; height: 100%; background: var(--white); transform: translateY(-100%); animation: drop 2.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    @keyframes drop { 0% { transform: translateY(-100%); } 50% { transform: translateY(0); } 100% { transform: translateY(100%); } }
 
-/* Avail chip */
-.avail-chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 0.78rem; font-weight: 500; color: var(--green);
-  padding: 7px 14px 7px 10px;
-  background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2);
-  border-radius: 100px; margin-bottom: 28px; w: fit-content;
-}
-.avail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s ease infinite; }
-@keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    /* The Philosophy Section */
+    .phil-section {
+      padding: 240px 0; max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    .lux-quote {
+      font-family: var(--font-lux); font-size: clamp(2rem, 4vw, 3.2rem); 
+      line-height: 1.3; color: var(--white); margin-bottom: 60px;
+    }
+    .lux-quote-sub {
+      font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); margin-bottom: 40px;
+    }
 
-/* Hero headline */
-.hero-headline { font-size: clamp(2.6rem, 6.5vw, 5rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 20px; }
-.hero-headline .line-2 { color: var(--t2); font-weight: 700; }
+    /* The Work Section */
+    .work-section { padding-bottom: 160px; }
+    .work-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px 60px; border-bottom: 1px solid var(--wire); }
+    
+    .lux-list { list-style: none; }
+    .lux-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 60px 40px; border-bottom: 1px solid var(--wire); text-decoration: none;
+      position: relative; overflow: hidden; transition: var(--t-lux); cursor: pointer;
+    }
+    .lux-item-bg {
+      position: absolute; inset: 0; background: url('assets/silk.png') center/cover no-repeat;
+      z-index: 0; opacity: 0; filter: grayscale(1) brightness(0.3); transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux); transform: scale(1.1);
+    }
+    .lux-item:hover .lux-item-bg { opacity: 1; transform: scale(1); }
+    .lux-item-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    
+    .item-title { font-family: var(--font-lux); font-size: clamp(2rem, 3.5vw, 4rem); font-weight: 400; transition: transform 0.6s var(--ease-lux); }
+    .lux-item:hover .item-title { transform: translateX(20px); }
+    .item-meta { text-align: right; }
+    .item-cat { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--silver); margin-bottom: 8px; }
+    .item-year { font-family: var(--font-lux); font-size: 1.4rem; color: var(--white); font-style: italic; }
 
-/* Typewriter */
-.tw-row { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
-.tw-label { font-size: 0.9rem; color: var(--t3); font-weight: 500; }
-.tw-text {
-  font-size: 0.9rem; font-weight: 700;
-  background: var(--grad-accent); -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; background-clip: text;
-  position: relative;
-}
-.tw-cursor { display: inline-block; width: 2px; height: 0.9em; background: var(--indigo); margin-left: 1px; vertical-align: middle; animation: blink 0.9s step-end infinite; }
-@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+    /* Imagery Break */
+    .img-break {
+      width: 100%; height: 80vh; background: url('assets/silk.png') center/cover fixed;
+      position: relative;
+    }
+    .img-break::after { content:''; position: absolute; inset:0; background: rgba(0,0,0,0.4); }
 
-/* Hero desc */
-.hero-desc { font-size: 1rem; color: var(--t2); line-height: 1.8; max-width: 500px; margin-bottom: 36px; }
+    /* Competencies (no stars, no bars. Just stark lists) */
+    .comp-section { padding: 160px 0; }
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .comp-col h3 { font-size: 2rem; margin-bottom: 40px; border-bottom: 1px solid var(--wire); padding-bottom: 20px; }
+    .comp-list { list-style: none; }
+    .comp-list li { 
+      font-size: 1.1rem; color: var(--platinum); padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; justify-content: space-between;
+    }
+    .comp-list li span { font-family: var(--font-lux); font-style: italic; color: var(--silver); }
 
-/* Action row */
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-
-/* Social row */
-.hero-socials { display: flex; align-items: center; gap: 20px; }
-.hs-label { font-size: 0.75rem; color: var(--t3); font-weight: 500; white-space: nowrap; }
-.hs-sep { width: 24px; height: 1px; background: var(--wire); }
-.hs-link { font-size: 0.8rem; font-weight: 600; color: var(--t2); transition: var(--t-fast); cursor: none; display: flex; align-items: center; gap: 5px; }
-.hs-link:hover { color: var(--t1); }
-
-/* ── PROFILE CARD (right side) ── */
-.profile-card {
-  background: var(--ink-card); border: 1px solid rgba(255,255,255,0.09);
-  border-radius: var(--radius-xl); padding: 32px; position: relative;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, var(--shadow-lg);
-  overflow: hidden;
-}
-/* Subtle gradient overlay */
-.profile-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: inherit;
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(129,140,248,0.08), transparent);
-  pointer-events: none;
-}
-
-.pc-top { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
-.pc-avatar {
-  width: 64px; height: 64px; border-radius: 18px; flex-shrink: 0;
-  background: var(--grad-btn);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-logo); font-size: 1.2rem; font-weight: 800; color: #fff;
-  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
-}
-.pc-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--t1); margin-bottom: 3px; }
-.pc-role { font-size: 0.78rem; color: var(--t3); }
-
-.pc-divider { height: 1px; background: var(--wire); margin: 0 0 20px; }
-
-/* Stats row */
-.pc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--wire); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
-.pc-stat { background: rgba(255,255,255,0.02); padding: 14px 10px; text-align: center; }
-.pc-stat-n { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-.pc-stat-l { font-size: 0.65rem; color: var(--t3); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-
-/* Stack pills */
-.pc-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
-.pc-pill { font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid var(--wire); color: var(--t2); }
-
-/* Progress items */
-.pc-learning { display: flex; flex-direction: column; gap: 12px; }
-.pc-learn-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.pc-learn-label { font-size: 0.78rem; color: var(--t2); font-weight: 500; white-space: nowrap; }
-.pc-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.pc-fill { height: 100%; background: var(--grad-accent); border-radius: 2px; width: 0; transition: width 1s var(--ease-out) 0.5s; }
-.profile-card.in-view .pc-fill { width: var(--w, 70%); }
-.pc-pct { font-size: 0.68rem; color: var(--t3); font-weight: 600; white-space: nowrap; }
-
-/* ── MARQUEE ── */
-.marquee-wrap { border-top: 1px solid var(--wire); border-bottom: 1px solid var(--wire); padding: 0; overflow: hidden; }
-.marquee-inner { display: flex; user-select: none; }
-.marquee-row { display: flex; gap: 0; animation: marqueeX 28s linear infinite; flex-shrink: 0; }
-.marquee-row:hover { animation-play-state: paused; }
-.m-item {
-  display: flex; align-items: center; gap: 10px; padding: 18px 28px;
-  font-size: 0.8rem; font-weight: 600; color: var(--t3);
-  border-right: 1px solid var(--wire); white-space: nowrap;
-  transition: var(--t-fast); cursor: none;
-}
-.m-item:hover { color: var(--t1); background: rgba(255,255,255,0.03); }
-.m-item i { color: var(--indigo); font-size: 0.85rem; }
-@keyframes marqueeX { 0%{ transform:translateX(0); } 100%{ transform:translateX(-100%); } }
-
-/* ── BENTO (About/Skills) ── */
-.bento { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 160px; gap: 12px; }
-.b { background: var(--ink-card); border: 1px solid var(--wire); border-radius: var(--radius-lg); padding: 24px; overflow: hidden; transition: border-color var(--t-base), background var(--t-base); position: relative; }
-.b:hover { border-color: rgba(129,140,248,0.2); background: var(--ink-card-hov); }
-
-/* span helpers */
-.c3  { grid-column: span 3; }
-.c4  { grid-column: span 4; }
-.c5  { grid-column: span 5; }
-.c6  { grid-column: span 6; }
-.c7  { grid-column: span 7; }
-.c8  { grid-column: span 8; }
-.c9  { grid-column: span 9; }
-.c12 { grid-column: span 12; }
-.r1  { grid-row: span 1; }
-.r2  { grid-row: span 2; }
-
-.b-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--t3); margin-bottom: 10px; }
-.b-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--t1); line-height: 1.2; }
-.b-sub   { font-size: 0.82rem; color: var(--t2); margin-top: 6px; line-height: 1.5; }
-.b-num   { font-family: var(--font-display); font-size: 3.2rem; font-weight: 800; line-height: 1; background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-/* Skill list inside bento */
-.skill-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-.skill-row  { display: flex; align-items: center; gap: 10px; }
-.skill-icon-sm { width: 26px; height: 26px; border-radius: 7px; background: var(--indigo-dim); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--indigo); flex-shrink: 0; }
-.skill-info   { flex: 1; }
-.skill-name-sm { font-size: 0.78rem; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
-.skill-bar-sm { height: 2px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-.skill-fill-sm { height: 100%; background: var(--grad-accent); border-radius: 2px; width: 0; transition: width 1s var(--ease-out); }
-.b.in-view .skill-fill-sm { width: var(--w, 70%); }
-
-/* Stack icons grid */
-.icon-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.icon-pill { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: var(--radius); background: rgba(255,255,255,0.05); border: 1px solid var(--wire); font-size: 0.72rem; color: var(--t2); font-weight: 500; transition: var(--t-fast); }
-.icon-pill i { color: var(--indigo); font-size: 0.8rem; }
-.icon-pill:hover { border-color: rgba(129,140,248,0.3); color: var(--t1); background: var(--indigo-dim); }
-
-/* Location card */
-.loc-icon { font-size: 2.2rem; margin-bottom: 8px; }
-
-/* Focus card gradient bg */
-.b-focus::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(129,140,248,0.08), rgba(192,132,252,0.04)); border-radius: inherit; pointer-events: none; }
-
-/* ── PROJECTS ── */
-.projects-list { display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--wire); border-radius: var(--radius-lg); overflow: hidden; }
-.proj-item {
-  display: grid; grid-template-columns: 56px 1fr auto;
-  align-items: center; gap: 24px; padding: 24px 28px;
-  background: rgba(255,255,255,0.02); transition: var(--t-base); cursor: none;
-  border-bottom: 1px solid var(--wire); text-decoration: none;
-}
-.proj-item:last-child { border-bottom: none; }
-.proj-item:hover { background: rgba(255,255,255,0.05); }
-.proj-item:hover .proj-arrow { transform: translate(3px, -3px); color: var(--indigo); }
-.proj-num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: rgba(255,255,255,0.08); letter-spacing: -0.04em; line-height: 1; }
-.proj-body { min-width: 0; }
-.proj-tags { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-.proj-tag-sm { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 100px; background: var(--indigo-dim); color: var(--indigo); border: 1px solid rgba(129,140,248,0.2); }
-.proj-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--t1); margin-bottom: 4px; letter-spacing: -0.01em; }
-.proj-desc  { font-size: 0.83rem; color: var(--t3); line-height: 1.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.proj-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
-.proj-arrow { font-size: 0.9rem; color: var(--t3); transition: var(--t-base); }
-.proj-links-sm { display: flex; gap: 8px; }
-
-/* Featured project (large card) */
-.proj-featured {
-  border: 1px solid var(--wire); border-radius: var(--radius-lg); overflow: hidden;
-  display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1px;
-  background: rgba(255,255,255,0.02); transition: var(--t-base); cursor: none;
-}
-.proj-featured:hover { background: rgba(255,255,255,0.04); border-color: rgba(129,140,248,0.2); }
-.pf-visual {
-  background: linear-gradient(135deg, rgba(129,140,248,0.12), rgba(192,132,252,0.06));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 4rem; position: relative; min-height: 220px;
-  border-right: 1px solid var(--wire);
-}
-.pf-featured-badge { position: absolute; top: 16px; left: 16px; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 100px; background: var(--indigo-dim); color: var(--indigo); border: 1px solid rgba(129,140,248,0.25); }
-.pf-body { padding: 32px; display: flex; flex-direction: column; justify-content: center; }
-.pf-body .proj-title { font-size: 1.15rem; margin-bottom: 10px; }
-.pf-body .proj-desc  { font-size: 0.875rem; color: var(--t2); white-space: normal; margin-bottom: 20px; }
-
-/* ── JOURNEY ── */
-.journey-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.j-card {
-  background: var(--ink-card); border: 1px solid var(--wire); border-radius: var(--radius-lg);
-  padding: 28px 24px; position: relative; transition: var(--t-base);
-}
-.j-card:hover { border-color: rgba(129,140,248,0.2); background: var(--ink-card-hov); }
-.j-num { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(255,255,255,0.05); letter-spacing: -0.04em; margin-bottom: 16px; }
-.j-phase { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--indigo); margin-bottom: 8px; }
-.j-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--t1); margin-bottom: 10px; }
-.j-desc  { font-size: 0.85rem; color: var(--t2); line-height: 1.7; }
-.j-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 18px; font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 100px; }
-.s-active { background: rgba(52,211,153,0.1);  color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
-.s-next   { background: var(--indigo-dim);       color: var(--indigo); border: 1px solid rgba(129,140,248,0.2); }
-.s-vision { background: rgba(192,132,252,0.1);   color: #c084fc;       border: 1px solid rgba(192,132,252,0.2); }
-
-/* ── BLOG CTA ── */
-.blog-strip {
-  background: var(--ink-card); border: 1px solid var(--wire); border-radius: var(--radius-xl);
-  padding: 60px; display: flex; align-items: center; justify-content: space-between;
-  gap: 32px; flex-wrap: wrap; position: relative; overflow: hidden;
-}
-.blog-strip::before {
-  content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(99,102,241,0.08), transparent 60%);
-  right: -100px; top: -100px; pointer-events: none;
-}
-.blog-strip-text { max-width: 520px; }
-.blog-strip-text h2 { font-size: clamp(1.4rem,3vw,2rem); margin-bottom: 10px; }
-.blog-strip-text p  { font-size: 0.93rem; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .profile-card { display: none; } /* hide on mobile, or convert to smaller strip */
-  .bento { grid-auto-rows: auto; }
-  .c3,.c4,.c5,.c6,.c7,.c8,.c9 { grid-column: span 12; }
-  .r2 { grid-row: span 1; }
-  .journey-row { grid-template-columns: 1fr; }
-  .proj-featured { grid-template-columns: 1fr; }
-  .pf-visual { min-height: 160px; border-right: none; border-bottom: 1px solid var(--wire); }
-  .proj-item { grid-template-columns: 40px 1fr; }
-  .proj-right { display: none; }
-  .blog-strip { flex-direction: column; align-items: flex-start; padding: 40px 28px; }
-  .hero-socials { flex-wrap: wrap; gap: 14px; }
-}
-@media (max-width: 640px) {
-  .bento { display: flex; flex-direction: column; }
-  .proj-desc { display: none; }
-}
+    @media(max-width: 768px) {
+      .work-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .lux-item { padding: 40px 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
+      .item-meta { text-align: left; }
+      .lux-item:hover .item-title { transform: none; }
+      .comp-grid { grid-template-columns: 1fr; gap: 60px; }
+      .lux-quote { font-size: 1.6rem; }
+      .phil-section { padding: 120px 24px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cur"></div>
-<div class="cursor-follower" id="curf"></div>
-
-<!-- ═══ NAVBAR ═══ -->
-<nav class="navbar" id="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">⬡ SentientData</a>
-    <button class="nav-toggle" id="navBtn" aria-label="Menu"><span></span><span></span><span></span></button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="contact.html" class="nav-pill">Get in Touch</a></li>
-    </ul>
-  </div>
+<nav class="lux-nav" id="nav">
+  <a href="index.html" class="nav-brand">Ritik Mishra.</a>
+  <ul class="nav-menu">
+    <li><a href="index.html" class="nav-link active">Intelligence</a></li>
+    <li><a href="courses.html" class="nav-link">Resources</a></li>
+    <li><a href="blog.html" class="nav-link">Journal</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+  </ul>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="home">
-  <div class="container">
-    <div class="hero-grid">
+<!-- HERO -->
+<section class="lux-hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="container hero-content">
+    <span class="mono-label fade-up">01. Identity</span>
+    <h1 class="lux-huge-title reveal-mask">
+      <span class="reveal-text">The Architecture</span>
+    </h1>
+    <h1 class="lux-huge-title reveal-mask" style="font-style:italic;">
+      <span class="reveal-text delay-1">of Intelligence.</span>
+    </h1>
+    <p class="fade-up delay-2" style="max-width: 500px; margin-top: 40px;">
+      Data Scientist and Machine Learning Engineer. Building monolithic systems that turn raw data into structured truth.
+    </p>
+  </div>
+  <div class="scroll-line"><div class="scroll-line-fill"></div></div>
+</section>
 
-      <!-- Left -->
-      <div class="hero-left">
-        <div class="avail-chip">
-          <span class="avail-dot"></span>
-          Open to internships &amp; collaborations
-        </div>
-
-        <h1 class="hero-headline">
-          Building Data&#8209;Driven<br>
-          <span class="line-2">Intelligence.</span>
-        </h1>
-
-        <div class="tw-row">
-          <span class="tw-label">Currently learning </span>
-          <span class="tw-text" id="tw"></span><span class="tw-cursor"></span>
-        </div>
-
-        <p class="hero-desc">
-          I'm <strong>Ritik Mishra</strong> — CS student from India, turning raw datasets into models, APIs, and eventually startup products. On a path from Data Science to ML Engineering to founding something meaningful.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">View Projects <i class="fa-solid fa-arrow-right"></i></a>
-          <a href="contact.html" class="btn btn-ghost">Get in Touch</a>
-        </div>
-
-        <div class="hero-socials">
-          <span class="hs-label">Find me on</span>
-          <span class="hs-sep"></span>
-          <a href="https://github.com/ritikmishra0511" class="hs-link" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
-          <a href="https://linkedin.com/" class="hs-link" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-          <a href="blog.html" class="hs-link"><i class="fa-solid fa-pen-nib"></i> Blog</a>
-        </div>
-      </div>
-
-      <!-- Right: Profile Card -->
-      <div class="profile-card" id="profileCard">
-        <div class="pc-top">
-          <div class="pc-avatar">RM</div>
-          <div>
-            <div class="pc-name">Ritik Mishra</div>
-            <div class="pc-role">Data Scientist &amp; ML Engineer</div>
-          </div>
-        </div>
-        <div class="pc-divider"></div>
-        <div class="pc-stats">
-          <div class="pc-stat"><div class="pc-stat-n" data-count="4" data-s="+">0</div><div class="pc-stat-l">Projects</div></div>
-          <div class="pc-stat"><div class="pc-stat-n" data-count="8" data-s="+">0</div><div class="pc-stat-l">Articles</div></div>
-          <div class="pc-stat"><div class="pc-stat-n">2025</div><div class="pc-stat-l">Class of</div></div>
-        </div>
-        <div class="pc-divider" style="margin-top:0;margin-bottom:18px;"></div>
-        <div class="pc-stack">
-          <span class="pc-pill">Python</span>
-          <span class="pc-pill">Scikit-learn</span>
-          <span class="pc-pill">PyTorch</span>
-          <span class="pc-pill">FastAPI</span>
-          <span class="pc-pill">SQL</span>
-          <span class="pc-pill">HuggingFace</span>
-        </div>
-        <div class="pc-divider"></div>
-        <div class="b-label" style="margin-bottom:14px;">Current Skill Level</div>
-        <div class="pc-learning">
-          <div class="pc-learn-item">
-            <span class="pc-learn-label">Machine Learning</span>
-            <div class="pc-bar"><div class="pc-fill" style="--w:80%"></div></div>
-            <span class="pc-pct">80%</span>
-          </div>
-          <div class="pc-learn-item">
-            <span class="pc-learn-label">Data Analysis</span>
-            <div class="pc-bar"><div class="pc-fill" style="--w:88%"></div></div>
-            <span class="pc-pct">88%</span>
-          </div>
-          <div class="pc-learn-item">
-            <span class="pc-learn-label">Deep Learning</span>
-            <div class="pc-bar"><div class="pc-fill" style="--w:65%"></div></div>
-            <span class="pc-pct">65%</span>
-          </div>
-          <div class="pc-learn-item">
-            <span class="pc-learn-label">MLOps</span>
-            <div class="pc-bar"><div class="pc-fill" style="--w:55%"></div></div>
-            <span class="pc-pct">55%</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
+<!-- PHILOSOPHY / NARRATIVE -->
+<section class="section section-no-border phil-section">
+  <span class="mono-label fade-up">02. Philosophy</span>
+  <h2 class="lux-quote reveal-mask">
+    <span class="reveal-text">"Algorithms without context are merely math. True engineering occurs when data meets intuition."</span>
+  </h2>
+  <div class="lux-quote-sub fade-up delay-1">— Ritik Mishra</div>
+  <div class="fade-up delay-2" style="max-width:600px; margin: 0 auto;">
+    <p style="margin-bottom:20px;">I don't just build models; I construct pipelines of logic. From exploratory data analysis to deploying containerized FastAPI endpoints, my approach is rooted in absolute structural integrity and uncompromising elegance.</p>
+    <a href="contact.html" class="btn">Initiate Dialogue</a>
   </div>
 </section>
 
-<!-- ═══ MARQUEE ═══ -->
-<div class="marquee-wrap">
-  <div class="marquee-inner">
-    <div class="marquee-row" aria-hidden="true">
-      <span class="m-item"><i class="fa-brands fa-python"></i>Python</span>
-      <span class="m-item"><i class="fa-solid fa-table"></i>Pandas</span>
-      <span class="m-item"><i class="fa-solid fa-robot"></i>Scikit-learn</span>
-      <span class="m-item"><i class="fa-solid fa-fire"></i>PyTorch</span>
-      <span class="m-item"><i class="fa-solid fa-database"></i>SQL</span>
-      <span class="m-item"><i class="fa-solid fa-bolt"></i>FastAPI</span>
-      <span class="m-item"><i class="fa-brands fa-docker"></i>Docker</span>
-      <span class="m-item"><i class="fa-solid fa-language"></i>HuggingFace</span>
-      <span class="m-item"><i class="fa-solid fa-chart-line"></i>Tableau</span>
-      <span class="m-item"><i class="fa-brands fa-git-alt"></i>Git</span>
-      <span class="m-item"><i class="fa-solid fa-cloud"></i>Supabase</span>
-      <span class="m-item"><i class="fa-solid fa-chart-bar"></i>Matplotlib</span>
-    </div>
-    <div class="marquee-row" aria-hidden="true">
-      <span class="m-item"><i class="fa-brands fa-python"></i>Python</span>
-      <span class="m-item"><i class="fa-solid fa-table"></i>Pandas</span>
-      <span class="m-item"><i class="fa-solid fa-robot"></i>Scikit-learn</span>
-      <span class="m-item"><i class="fa-solid fa-fire"></i>PyTorch</span>
-      <span class="m-item"><i class="fa-solid fa-database"></i>SQL</span>
-      <span class="m-item"><i class="fa-solid fa-bolt"></i>FastAPI</span>
-      <span class="m-item"><i class="fa-brands fa-docker"></i>Docker</span>
-      <span class="m-item"><i class="fa-solid fa-language"></i>HuggingFace</span>
-      <span class="m-item"><i class="fa-solid fa-chart-line"></i>Tableau</span>
-      <span class="m-item"><i class="fa-brands fa-git-alt"></i>Git</span>
-      <span class="m-item"><i class="fa-solid fa-cloud"></i>Supabase</span>
-      <span class="m-item"><i class="fa-solid fa-chart-bar"></i>Matplotlib</span>
-    </div>
+<!-- ASSET BREAK -->
+<div class="img-break"></div>
+
+<!-- THE WORK -->
+<section class="work-section section-no-border" id="work">
+  <div class="work-header container">
+    <h2 class="reveal-mask"><span class="reveal-text">Selected Work.</span></h2>
+    <span class="mono-label" style="margin:0;">03. Output</span>
   </div>
-</div>
-
-<!-- ═══ ABOUT / BENTO ═══ -->
-<section class="section" id="about">
-  <div class="container">
-    <div style="margin-bottom:48px;" class="reveal">
-      <div class="label">About Me</div>
-      <h2 class="section-heading">Who I am &amp; <br>what I'm building toward</h2>
-    </div>
-
-    <div class="bento">
-      <!-- Bio -->
-      <div class="b c7 r2 reveal delay-1">
-        <div class="b-label">Background</div>
-        <h3 style="font-size:1.35rem;margin-bottom:14px;letter-spacing:-0.02em;">CS student obsessed with turning data into decisions.</h3>
-        <p style="font-size:0.88rem;line-height:1.8;">I'm on a structured journey — first mastering the fundamentals of Data Science, then AI/ML Engineering, then founding a startup that makes intelligent systems accessible. Every project I build is a step forward on that path.</p>
-        <div style="margin-top:24px;display:flex;gap:8px;flex-wrap:wrap;">
-          <span class="chip chip-indigo">Data Science</span>
-          <span class="chip chip-indigo">Machine Learning</span>
-          <span class="chip chip-white">NLP</span>
-          <span class="chip chip-white">MLOps</span>
+  
+  <ul class="lux-list">
+    <li class="lux-item fade-up">
+      <div class="lux-item-bg"></div>
+      <div class="lux-item-content container">
+        <h3 class="item-title">SentimentScope</h3>
+        <div class="item-meta">
+          <div class="item-cat">ML Engineering / NLP</div>
+          <div class="item-year">2024</div>
         </div>
       </div>
-
-      <!-- Stats B1 -->
-      <div class="b c3 reveal delay-2" style="display:flex;flex-direction:column;justify-content:center;">
-        <div class="b-label">Projects Built</div>
-        <div class="b-num">4+</div>
-        <p style="font-size:0.8rem;margin-top:8px;">EDA · ML · NLP · APIs</p>
-      </div>
-
-      <!-- Location -->
-      <div class="b c2 reveal delay-3" style="display:flex;flex-direction:column;justify-content:center;text-align:center;">
-        <div class="loc-icon">🇮🇳</div>
-        <div class="b-title" style="font-size:0.9rem;">India</div>
-        <div style="font-size:0.72rem;color:var(--t3);margin-top:4px;">Remote-ready</div>
-      </div>
-
-      <!-- Skills -->
-      <div class="b c5 r2 reveal delay-2">
-        <div class="b-label">Core Skills</div>
-        <div class="skill-list">
-          <div class="skill-row">
-            <div class="skill-icon-sm"><i class="fa-brands fa-python"></i></div>
-            <div class="skill-info"><div class="skill-name-sm">Python</div><div class="skill-bar-sm"><div class="skill-fill-sm" style="--w:92%"></div></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-icon-sm"><i class="fa-solid fa-robot"></i></div>
-            <div class="skill-info"><div class="skill-name-sm">Machine Learning</div><div class="skill-bar-sm"><div class="skill-fill-sm" style="--w:80%"></div></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-icon-sm"><i class="fa-solid fa-database"></i></div>
-            <div class="skill-info"><div class="skill-name-sm">SQL & Databases</div><div class="skill-bar-sm"><div class="skill-fill-sm" style="--w:78%"></div></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-icon-sm"><i class="fa-solid fa-language"></i></div>
-            <div class="skill-info"><div class="skill-name-sm">NLP</div><div class="skill-bar-sm"><div class="skill-fill-sm" style="--w:73%"></div></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-icon-sm"><i class="fa-solid fa-bolt"></i></div>
-            <div class="skill-info"><div class="skill-name-sm">MLOps / FastAPI</div><div class="skill-bar-sm"><div class="skill-fill-sm" style="--w:62%"></div></div></div>
-          </div>
+    </li>
+    
+    <li class="lux-item fade-up">
+      <div class="lux-item-bg"></div>
+      <div class="lux-item-content container">
+        <h3 class="item-title">Global Salary Insights</h3>
+        <div class="item-meta">
+          <div class="item-cat">Data Architecture / EDA</div>
+          <div class="item-year">2024</div>
         </div>
       </div>
-
-      <!-- Current Focus -->
-      <div class="b c4 b-focus reveal delay-3" style="display:flex;flex-direction:column;justify-content:flex-end;">
-        <div class="b-label">Currently Studying</div>
-        <div class="b-title">Deep Learning<br>with PyTorch</div>
-        <div class="b-sub">Transformers, fine-tuning, and building production NLP systems.</div>
-      </div>
-
-      <!-- Tech stack -->
-      <div class="b c8 reveal delay-1">
-        <div class="b-label">Full Tech Stack</div>
-        <div class="icon-grid">
-          <span class="icon-pill"><i class="fa-brands fa-python"></i>Python</span>
-          <span class="icon-pill"><i class="fa-solid fa-table"></i>Pandas</span>
-          <span class="icon-pill"><i class="fa-solid fa-fire"></i>PyTorch</span>
-          <span class="icon-pill"><i class="fa-solid fa-robot"></i>XGBoost</span>
-          <span class="icon-pill"><i class="fa-solid fa-bolt"></i>FastAPI</span>
-          <span class="icon-pill"><i class="fa-brands fa-docker"></i>Docker</span>
-          <span class="icon-pill"><i class="fa-solid fa-database"></i>PostgreSQL</span>
-          <span class="icon-pill"><i class="fa-solid fa-language"></i>HuggingFace</span>
-          <span class="icon-pill"><i class="fa-brands fa-git-alt"></i>Git</span>
-          <span class="icon-pill"><i class="fa-solid fa-chart-line"></i>Seaborn</span>
-          <span class="icon-pill"><i class="fa-solid fa-chart-bar"></i>Plotly</span>
-          <span class="icon-pill"><i class="fa-solid fa-cloud"></i>Supabase</span>
+    </li>
+    
+    <li class="lux-item fade-up">
+      <div class="lux-item-bg"></div>
+      <div class="lux-item-content container">
+        <h3 class="item-title">Customer Churn Oracle</h3>
+        <div class="item-meta">
+          <div class="item-cat">XGBoost / Predictive Modeling</div>
+          <div class="item-year">2023</div>
         </div>
       </div>
-
-      <!-- Goal -->
-      <div class="b c4 reveal delay-2" style="display:flex;flex-direction:column;justify-content:center;">
-        <div class="b-label">End Goal</div>
-        <div class="b-title" style="font-size:1.6rem;line-height:1.1;">Build an<br><span class="g-text">AI Startup</span></div>
-        <p style="font-size:0.8rem;margin-top:10px;">Democratizing data intelligence for small businesses.</p>
-      </div>
-
-    </div>
-  </div>
+    </li>
+  </ul>
 </section>
 
-<!-- ═══ PROJECTS ═══ -->
-<section class="section" id="projects">
-  <div class="container">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:16px;" class="reveal">
-      <div>
-        <div class="label">Work</div>
-        <h2 class="section-heading" style="margin-bottom:0;">Featured Projects</h2>
-      </div>
-      <a href="https://github.com/ritikmishra0511" class="btn btn-ghost btn-sm" target="_blank">
-        <i class="fa-brands fa-github"></i> View all on GitHub
-      </a>
-    </div>
-
-    <!-- Featured large card -->
-    <div class="proj-featured reveal delay-1">
-      <div class="pf-visual">
-        🧠
-        <span class="pf-featured-badge">Featured</span>
-      </div>
-      <div class="pf-body">
-        <div class="proj-tags" style="margin-bottom:12px;">
-          <span class="proj-tag-sm">NLP</span>
-          <span class="proj-tag-sm">ML Engineering</span>
-          <span class="proj-tag-sm">FastAPI</span>
-        </div>
-        <div class="proj-title" style="font-size:1.25rem;">SentimentScope — Twitter NLP API</div>
-        <p class="proj-desc">Fine-tuned DistilBERT for 3-class sentiment analysis on Twitter data. Served via FastAPI with Docker containerization. 94% accuracy on test set — production-ready.</p>
-        <div style="display:flex;gap:10px;">
-          <a href="#" class="btn btn-outline btn-sm"><i class="fa-brands fa-github"></i> Code</a>
-          <a href="#" class="btn btn-primary btn-sm">Live API <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Project list -->
-    <div class="projects-list reveal delay-2">
-      <div class="proj-item">
-        <div class="proj-num">01</div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="proj-tag-sm">EDA</span><span class="proj-tag-sm">Data Science</span></div>
-          <div class="proj-title">Global Salary Insights — EDA Deep-Dive</div>
-          <div class="proj-desc">Thorough EDA of global tech salaries using Pandas, Seaborn, and Plotly. Uncovered compensation trends across 40+ countries.</div>
-        </div>
-        <div class="proj-right">
-          <i class="fa-solid fa-arrow-up-right proj-arrow"></i>
-          <div class="proj-links-sm">
-            <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-github"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-item">
-        <div class="proj-num">02</div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="proj-tag-sm">ML</span><span class="proj-tag-sm">XGBoost</span><span class="proj-tag-sm">SHAP</span></div>
-          <div class="proj-title">Customer Churn Predictor</div>
-          <div class="proj-desc">XGBoost classifier with 91% AUC-ROC. Feature engineering, SHAP explainability, Optuna hyperparameter tuning.</div>
-        </div>
-        <div class="proj-right">
-          <i class="fa-solid fa-arrow-up-right proj-arrow"></i>
-          <div class="proj-links-sm">
-            <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-github"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-item">
-        <div class="proj-num">03</div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="proj-tag-sm">Startup</span><span class="proj-tag-sm">AI Product</span></div>
-          <div class="proj-title">SentientAI — AI Business Intelligence (Concept)</div>
-          <div class="proj-desc">Startup vision: AI-powered analytics platform for small businesses. This very website is the MVP proof-of-concept.</div>
-        </div>
-        <div class="proj-right">
-          <i class="fa-solid fa-arrow-up-right proj-arrow"></i>
-          <div class="proj-links-sm">
-            <a href="courses.html" class="btn btn-ghost btn-sm">Explore</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ JOURNEY ═══ -->
-<section class="section" id="journey" style="background:linear-gradient(180deg,transparent,rgba(99,102,241,0.03),transparent);">
-  <div class="container">
-    <div style="margin-bottom:48px;" class="reveal">
-      <div class="label">Roadmap</div>
-      <h2 class="section-heading">The Plan.</h2>
-      <p class="section-sub">A clear, structured path from student to Data Scientist to Startup Founder.</p>
-    </div>
-    <div class="journey-row">
-      <div class="j-card reveal from-left delay-1">
-        <div class="j-num">01</div>
-        <div class="j-phase">Phase 01 · Now</div>
-        <div class="j-title">Data Science Foundations</div>
-        <p class="j-desc">Statistics, EDA, visualization, and classical ML. Building the analytical mindset and learning to ask the right questions from data.</p>
-        <span class="j-status s-active"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;"></span>In Progress</span>
-      </div>
-      <div class="j-card reveal delay-2">
-        <div class="j-num">02</div>
-        <div class="j-phase">Phase 02 · Next</div>
-        <div class="j-title">ML & AI Engineering</div>
-        <p class="j-desc">Deep Learning, NLP, model deployment, FastAPI, Docker, MLflow. Turning research-grade models into production systems that scale.</p>
-        <span class="j-status s-next">⏳ Coming Soon</span>
-      </div>
-      <div class="j-card reveal from-right delay-3">
-        <div class="j-num">03</div>
-        <div class="j-phase">Phase 03 · Vision</div>
-        <div class="j-title">AI Startup Founder</div>
-        <p class="j-desc">Founding an AI product company that makes data intelligence accessible to businesses that can't afford a data team. The domain bought. The plan set.</p>
-        <span class="j-status s-vision">🌌 The Dream</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ BLOG CTA ═══ -->
-<section class="section-sm" id="blog">
-  <div class="container">
-    <div class="blog-strip reveal scale">
-      <div class="blog-strip-text">
-        <div class="label">Writing</div>
-        <h2>I write about Data, ML,<br>&amp; the journey.</h2>
-        <p style="margin-top:10px;">Tutorials, honest learnings, paper breakdowns, and everything I figure out along the way. Published on Hashnode.</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
-        <a href="blog.html" class="btn btn-primary btn-lg">
-          Read the Blog <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <span style="font-size:0.78rem;color:var(--t3);">No spam. Just signal.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="nav-logo">⬡ SentientData</div>
-        <p class="footer-desc">Data Scientist in training. ML Engineer in the making. Eventually founder of something worth building.</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Pages</div>
-        <ul class="footer-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="courses.html">Courses</a></li>
-          <li><a href="contact.html">Contact</a></li>
+<!-- COMPETENCIES -->
+<section class="section comp-section">
+  <div class="container container-narrow">
+    <span class="mono-label fade-up" style="text-align:center;">04. Framework</span>
+    <h2 class="reveal-mask" style="text-align:center; margin-bottom: 80px;">
+      <span class="reveal-text">Technical Prowess</span>
+    </h2>
+    
+    <div class="comp-grid">
+      <div class="comp-col fade-up delay-1">
+        <h3>Languages & Logic</h3>
+        <ul class="comp-list">
+          <li>Python <span>Primary</span></li>
+          <li>SQL <span>Extraction</span></li>
+          <li>PostgreSQL <span>Persistence</span></li>
+          <li>Git <span>Versioning</span></li>
         </ul>
       </div>
-      <div>
-        <div class="footer-col-title">Online</div>
-        <ul class="footer-links">
-          <li><a href="https://github.com/ritikmishra0511" target="_blank">GitHub</a></li>
-          <li><a href="https://linkedin.com/" target="_blank">LinkedIn</a></li>
-          <li><a href="https://twitter.com/" target="_blank">Twitter / X</a></li>
-          <li><a href="https://hashnode.com/" target="_blank">Hashnode</a></li>
+      
+      <div class="comp-col fade-up delay-2">
+        <h3>Intelligence Systems</h3>
+        <ul class="comp-list">
+          <li>PyTorch <span>Deep Logic</span></li>
+          <li>Scikit-Learn <span>Classical</span></li>
+          <li>HuggingFace <span>Transformers</span></li>
+          <li>FastAPI <span>Distribution</span></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Ritik Mishra · sentientdata.xyz</span>
-      <div class="soc-links">
-        <a href="https://github.com/ritikmishra0511" class="soc-link" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="https://linkedin.com/" class="soc-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-        <a href="https://twitter.com/" class="soc-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-        <a href="blog.html" class="soc-link"><i class="fa-solid fa-pen-nib"></i></a>
-      </div>
+  </div>
+</section>
+
+<footer class="lux-footer">
+  <div class="container">
+    <div class="foot-brand">SentientData</div>
+    <div class="foot-links">
+      <a href="https://github.com/ritikmishra0511">GitHub</a>
+      <a href="https://linkedin.com/">LinkedIn</a>
+      <a href="contact.html">Inquiries</a>
+    </div>
+    <div class="foot-legal">
+      <span>© 2025 RITIK MISHRA. ALL RIGHTS RESERVED.</span>
+      <span>INTELLIGENCE ENGINEERED.</span>
     </div>
   </div>
 </footer>
 
-<button class="scroll-up" id="scrollUp" aria-label="Scroll up"><i class="fa-solid fa-chevron-up"></i></button>
-
 <script>
-/* ── CURSOR ── */
-const cur  = document.getElementById('cur');
-const curf = document.getElementById('curf');
-let cx = -100, cy = -100, fx = -100, fy = -100;
-
-document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
-document.addEventListener('mousedown', () => { cur.classList.add('active'); curf.classList.add('active'); });
-document.addEventListener('mouseup',   () => { cur.classList.remove('active'); curf.classList.remove('active'); });
-
-const hoverables = 'a, button, .proj-item, .j-card, .b, .m-item, .blog-strip, .proj-featured, .pc-pill, .icon-pill';
-document.addEventListener('mouseover', e => {
-  if (e.target.closest(hoverables)) { cur.classList.add('active'); curf.classList.add('active'); }
-});
-document.addEventListener('mouseout', e => {
-  if (e.target.closest(hoverables)) { cur.classList.remove('active'); curf.classList.remove('active'); }
-});
-
-(function loop() {
-  cur.style.left  = cx + 'px';
-  cur.style.top   = cy + 'px';
-  fx += (cx - fx) * 0.12;
-  fy += (cy - fy) * 0.12;
-  curf.style.left = fx + 'px';
-  curf.style.top  = fy + 'px';
-  requestAnimationFrame(loop);
-})();
-
-/* ── TYPEWRITER ── */
-const words = ['Machine Learning', 'Data Analysis', 'Deep Learning', 'NLP & Transformers', 'Python & FastAPI'];
-let wi = 0, ci = 0, del = false;
-const twEl = document.getElementById('tw');
-function tw() {
-  const w = words[wi];
-  twEl.textContent = del ? w.slice(0, ci - 1) : w.slice(0, ci + 1);
-  del ? ci-- : ci++;
-  if (!del && ci === w.length) { setTimeout(() => { del = true; tw(); }, 1800); return; }
-  if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; }
-  setTimeout(tw, del ? 50 : ci === 1 && !del ? 250 : 90);
-}
-setTimeout(tw, 600);
-
-/* ── NAVBAR ── */
-const nav = document.getElementById('nav');
+/* ── SCROLL NAV ── */
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', scrollY > 20);
-  document.getElementById('scrollUp').classList.toggle('show', scrollY > 500);
-});
-document.getElementById('navBtn').addEventListener('click', function() {
-  this.classList.toggle('open');
-  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-/* ── SCROLL UP ── */
-document.getElementById('scrollUp').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+/* ── PARALLAX HERO ── */
+const heroBg = document.getElementById('heroBg');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  if(scrolled < window.innerHeight) {
+    heroBg.style.transform = `scale(${(1.05 + scrolled * 0.0002)}) translateY(${scrolled * 0.3}px)`;
+  }
+});
 
-/* ── REVEAL ON SCROLL ── */
-const revObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('done'); revObs.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+/* ── REVEAL OBSERVERS ── */
+// Using IntersectionObserver to trigger animations precisely when elements enter the viewport
+const observerOptions = {
+  root: null,
+  rootMargin: '0px 0px -10% 0px',
+  threshold: 0.1
+};
 
-/* ── SKILL BARS IN BENTO ── */
-const barObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); barObs.unobserve(e.target); } });
-}, { threshold: 0.2 });
-document.querySelectorAll('.b, #profileCard').forEach(el => barObs.observe(el));
-
-/* ── COUNTER ANIMATION ── */
-function animCount(el) {
-  const target = parseInt(el.dataset.count);
-  const suffix = el.dataset.s || '';
-  let n = 0; const step = target / 50;
-  const t = setInterval(() => {
-    n += step;
-    if (n >= target) { el.textContent = target + suffix; clearInterval(t); }
-    else { el.textContent = Math.floor(n) + suffix; }
-  }, 25);
-}
-const cntObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('[data-count]').forEach(animCount);
-      cntObs.unobserve(e.target);
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-revealed');
+      // Uncomment the line below if you want animations to only trigger once
+      // observer.unobserve(entry.target);
+    } else {
+      // remove class when out of view so it animates back in when scrolled back up (luxury touch)
+      entry.target.classList.remove('is-revealed');
     }
   });
-}, { threshold: 0.5 });
-const pc = document.getElementById('profileCard');
-if (pc) cntObs.observe(pc);
+}, observerOptions);
 
-/* ── SMOOTH ANCHOR SCROLL ── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-});
+document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => observer.observe(el));
+
+// Trigger immediately on load for hero elements
+setTimeout(() => {
+  document.querySelectorAll('.lux-hero .reveal-mask, .lux-hero .fade-up').forEach(el => el.classList.add('is-revealed'));
+}, 100);
 </script>
 </body>
 </html>

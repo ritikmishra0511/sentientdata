@@ -3,350 +3,290 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Courses & Roadmaps | SentientData</title>
-  <meta name="description" content="AI Roadmaps, Data Science resources, and premium project tutorials by Ritik Mishra." />
+  <title>Resources — Ritik Mishra</title>
+  <meta name="description" content="Structured maps for AI and Data Engineering." />
   <link rel="stylesheet" href="shared.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ── PAGE SPECIFIC ── */
-    .page-header {
-      padding: calc(var(--nav-h) + 80px) 0 60px;
-      text-align: center; max-width: 700px; margin: 0 auto;
-    }
-    .page-title { font-size: clamp(2.4rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; line-height: 1.1; }
-    .page-desc { font-size: 1.05rem; color: var(--t2); line-height: 1.7; margin-bottom: 30px; }
-
-    /* Auth Banner */
-    .auth-banner {
-      background: var(--ink-card); border: 1px solid var(--wire); display: inline-flex; align-items: center; gap: 14px;
-      padding: 10px 14px 10px 20px; border-radius: 100px; font-size: 0.85rem; color: var(--t2); margin: 0 auto;
-    }
-    .auth-btn {
-      background: var(--t1); color: var(--ink); border: none; border-radius: 100px; padding: 6px 16px; font-weight: 600; font-size: 0.8rem; cursor: none; transition: var(--t-base);
-    }
-    .auth-btn:hover { background: #fff; transform: translateY(-1px); }
-
-    /* User Profile section */
-    .profile-banner {
-      display: none; align-items: center; gap: 14px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.2); left: 50%; padding: 12px 24px; border-radius: 100px; font-size: 0.85rem; color: var(--green); transform: translateX(-50%); position: relative; margin: 0 auto; w: fit-content;
-    }
-    .avatar-sm { width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.7rem; }
-    .logout-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--wire); color: var(--t2); border-radius: 100px; padding: 5px 12px; font-size: 0.75rem; cursor: none; transition: var(--t-fast); margin-left: 10px; }
-    .logout-btn:hover { color: var(--red); border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
-
-    /* Categories Tabs */
-    .cats { display: flex; justify-content: center; gap: 8px; margin-bottom: 40px; }
-    .cat-tab {
-      background: transparent; color: var(--t2); border: 1px solid transparent; font-weight: 600; font-size: 0.85rem; padding: 8px 18px; border-radius: 100px; cursor: none; transition: var(--t-fast);
-    }
-    .cat-tab:hover { color: var(--t1); }
-    .cat-tab.active { background: var(--ink-card); border-color: var(--wire); color: var(--t1); }
-
-    /* Courses Grid */
-    .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-    .course-card {
-      background: var(--ink-card); border: 1px solid var(--wire); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; transition: var(--t-base); position: relative; overflow: hidden;
-    }
-    .course-card:hover { background: var(--ink-card-hov); border-color: rgba(129,140,248,0.3); transform: translateY(-3px); }
+    .res-hero { padding: calc(var(--nav-h) + 120px) 0 80px; text-align: center; }
     
-    .cc-badge {
-      position: absolute; top: 16px; right: 16px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; display: flex; align-items: center; gap: 4px;
+    .filter-cats { display: flex; justify-content: center; gap: 40px; margin-bottom: 80px; border-bottom: 1px solid var(--wire); padding-bottom: 32px; }
+    .lux-tab { background: none; border: none; font-family: var(--font-tech); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); cursor: pointer; transition: var(--t-fast); }
+    .lux-tab:hover, .lux-tab.active { color: var(--white); }
+    
+    .course-list { list-style: none; margin-bottom: 120px; }
+    .lux-course {
+      display: grid; grid-template-columns: 240px 1fr 200px; gap: 40px;
+      padding: 60px 0; border-bottom: 1px solid var(--wire);
+      transition: var(--t-lux); align-items: center; position: relative;
     }
-    .badge-free { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
-    .badge-pro  { background: var(--indigo-dim); color: var(--indigo); border: 1px solid rgba(129,140,248,0.25); }
-    .badge-lock { background: rgba(255,255,255,0.05); color: var(--t3); border: 1px solid var(--wire); }
-
-    .cc-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--wire); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--indigo); margin-bottom: 20px; }
+    .lux-course:hover { background: rgba(255,255,255,0.02); padding-left: 20px; padding-right: 20px; }
     
-    .cc-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--t1); margin-bottom: 8px; line-height: 1.3; }
-    .cc-desc { font-size: 0.85rem; color: var(--t2); line-height: 1.6; margin-bottom: 24px; flex: 1; }
+    .c-badge {
+      font-family: var(--font-tech); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 6px 12px; border: 1px solid var(--wire-light);
+    }
+    .c-free { color: var(--white); }
+    .c-pro { color: var(--obsidian); background: var(--white); border-color: var(--white); }
     
-    .cc-meta { display: flex; align-items: center; gap: 14px; font-size: 0.75rem; color: var(--t3); margin-bottom: 24px; font-weight: 500; }
-    .cc-meta i { color: var(--t2); }
+    .c-content h3 { font-size: 2.2rem; margin-bottom: 16px; }
+    .c-content p { font-size: 1rem; color: var(--platinum); line-height: 1.6; max-width: 600px; }
+    
+    .c-action { text-align: right; }
 
-    /* Modal Tweaks */
-    .modal-box h3 { font-size: 1.5rem; margin-bottom: 8px; }
-    .modal-box p { font-size: 0.88rem; color: var(--t2); margin-bottom: 24px; }
-    .form-btn { width: 100%; justify-content: center; margin-top: 10px; }
-    .modal-switch { text-align: center; font-size: 0.8rem; margin-top: 16px; color: var(--t2); }
-    .modal-switch button { background: none; border: none; color: var(--indigo); font-weight: 600; cursor: none; margin-left: 4px; }
-    .modal-switch button:hover { text-decoration: underline; }
+    /* Modals */
+    .lux-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: var(--t-lux);
+    }
+    .lux-modal.open { opacity: 1; pointer-events: all; }
+    .modal-content {
+      width: 100%; max-width: 500px; padding: 60px; border: 1px solid var(--wire); background: var(--obsidian);
+      transform: translateY(20px); transition: transform 0.6s var(--ease-lux);
+    }
+    .lux-modal.open .modal-content { transform: translateY(0); }
+    
+    .close-btn { position: absolute; right: 24px; top: 24px; background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+    .modal-content h3 { font-size: 2rem; margin-bottom: 8px; }
+    .modal-content p { color: var(--silver); margin-bottom: 32px; }
 
+    .lux-form-group { margin-bottom: 32px; }
+    .lux-label { display: block; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); margin-bottom: 8px; }
+    .lux-input {
+      width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--wire-light);
+      padding: 12px 0; color: var(--white); font-family: var(--font-lux); font-size: 1.2rem; outline: none; border-radius: 0;
+    }
+    .lux-input:focus { border-color: var(--white); }
+    
+    .auth-bar {
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--wire); padding-bottom: 24px; margin-bottom: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .lux-course { grid-template-columns: 1fr; gap: 20px; padding: 40px 0; }
+      .c-action { text-align: left; margin-top: 20px; }
+      .filter-cats { flex-wrap: wrap; }
+      .modal-content { padding: 40px 24px; border: none; }
+    }
   </style>
 </head>
 <body>
 
-<div class="cursor" id="cur"></div>
-<div class="cursor-follower" id="curf"></div>
-
-<nav class="navbar" id="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">⬡ SentientData</a>
-    <button class="nav-toggle" id="navBtn"><span></span><span></span><span></span></button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="courses.html" class="active">Courses</a></li>
-      <li><a href="contact.html" class="nav-pill">Get in Touch</a></li>
-    </ul>
-  </div>
+<nav class="lux-nav" id="nav">
+  <a href="index.html" class="nav-brand">Ritik Mishra.</a>
+  <ul class="nav-menu">
+    <li><a href="index.html" class="nav-link">Intelligence</a></li>
+    <li><a href="courses.html" class="nav-link active">Resources</a></li>
+    <li><a href="blog.html" class="nav-link">Journal</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+  </ul>
 </nav>
 
-<div class="container" style="padding-bottom:120px;">
-  <header class="page-header reveal">
-    <div class="label">Learning Hub</div>
-    <h1 class="page-title">Roadmaps & <br><span class="g-text">Actionable Tutorials</span></h1>
-    <p class="page-desc">Structured learning paths, project blueprints, and resources I use to study Data Science & ML. Free forever. Pro tier coming later.</p>
-
-    <div class="auth-banner reveal delay-1" id="authBanner">
-      <span>Get access to saved progress and exclusive project files.</span>
-      <button class="auth-btn" id="showLoginBtn">Sign In</button>
-    </div>
-
-    <div class="profile-banner reveal delay-1" id="profileBanner">
-      <div class="avatar-sm" id="userInitial">U</div>
-      <span>Welcome back, <strong id="userNameSpan">User</strong>!</span>
-      <button class="logout-btn" id="logoutBtn">Log out</button>
-    </div>
-  </header>
-
-  <div class="cats reveal delay-2">
-    <button class="cat-tab active">All</button>
-    <button class="cat-tab">Data Science</button>
-    <button class="cat-tab">Machine Learning</button>
-    <button class="cat-tab">Projects</button>
-  </div>
-
-  <div class="course-grid">
-    <!-- Course 1 -->
-    <div class="course-card reveal delay-1">
-      <div class="cc-badge badge-free">Free Roadmap</div>
-      <div class="cc-icon"><i class="fa-solid fa-map"></i></div>
-      <h3 class="cc-title">The Complete Data Science Roadmap 2025</h3>
-      <p class="cc-desc">A structured 6-month path starting from Python basics to advanced Pandas, SQL, Statistics, and EDA.</p>
-      <div class="cc-meta">
-        <span><i class="fa-solid fa-layer-group"></i> Beginner</span>
-        <span><i class="fa-solid fa-clock"></i> 6 Modules</span>
-      </div>
-      <button class="btn btn-outline" style="width:100%;justify-content:center;">Explore Map</button>
-    </div>
-
-    <!-- Course 2 -->
-    <div class="course-card reveal delay-2">
-      <div class="cc-badge badge-free">Free Roadmap</div>
-      <div class="cc-icon" style="color:var(--green);"><i class="fa-solid fa-robot"></i></div>
-      <h3 class="cc-title">Machine Learning Foundations</h3>
-      <p class="cc-desc">The math and intuition behind classical ML. Linear Regression, Logistic Regression, Trees, and Ensemble methods.</p>
-      <div class="cc-meta">
-        <span><i class="fa-solid fa-layer-group"></i> Intermediate</span>
-        <span><i class="fa-solid fa-clock"></i> 8 Modules</span>
-      </div>
-      <button class="btn btn-outline" style="width:100%;justify-content:center;">Explore Map</button>
-    </div>
-
-    <!-- Course 3 -->
-    <div class="course-card reveal delay-3">
-      <div class="cc-badge badge-pro"><i class="fa-solid fa-crown"></i> Sentient Pro</div>
-      <div class="cc-icon" style="color:#fbbf24;"><i class="fa-solid fa-box-open"></i></div>
-      <h3 class="cc-title">End-to-End Starter: FastAPI + Docker</h3>
-      <p class="cc-desc">Learn how to wrap your trained models in a REST API and containerize them for production deployment.</p>
-      <div class="cc-meta">
-        <span><i class="fa-solid fa-layer-group"></i> Advanced</span>
-        <span><i class="fa-solid fa-clock"></i> Project Build</span>
-      </div>
-      <button class="btn btn-primary auth-required" style="width:100%;justify-content:center;">Unlock Access</button>
-    </div>
-
-    <!-- Course 4 -->
-    <div class="course-card reveal delay-4">
-      <div class="cc-badge badge-lock"><i class="fa-solid fa-lock"></i> Coming Q3</div>
-      <div class="cc-icon" style="color:var(--t3);"><i class="fa-solid fa-language"></i></div>
-      <h3 class="cc-title">Applied NLP with Transformers</h3>
-      <p class="cc-desc">Fine-tuning HuggingFace models for real business use cases. Text classification, NER, and basic RAG pipelines.</p>
-      <div class="cc-meta">
-        <span><i class="fa-solid fa-layer-group"></i> Advanced</span>
-        <span><i class="fa-solid fa-clock"></i> In Development</span>
-      </div>
-      <button class="btn btn-ghost" style="width:100%;justify-content:center;" disabled>Notify Me</button>
-    </div>
+<div class="res-hero">
+  <div class="container container-narrow">
+    <span class="mono-label fade-up">Curriculum</span>
+    <h1 class="reveal-mask">
+      <span class="reveal-text">Structural Maps.</span>
+    </h1>
+    <p class="fade-up delay-1" style="max-width:600px; margin: 24px auto 0;">
+      A brutalist approach to learning. Step-by-step blueprints and resource maps covering data paradigms and algorithmic structuring.
+    </p>
   </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container container-sm">
-    <div class="footer-bottom" style="border-top:none;">
-      <span class="footer-copy">© 2025 Ritik Mishra · sentientdata.xyz</span>
-      <div class="soc-links">
-        <a href="https://github.com/ritikmishra0511" class="soc-link" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="https://linkedin.com/" class="soc-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+<div class="container fade-up delay-2">
+  <div class="auth-bar" id="authZone">
+    <div id="authLoggedOut">
+      <span style="font-family: var(--font-lux); font-size: 1.2rem; font-style: italic;">Access restricted materials.</span>
+    </div>
+    <div id="authLoggedIn" style="display:none; align-items:center; gap: 16px;">
+      <span style="font-family: var(--font-lux); font-size: 1.2rem;">Welcome, <span id="uName">Analyst</span>.</span>
+      <button class="btn" style="padding: 10px 20px;" id="logoutBtn">Disengage</button>
+    </div>
+    <button class="btn" id="showLoginBtn">Authenticate</button>
+  </div>
+
+  <div class="filter-cats">
+    <button class="lux-tab active">All Architecture</button>
+    <button class="lux-tab">Data Engineering</button>
+    <button class="lux-tab">Machine Learning</button>
+  </div>
+
+  <ul class="course-list">
+    <li class="lux-course">
+      <div><span class="c-badge c-free">Open Ledger</span></div>
+      <div class="c-content">
+        <h3>The Data Science Architecture</h3>
+        <p>A structured 6-month path starting from relational databases to advanced linear algebra, Pandas, and EDA visualization.</p>
       </div>
+      <div class="c-action"><button class="btn">Inspect</button></div>
+    </li>
+    
+    <li class="lux-course">
+      <div><span class="c-badge c-free">Open Ledger</span></div>
+      <div class="c-content">
+        <h3>Machine Learning Frameworks</h3>
+        <p>Mathematical intuition underlying classical ML systems. Logistic Regression, Decision Trees, and High-dimensional spaces.</p>
+      </div>
+      <div class="c-action"><button class="btn">Inspect</button></div>
+    </li>
+
+    <li class="lux-course">
+      <div><span class="c-badge c-pro">Classified // Pro</span></div>
+      <div class="c-content">
+        <h3>FastAPI Deployment Protocols</h3>
+        <p>Containerizing machine learning logic for production. Docker matrices, REST structural boundaries, and CI/CD operations.</p>
+      </div>
+      <div class="c-action"><button class="btn auth-req">Decrypt</button></div>
+    </li>
+  </ul>
+</div>
+
+<footer class="lux-footer" style="border-top:none;">
+  <div class="container">
+    <div class="foot-brand">SentientData</div>
+    <div class="foot-links">
+      <a href="https://github.com/ritikmishra0511">GitHub</a>
+      <a href="https://linkedin.com/">LinkedIn</a>
+      <a href="contact.html">Inquiries</a>
+    </div>
+    <div class="foot-legal">
+      <span>© 2025 RITIK MISHRA.</span><span>INTELLIGENCE ENGINEERED.</span>
     </div>
   </div>
 </footer>
 
-<button class="scroll-up" id="scrollUp" aria-label="Scroll up"><i class="fa-solid fa-chevron-up"></i></button>
-
-<!-- Auth Modal -->
-<div class="modal-bg" id="authModal">
-  <div class="modal-box">
-    <button class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+<!-- Modals -->
+<div class="lux-modal" id="authModal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
     
-    <div id="loginView">
-      <h3>Sign in to your account</h3>
-      <p>Access your Pro courses and track your progress.</p>
-      <div id="loginAlert" style="display:none; margin-bottom:15px; font-size:0.8rem; padding:10px; border-radius:6px; background:rgba(248,113,113,0.1); color:var(--red); border:1px solid rgba(248,113,113,0.3);"></div>
-      <form id="loginForm">
-        <div class="form-group">
-          <label class="form-label">Email address</label>
-          <input type="email" class="form-input" id="loginEmail" required />
+    <div id="logView">
+      <h3>Authentication</h3>
+      <p>Verify credentials to access classified maps.</p>
+      <div id="logAlert" style="display:none; color:#ff4444; margin-bottom:16px;"></div>
+      <form id="logForm">
+        <div class="lux-form-group">
+          <label class="lux-label">Identification String</label>
+          <input type="email" id="lEmail" class="lux-input" required>
         </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-input" id="loginPwd" required />
+        <div class="lux-form-group">
+          <label class="lux-label">Cryptographic Key</label>
+          <input type="password" id="lPwd" class="lux-input" required>
         </div>
-        <button type="submit" class="btn btn-primary form-btn" id="loginSubmitBtn">Sign In</button>
+        <button class="btn" style="width:100%;" type="submit" id="lBtn">Authenticate</button>
       </form>
-      <div class="modal-switch">Don't have an account? <button id="toSignupBtn">Create one</button></div>
+      <div style="margin-top:24px; text-align:center;">
+        <button style="background:none;border:none;color:var(--silver);font-family:var(--font-tech);font-size:0.7rem;letter-spacing:0.1em;cursor:pointer;" id="toReg">REQUEST CLEARANCE</button>
+      </div>
+    </div>
+    
+    <div id="regView" style="display:none;">
+      <h3>Registration</h3>
+      <p>Apply for classified system access.</p>
+      <div id="regAlert" style="display:none; color:#ff4444; margin-bottom:16px;"></div>
+      <form id="regForm">
+        <div class="lux-form-group">
+          <label class="lux-label">Designation Code</label>
+          <input type="text" id="rName" class="lux-input" required>
+        </div>
+        <div class="lux-form-group">
+          <label class="lux-label">Identification String</label>
+          <input type="email" id="rEmail" class="lux-input" required>
+        </div>
+        <div class="lux-form-group">
+          <label class="lux-label">New Cryptographic Key</label>
+          <input type="password" id="rPwd" class="lux-input" required>
+        </div>
+        <button class="btn" style="width:100%;" type="submit" id="rBtn">Submit Clearance</button>
+      </form>
+      <div style="margin-top:24px; text-align:center;">
+        <button style="background:none;border:none;color:var(--silver);font-family:var(--font-tech);font-size:0.7rem;letter-spacing:0.1em;cursor:pointer;" id="toLog">RETURN TO AUTH</button>
+      </div>
     </div>
 
-    <div id="signupView" style="display:none;">
-      <h3>Create an account</h3>
-      <p>Join the learning platform for free.</p>
-      <div id="signupAlert" style="display:none; margin-bottom:15px; font-size:0.8rem; padding:10px; border-radius:6px; background:rgba(248,113,113,0.1); color:var(--red); border:1px solid rgba(248,113,113,0.3);"></div>
-      <form id="signupForm">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" id="signupName" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email address</label>
-          <input type="email" class="form-input" id="signupEmail" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-input" id="signupPwd" minlength="6" required />
-        </div>
-        <button type="submit" class="btn btn-primary form-btn" id="signupSubmitBtn">Sign Up</button>
-      </form>
-      <div class="modal-switch">Already have an account? <button id="toLoginBtn">Sign in</button></div>
-    </div>
   </div>
 </div>
 
-<!-- supabase js map -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ── UI SCRIPTS ── */
-const cur=document.getElementById('cur'), curf=document.getElementById('curf');
-let cx=-100,cy=-100,fx=-100,fy=-100;
-document.addEventListener('mousemove', e=>{cx=e.clientX;cy=e.clientY;});
-document.addEventListener('mousedown', ()=>{cur.classList.add('active');curf.classList.add('active');});
-document.addEventListener('mouseup', ()=>{cur.classList.remove('active');curf.classList.remove('active');});
-const hovers='a, button, .course-card';
-document.addEventListener('mouseover', e=>{if(e.target.closest(hovers)){cur.classList.add('active');curf.classList.add('active');}});
-document.addEventListener('mouseout', e=>{if(e.target.closest(hovers)){cur.classList.remove('active');curf.classList.remove('active');}});
-(function loop(){
-  cur.style.left=cx+'px'; cur.style.top=cy+'px';
-  fx+=(cx-fx)*0.12; fy+=(cy-fy)*0.12;
-  curf.style.left=fx+'px'; curf.style.top=fy+'px';
-  requestAnimationFrame(loop);
-})();
-
-window.addEventListener('scroll', ()=>{
-  document.getElementById('nav').classList.toggle('scrolled', scrollY>20);
-  document.getElementById('scrollUp').classList.toggle('show', scrollY>500);
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
-document.getElementById('navBtn').addEventListener('click', function(){
-  this.classList.toggle('open'); document.getElementById('navLinks').classList.toggle('open');
-});
-document.getElementById('scrollUp').addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); }
+    else { entry.target.classList.remove('is-revealed'); }
+  });
+}, { rootMargin: '0px', threshold: 0.1 });
+document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => observer.observe(el));
+setTimeout(() => document.querySelectorAll('.res-hero .reveal-mask, .res-hero .fade-up').forEach(el => el.classList.add('is-revealed')), 100);
 
-const revObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('done'); revObs.unobserve(e.target); } });
-}, {threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
-
-/* ── SUPABASE AUTH DEMO ── */
+/* Supabase Auth */
 const SUPABASE_URL = 'YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-let isDemoMode = (SUPABASE_URL === 'YOUR_SUPABASE_URL');
+let isDemo = (SUPABASE_URL === 'YOUR_SUPABASE_URL');
 let supabase = null;
-if(!isDemoMode) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+if(!isDemo) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const modal = document.getElementById('authModal');
-const loginView = document.getElementById('loginView');
-const signupView = document.getElementById('signupView');
-const authBanner = document.getElementById('authBanner');
-const profileBanner = document.getElementById('profileBanner');
+const mod = document.getElementById('authModal');
+const logView = document.getElementById('logView');
+const regView = document.getElementById('regView');
+document.getElementById('showLoginBtn').onclick = () => mod.classList.add('open');
+document.getElementById('closeModal').onclick = () => mod.classList.remove('open');
+document.getElementById('toReg').onclick = () => { logView.style.display='none'; regView.style.display='block'; };
+document.getElementById('toLog').onclick = () => { regView.style.display='none'; logView.style.display='block'; };
 
-function openModal() { modal.classList.add('open'); }
-function closeModal() { modal.classList.remove('open'); }
-
-document.getElementById('showLoginBtn').addEventListener('click', openModal);
-document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-document.querySelectorAll('.auth-required').forEach(b => b.addEventListener('click', e => {
-  if (profileBanner.style.display !== 'flex') { e.preventDefault(); openModal(); }
-}));
-
-document.getElementById('toSignupBtn').addEventListener('click', () => { loginView.style.display='none'; signupView.style.display='block'; });
-document.getElementById('toLoginBtn').addEventListener('click', () => { signupView.style.display='none'; loginView.style.display='block'; });
-
-function showLocalUser(email, name) {
-  authBanner.style.display = 'none';
-  profileBanner.style.display = 'flex';
-  document.getElementById('userNameSpan').textContent = name || email.split('@')[0];
-  document.getElementById('userInitial').textContent = (name || email)[0].toUpperCase();
-  closeModal();
-}
-
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  if(!isDemoMode) supabase.auth.signOut();
-  authBanner.style.display = 'inline-flex';
-  profileBanner.style.display = 'none';
-});
-
-// Forms
-document.getElementById('loginForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const em = document.getElementById('loginEmail').value;
-  const pw = document.getElementById('loginPwd').value;
-  const btn = document.getElementById('loginSubmitBtn');
-  const alertEl = document.getElementById('loginAlert');
-  
-  if (isDemoMode) { showLocalUser(em, ''); return; }
-  
-  btn.textContent = 'Signing in...'; alertEl.style.display = 'none';
-  const { data, error } = await supabase.auth.signInWithPassword({ email: em, password: pw });
-  btn.textContent = 'Sign In';
-  if (error) { alertEl.textContent = error.message; alertEl.style.display = 'block'; }
-  else { showLocalUser(data.user.email, data.user.user_metadata?.full_name); }
-});
-
-document.getElementById('signupForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = document.getElementById('signupName').value;
-  const em = document.getElementById('signupEmail').value;
-  const pw = document.getElementById('signupPwd').value;
-  const btn = document.getElementById('signupSubmitBtn');
-  const alertEl = document.getElementById('signupAlert');
-  
-  if (isDemoMode) { showLocalUser(em, name); return; }
-  
-  btn.textContent = 'Creating...'; alertEl.style.display = 'none';
-  const { data, error } = await supabase.auth.signUp({ email: em, password: pw, options: { data: { full_name: name } } });
-  btn.textContent = 'Sign Up';
-  if (error) { alertEl.textContent = error.message; alertEl.style.display = 'block'; }
-  else {
-    alertEl.textContent = "Success! Please check your email to verify."; 
-    alertEl.style.display = 'block'; alertEl.style.color = "var(--green)"; alertEl.style.borderColor = "var(--green)"; alertEl.style.backgroundColor = "rgba(52,211,153,0.1)";
+document.querySelectorAll('.auth-req').forEach(btn => {
+  btn.onclick = (e) => {
+    if(document.getElementById('authLoggedIn').style.display === 'none') {
+      e.preventDefault(); mod.classList.add('open');
+    }
   }
 });
 
-// Check Session
-if (!isDemoMode && supabase) {
+function setUser(email, name) {
+  document.getElementById('authLoggedOut').style.display = 'none';
+  document.getElementById('showLoginBtn').style.display = 'none';
+  document.getElementById('authLoggedIn').style.display = 'flex';
+  document.getElementById('uName').textContent = name || email.split('@')[0];
+  mod.classList.remove('open');
+}
+
+document.getElementById('logoutBtn').onclick = () => {
+  if(!isDemo) supabase.auth.signOut();
+  document.getElementById('authLoggedOut').style.display = 'block';
+  document.getElementById('showLoginBtn').style.display = 'inline-flex';
+  document.getElementById('authLoggedIn').style.display = 'none';
+};
+
+document.getElementById('logForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const eVal = document.getElementById('lEmail').value;
+  if(isDemo) { setUser(eVal, ''); return; }
+  
+  const b = document.getElementById('lBtn'); b.textContent = 'Authenticating...';
+  const { data, error } = await supabase.auth.signInWithPassword({ email: eVal, password: document.getElementById('lPwd').value });
+  b.textContent = 'Authenticate';
+  if(error) { document.getElementById('logAlert').style.display='block'; document.getElementById('logAlert').textContent = error.message; }
+  else setUser(data.user.email, data.user.user_metadata?.full_name);
+};
+
+document.getElementById('regForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const nVal = document.getElementById('rName').value, eVal = document.getElementById('rEmail').value;
+  if(isDemo) { setUser(eVal, nVal); return; }
+  
+  const b = document.getElementById('rBtn'); b.textContent = 'Processing...';
+  const { data, error } = await supabase.auth.signUp({ email: eVal, password: document.getElementById('rPwd').value, options: { data: { full_name: nVal } } });
+  b.textContent = 'Submit Clearance';
+  if(error) { document.getElementById('regAlert').style.display='block'; document.getElementById('regAlert').textContent = error.message; }
+  else { document.getElementById('regAlert').style.display='block'; document.getElementById('regAlert').textContent = 'Clearance granted. Verify contact matrix (email).'; document.getElementById('regAlert').style.color='var(--white)'; }
+};
+
+if(!isDemo && supabase) {
   supabase.auth.getSession().then(({ data: { session } }) => {
-    if (session) showLocalUser(session.user.email, session.user.user_metadata?.full_name);
+    if(session) setUser(session.user.email, session.user.user_metadata?.full_name);
   });
 }
 </script>
