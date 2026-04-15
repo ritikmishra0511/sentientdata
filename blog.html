@@ -3,546 +3,298 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog — Data Science & ML Writings | SentientData</title>
-  <meta name="description" content="Deep dives, tutorials, and honest learnings from Ritik Mishra's journey into Data Science, Machine Learning, and AI. Powered by Hashnode." />
+  <title>Blog — Data & AI | SentientData</title>
+  <meta name="description" content="Articles, tutorials, and insights on Data Science, Machine Learning, and building AI products." />
   <link rel="stylesheet" href="shared.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    .page-hero {
-      padding: calc(var(--nav-height) + 80px) 0 60px;
-      position: relative; text-align: center; overflow: hidden;
+    /* ── PAGE SPECIFIC ── */
+    .page-header {
+      padding: calc(var(--nav-h) + 80px) 0 60px;
+      text-align: center; max-width: 700px; margin: 0 auto;
     }
-    .page-hero h1 { margin: 12px 0 16px; }
-    .page-hero p  { font-size: 1.05rem; max-width: 550px; margin: 0 auto; }
+    .page-title { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .page-desc { font-size: 1.05rem; color: var(--t2); line-height: 1.7; }
 
-    /* Filter Bar */
-    .filter-bar {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center; margin-bottom: 48px;
+    /* Search & Filter */
+    .toolbar {
+      display: flex; flex-direction: column; gap: 24px; align-items: center;
+      margin-bottom: 60px;
     }
-    .filter-btn {
-      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 18px;
-      border-radius: 50px; border: 1px solid var(--border-card);
-      background: var(--bg-card); color: var(--text-secondary);
-      cursor: pointer; transition: var(--transition);
+    .search-box {
+      width: 100%; max-width: 500px; position: relative;
     }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--neon-blue-dim); border-color: rgba(0,212,255,0.4);
-      color: var(--neon-blue);
-    }
-
-    /* Search */
-    .search-wrapper {
-      max-width: 480px; margin: 0 auto 40px; position: relative;
-    }
-    .search-wrapper i {
-      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); font-size: 0.95rem;
-    }
+    .search-box i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--t3); }
     .search-input {
-      width: 100%; padding: 14px 18px 14px 46px;
-      background: var(--bg-card); border: 1px solid var(--border-card);
-      border-radius: 50px; color: var(--text-primary);
-      font-family: var(--font-body); font-size: 0.95rem; outline: none;
-      transition: var(--transition);
+      width: 100%; background: var(--ink-card); border: 1px solid var(--wire);
+      border-radius: 100px; padding: 14px 20px 14px 44px; color: var(--t1);
+      font-family: var(--font-body); font-size: 0.95rem; transition: var(--t-base);
+      outline: none;
     }
-    .search-input:focus {
-      border-color: var(--neon-blue); background: rgba(0,212,255,0.04);
-      box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+    .search-input:focus { border-color: var(--indigo); background: var(--indigo-dim); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    
+    .tags-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .filter-tag {
+      font-size: 0.72rem; font-weight: 600; padding: 6px 14px;
+      border-radius: 100px; background: rgba(255,255,255,0.03); border: 1px solid var(--wire);
+      color: var(--t2); cursor: none; transition: var(--t-fast); font-family: var(--font-body);
     }
-    .search-input::placeholder { color: var(--text-muted); }
+    .filter-tag:hover, .filter-tag.active {
+      color: var(--indigo); border-color: rgba(129,140,248,0.4); background: var(--indigo-dim);
+    }
 
     /* Blog Grid */
-    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;
+    }
     .post-card {
-      background: var(--bg-card); border: 1px solid var(--border-card);
-      border-radius: var(--border-radius-lg); overflow: hidden;
-      transition: var(--transition); position: relative;
       display: flex; flex-direction: column;
-      backdrop-filter: blur(10px);
+      background: var(--ink-card); border: 1px solid var(--wire);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: var(--t-base); cursor: none; text-decoration: none;
     }
-    .post-card:hover {
-      border-color: rgba(0,212,255,0.22); transform: translateY(-5px);
-      box-shadow: var(--shadow-neon-both);
-    }
-    .post-cover {
-      width: 100%; aspect-ratio: 16/9; object-fit: cover;
-      background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem; color: var(--text-muted);
-    }
-    .post-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .post-card:hover { border-color: rgba(129,140,248,0.3); background: var(--ink-card-hov); transform: translateY(-3px); }
+    .post-img { aspect-ratio: 16/9; background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; border-bottom: 1px solid var(--wire); }
+    .post-img img { width: 100%; height: 100%; object-fit: cover; }
     .post-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-    .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-    .post-tag {
-      font-size: 0.65rem; font-family: var(--font-heading); font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px;
-      border-radius: 50px; background: var(--neon-blue-dim); color: var(--neon-blue);
-      border: 1px solid rgba(0,212,255,0.2);
-    }
-    .post-title {
-      font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700;
-      letter-spacing: 0.03em; color: var(--text-primary); margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .post-brief { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
-    .post-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 20px; font-size: 0.8rem; color: var(--text-muted);
-      font-family: var(--font-heading); letter-spacing: 0.05em;
-    }
-    .post-date { display: flex; align-items: center; gap: 6px; }
-    .post-read-link {
-      color: var(--neon-blue); font-size: 0.78rem; font-weight: 600;
-      display: flex; align-items: center; gap: 5px; transition: var(--transition);
-    }
-    .post-read-link:hover { color: var(--neon-purple); gap: 8px; }
+    .post-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--t3); font-weight: 500; margin-bottom: 12px; font-family: var(--font-body); }
+    .post-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--t1); margin-bottom: 8px; line-height: 1.4; }
+    .post-excerpt { font-size: 0.85rem; color: var(--t2); line-height: 1.6; margin-bottom: 20px; flex: 1; }
+    .post-foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; border-top: 1px solid var(--wire); padding-top: 16px; }
+    .post-read { font-size: 0.75rem; font-weight: 600; color: var(--indigo); display: inline-flex; align-items: center; gap: 4px; }
 
-    /* Featured post */
-    .featured-post {
-      background: var(--bg-card); border: 1px solid var(--border-card);
-      border-radius: var(--border-radius-xl); overflow: hidden;
-      display: grid; grid-template-columns: 1fr 1fr;
-      margin-bottom: 48px; transition: var(--transition);
-      backdrop-filter: blur(10px);
+    /* Newsletter Box */
+    .nl-box {
+      margin-top: 80px; background: linear-gradient(135deg, rgba(129,140,248,0.06), rgba(192,132,252,0.03));
+      border: 1px solid var(--wire); border-radius: var(--radius-xl);
+      padding: 48px; text-align: center; max-width: 680px; margin-left: auto; margin-right: auto;
     }
-    .featured-post:hover { border-color: rgba(168,85,247,0.3); box-shadow: var(--shadow-neon-purple); }
-    .featured-cover {
-      background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.1));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 5rem; min-height: 280px;
+    .nl-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; margin-bottom: 12px; }
+    .nl-desc { font-size: 0.9rem; color: var(--t2); margin-bottom: 24px; }
+    .nl-form { display: flex; gap: 8px; max-width: 400px; margin: 0 auto; }
+    .nl-input {
+      flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--wire);
+      border-radius: 100px; padding: 10px 18px; color: var(--t1); font-size: 0.85rem; outline: none; transition: var(--t-base);
     }
-    .featured-body { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-    .featured-label { font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--neon-purple); margin-bottom: 14px; }
-    .featured-title { font-size: clamp(1.2rem, 2.5vw, 1.7rem); color: var(--text-primary); margin-bottom: 14px; }
-    .featured-brief { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
+    .nl-input:focus { border-color: var(--indigo); }
+    .nl-btn {
+      background: var(--t1); color: var(--ink); border: none; border-radius: 100px;
+      padding: 10px 24px; font-weight: 600; font-size: 0.85rem; cursor: none; transition: var(--t-fast);
+    }
+    .nl-btn:hover { background: #fff; transform: translateY(-1px); }
 
-    /* Pagination */
-    .pagination {
-      display: flex; align-items: center; justify-content: center;
-      gap: 8px; margin-top: 56px; flex-wrap: wrap;
-    }
-    .page-btn {
-      width: 40px; height: 40px; border-radius: var(--border-radius-sm);
-      background: var(--bg-card); border: 1px solid var(--border-card);
-      color: var(--text-secondary); cursor: pointer; transition: var(--transition);
-      font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
-    }
-    .page-btn:hover, .page-btn.active {
-      background: var(--neon-blue-dim); border-color: rgba(0,212,255,0.4); color: var(--neon-blue);
-    }
-    .page-btn.arrow { width: auto; padding: 0 16px; }
-
-    /* Error/Empty state */
-    .empty-state {
-      text-align: center; padding: 80px 20px;
-    }
-    .empty-state i { font-size: 3.5rem; color: var(--text-muted); margin-bottom: 20px; }
-    .empty-state h3 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 8px; }
-
-    /* Newsletter */
-    .newsletter-strip {
-      background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(168,85,247,0.06));
-      border: 1px solid var(--border-card); border-radius: var(--border-radius-xl);
-      padding: 48px; text-align: center; margin-top: 60px;
-    }
-    .newsletter-form { display: flex; gap: 12px; max-width: 440px; margin: 24px auto 0; flex-wrap: wrap; justify-content: center; }
-    .newsletter-form input {
-      flex: 1; min-width: 200px; padding: 12px 18px;
-      background: var(--bg-card); border: 1px solid var(--border-card);
-      border-radius: 50px; color: var(--text-primary);
-      font-family: var(--font-body); outline: none; transition: var(--transition);
-    }
-    .newsletter-form input:focus {
-      border-color: var(--neon-blue); box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
-    }
-    .newsletter-form input::placeholder { color: var(--text-muted); }
-
-    @media (max-width: 768px) {
-      .featured-post { grid-template-columns: 1fr; }
-      .featured-cover { min-height: 160px; }
-      .featured-body { padding: 28px; }
+    @media (max-width: 600px) {
+      .nl-form { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <div class="stars-layer" id="stars"></div>
+<div class="cursor" id="cur"></div>
+<div class="cursor-follower" id="curf"></div>
 
-  <!-- Navbar -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">⬡ SentientData</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="blog.html" class="active">Blog</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="contact.html" class="nav-cta">Contact Me</a></li>
-      </ul>
+<nav class="navbar" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">⬡ SentientData</a>
+    <button class="nav-toggle" id="navBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="courses.html">Courses</a></li>
+      <li><a href="contact.html" class="nav-pill">Get in Touch</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <header class="page-header reveal">
+    <div class="label">Journal</div>
+    <h1 class="page-title">Writing about <span class="g-text">Data & AI</span></h1>
+    <p class="page-desc">Deep dives, tutorials, and honest learnings from studying Data Science and building Machine Learning systems. No fluff — just signal.</p>
+  </header>
+
+  <div class="toolbar reveal delay-1">
+    <div class="search-box">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search articles, topics, keywords..." />
     </div>
-  </nav>
-
-  <!-- Page Hero -->
-  <div class="page-hero">
-    <div class="glow-orb glow-purple" style="width:500px;height:500px;top:-150px;right:-100px;"></div>
-    <div class="glow-orb glow-blue" style="width:400px;height:400px;bottom:-100px;left:-100px;"></div>
-    <div class="container">
-      <div class="section-tag">The Blog</div>
-      <h1>Writing about <span class="gradient-text">Data & AI</span></h1>
-      <p>Tutorials, deep dives, paper breakdowns, and honest learnings from studying Data Science and ML. No fluff — just signal.</p>
+    <div class="tags-row" id="tagsRow">
+      <button class="filter-tag active" data-tag="all">All Posts</button>
+      <button class="filter-tag" data-tag="data-science">Data Science</button>
+      <button class="filter-tag" data-tag="machine-learning">Machine Learning</button>
+      <button class="filter-tag" data-tag="nlp">NLP</button>
+      <button class="filter-tag" data-tag="mlops">MLOps</button>
+      <button class="filter-tag" data-tag="startup">Startup</button>
     </div>
   </div>
 
-  <main class="section" style="padding-top:20px;">
-    <div class="container">
-
-      <!-- Search -->
-      <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" class="search-input" id="searchInput" placeholder="Search articles…" />
-      </div>
-
-      <!-- Filter Bar -->
-      <div class="filter-bar" id="filterBar">
-        <button class="filter-btn active" data-tag="all">All Posts</button>
-        <button class="filter-btn" data-tag="data-science">Data Science</button>
-        <button class="filter-btn" data-tag="machine-learning">Machine Learning</button>
-        <button class="filter-btn" data-tag="nlp">NLP</button>
-        <button class="filter-btn" data-tag="mlops">MLOps</button>
-        <button class="filter-btn" data-tag="python">Python</button>
-        <button class="filter-btn" data-tag="startup">Startup</button>
-      </div>
-
-      <!-- Featured Post (shows loading state, then first post) -->
-      <div id="featuredSection"></div>
-
-      <!-- Blog Grid -->
-      <div id="blogGrid">
-        <div class="loading">
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-        </div>
-      </div>
-
-      <!-- Pagination -->
-      <div class="pagination" id="pagination"></div>
-
-      <!-- Newsletter -->
-      <div class="newsletter-strip">
-        <div class="section-tag">Stay Updated</div>
-        <h2 style="font-size:clamp(1.2rem,3vw,1.8rem);margin:12px 0 8px;">Get new posts in your inbox</h2>
-        <p style="color:var(--text-muted);font-size:0.9rem;">No spam. Unsubscribe whenever you want.</p>
-        <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-          <input type="email" id="nlEmail" placeholder="your@email.com" required />
-          <button type="submit" class="btn btn-primary">Subscribe</button>
-        </form>
-        <div id="nlMessage" style="margin-top:12px;font-size:0.9rem;"></div>
-      </div>
-
+  <div id="blogContainer">
+    <!-- State: Loading -->
+    <div class="loading" id="loadingState">
+      <div class="ld"></div><div class="ld"></div><div class="ld"></div>
     </div>
-  </main>
+    
+    <!-- State: Grid -->
+    <div class="blog-grid" id="blogGrid" style="display:none;"></div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <div class="nav-logo">⬡ SentientData</div>
-          <p>Data Scientist in training. ML Engineer in the making. Writing my journey out loud.</p>
-        </div>
-        <div>
-          <div class="footer-heading">Navigate</div>
-          <ul class="footer-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="courses.html">Courses</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <div class="footer-heading">Connect</div>
-          <ul class="footer-links">
-            <li><a href="https://github.com/" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a></li>
-            <li><a href="https://linkedin.com/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a></li>
-            <li><a href="https://hashnode.com/" target="_blank"><i class="fa-solid fa-blog"></i> Hashnode</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2025 Ritik Mishra · sentientdata.xyz</p>
-        <div class="social-links">
-          <a href="https://github.com/" class="social-link" target="_blank"><i class="fa-brands fa-github"></i></a>
-          <a href="https://linkedin.com/" class="social-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="https://twitter.com/" class="social-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-        </div>
+    <!-- State: Empty -->
+    <div id="emptyState" style="display:none; text-align:center; padding:60px 20px; color:var(--t3);">
+      <i class="fa-solid fa-magnifying-glass" style="font-size:2rem;margin-bottom:16px;"></i>
+      <h3 style="color:var(--t2);">No articles found</h3>
+      <p style="font-size:0.9rem;margin-top:8px;">Try adjusting your search or filters.</p>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="nl-box reveal">
+    <div class="nl-title">Stay in the loop</div>
+    <div class="nl-desc">Join my newsletter to get the latest articles on Data Science, ML techniques, and building intelligent products. Sent once a month.</div>
+    <form class="nl-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+      <input type="email" class="nl-input" placeholder="jane@example.com" required>
+      <button type="submit" class="nl-btn">Subscribe</button>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container container-sm">
+    <div class="footer-bottom" style="border-top:none;">
+      <span class="footer-copy">© 2025 Ritik Mishra · sentientdata.xyz</span>
+      <div class="soc-links">
+        <a href="https://github.com/ritikmishra0511" class="soc-link" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com/" class="soc-link" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://twitter.com/" class="soc-link" target="_blank"><i class="fa-brands fa-twitter"></i></a>
       </div>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <button class="scroll-top" id="scrolltop"><i class="fa-solid fa-chevron-up"></i></button>
+<button class="scroll-up" id="scrollUp" aria-label="Scroll up"><i class="fa-solid fa-chevron-up"></i></button>
 
 <script>
-  // ─────────────────────────────────────────────
-  // ⚙️  CONFIG — Replace YOUR_HASHNODE_USERNAME
-  // ─────────────────────────────────────────────
-  const HASHNODE_USERNAME = 'YOUR_HASHNODE_USERNAME'; // e.g. 'ritikmishra'
-  const POSTS_PER_PAGE = 6;
+/* ── UI SCRIPTS ── */
+const cur=document.getElementById('cur'), curf=document.getElementById('curf');
+let cx=-100,cy=-100,fx=-100,fy=-100;
+document.addEventListener('mousemove', e=>{cx=e.clientX;cy=e.clientY;});
+document.addEventListener('mousedown', ()=>{cur.classList.add('active');curf.classList.add('active');});
+document.addEventListener('mouseup', ()=>{cur.classList.remove('active');curf.classList.remove('active');});
+const hovers='a, button, .post-card, .filter-tag';
+document.addEventListener('mouseover', e=>{if(e.target.closest(hovers)){cur.classList.add('active');curf.classList.add('active');}});
+document.addEventListener('mouseout', e=>{if(e.target.closest(hovers)){cur.classList.remove('active');curf.classList.remove('active');}});
+(function loop(){
+  cur.style.left=cx+'px'; cur.style.top=cy+'px';
+  fx+=(cx-fx)*0.12; fy+=(cy-fy)*0.12;
+  curf.style.left=fx+'px'; curf.style.top=fy+'px';
+  requestAnimationFrame(loop);
+})();
 
-  // State
-  let allPosts = [];
-  let filteredPosts = [];
-  let currentPage = 1;
-  let currentTag = 'all';
-  let searchQuery = '';
+window.addEventListener('scroll', ()=>{
+  document.getElementById('nav').classList.toggle('scrolled', scrollY>20);
+  document.getElementById('scrollUp').classList.toggle('show', scrollY>500);
+});
+document.getElementById('navBtn').addEventListener('click', function(){
+  this.classList.toggle('open'); document.getElementById('navLinks').classList.toggle('open');
+});
+document.getElementById('scrollUp').addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-  // ── Stars ──
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 140; i++) {
-    const s = document.createElement('div'); s.className = 'star';
-    const size = Math.random() < 0.1 ? 2 : 1;
-    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${3+Math.random()*5}s;--delay:${Math.random()*6}s;--op:${0.3+Math.random()*0.7};`;
-    starsEl.appendChild(s);
-  }
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('done'); revObs.unobserve(e.target); } });
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-  // ── Navbar ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
-    document.getElementById('scrolltop').classList.toggle('visible', window.scrollY > 400);
+/* ── HASHNODE LOGIC ── */
+// ⚙️ REPLACE WITH YOUR HASHNODE USERNAME
+const HASHNODE_USERNAME = 'YOUR_HASHNODE_USERNAME';
+
+let allPosts = [];
+let activeTag = 'all';
+let searchQuery = '';
+
+const demoPosts = [
+  { title: "Building a Customer Churn Predictor with XGBoost & SHAP", brief: "A complete walkthrough of cleaning telco data, handling class imbalance, training an XGBoost model, and explaining predictions using SHAP values.", slug: "#", coverImage: null, dateAdded: new Date().toISOString(), tags: ["Machine Learning", "Data Science", "Python"], readTime: "8 min read" },
+  { title: "End-to-End NLP: DistilBERT for Sentiment Analysis", brief: "How I fine-tuned a HuggingFace Transformer model on custom Twitter data, containerized it with Docker, and served it using FastAPI.", slug: "#", coverImage: null, dateAdded: new Date(Date.now() - 86400000*5).toISOString(), tags: ["NLP", "MLOps", "Python"], readTime: "12 min read" },
+  { title: "Why I'm Moving from Notebooks to Production Code", brief: "Jupyter notebooks are great for exploration, but terrible for engineering. Here are the 5 steps I took to modularize my ML workflows.", slug: "#", coverImage: null, dateAdded: new Date(Date.now() - 86400000*12).toISOString(), tags: ["MLOps", "Machine Learning"], readTime: "6 min read" },
+  { title: "Global Tech Salaries: An EDA Deep-Dive Using Pandas", brief: "Uncovering insights from 10k+ rows of salary data. What factors actually influence compensation in Data Science roles globally?", slug: "#", coverImage: null, dateAdded: new Date(Date.now() - 86400000*20).toISOString(), tags: ["Data Science", "Python"], readTime: "5 min read" },
+];
+
+const grid = document.getElementById('blogGrid');
+const loader = document.getElementById('loadingState');
+const empty = document.getElementById('emptyState');
+
+function renderPosts() {
+  grid.innerHTML = '';
+  const filtered = allPosts.filter(p => {
+    const sMatch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.brief.toLowerCase().includes(searchQuery.toLowerCase());
+    const tMatch = activeTag === 'all' || p.tags.map(t=>t.toLowerCase().replace(/ /g,'-')).includes(activeTag);
+    return sMatch && tMatch;
   });
-  document.getElementById('navToggle').addEventListener('click', () => {
-    document.getElementById('navLinks').classList.toggle('open');
-    document.getElementById('navToggle').classList.toggle('open');
-  });
-  document.getElementById('scrolltop').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-  // ── Fetch posts from Hashnode GraphQL API ──
-  async function fetchPosts() {
-    // Show loading
-    document.getElementById('blogGrid').innerHTML = `<div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>`;
-
-    // If placeholder username, show demo posts
-    if (HASHNODE_USERNAME === 'YOUR_HASHNODE_USERNAME') {
-      allPosts = getDemoPosts();
-      applyFilters();
-      return;
-    }
-
-    const query = `
-      query GetPosts($host: String!, $first: Int!, $after: String) {
-        publication(host: $host) {
-          posts(first: $first, after: $after) {
-            pageInfo { hasNextPage endCursor }
-            edges {
-              node {
-                title brief slug publishedAt
-                coverImage { url }
-                tags { name slug }
-                readTimeInMinutes
-                views
-              }
-            }
-          }
-        }
-      }
-    `;
-
-    try {
-      let after = null;
-      let hasMore = true;
-      allPosts = [];
-
-      while (hasMore) {
-        const resp = await fetch('https://gql.hashnode.com/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query,
-            variables: {
-              host: `${HASHNODE_USERNAME}.hashnode.dev`,
-              first: 50,
-              after
-            }
-          })
-        });
-        const { data, errors } = await resp.json();
-        if (errors || !data?.publication) throw new Error('API error');
-
-        const { edges, pageInfo } = data.publication.posts;
-        allPosts.push(...edges.map(e => e.node));
-        hasMore = pageInfo.hasNextPage;
-        after = pageInfo.endCursor;
-        if (allPosts.length > 200) break; // safety cap
-      }
-
-      applyFilters();
-    } catch (err) {
-      console.error(err);
-      document.getElementById('blogGrid').innerHTML = `
-        <div class="empty-state">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          <h3>Couldn't load posts</h3>
-          <p style="color:var(--text-muted);font-size:0.88rem;">Make sure your Hashnode username is set correctly in blog.html</p>
-        </div>`;
-    }
-  }
-
-  // ── Demo posts (shown when username not set) ──
-  function getDemoPosts() {
-    return [
-      { title:'What is Exploratory Data Analysis? A Practical Guide', brief:'EDA is the first and most important step in any data science project. Here's how I approach it, and the tools & visualizations that helped me understand my data better.', slug:'#', publishedAt:'2025-04-10', tags:[{name:'Data Science',slug:'data-science'},{name:'Python',slug:'python'}], readTimeInMinutes:7, coverImage:null },
-      { title:'XGBoost Explained — Intuition Behind the Algorithm', brief:'XGBoost won Kaggle competitions for years. In this post, I break down the math and intuition behind gradient boosting trees so you can actually understand what's happening under the hood.', slug:'#', publishedAt:'2025-04-02', tags:[{name:'Machine Learning',slug:'machine-learning'}], readTimeInMinutes:10, coverImage:null },
-      { title:'My First 30 Days Learning NLP: What I Wish I Knew', brief:'NLP feels like magic until you understand the tokenization, embeddings, and attention mechanisms. Here's a raw, honest log of what I learned in month one of studying natural language processing.', slug:'#', publishedAt:'2025-03-22', tags:[{name:'NLP',slug:'nlp'},{name:'Python',slug:'python'}], readTimeInMinutes:8, coverImage:null },
-      { title:'Building a Sentiment API with FastAPI + HuggingFace', brief:'Step-by-step tutorial on serving a fine-tuned DistilBERT model as a production REST API using FastAPI. Covers request validation, async endpoints, and Dockerization.', slug:'#', publishedAt:'2025-03-14', tags:[{name:'NLP',slug:'nlp'},{name:'MLOps',slug:'mlops'}], readTimeInMinutes:12, coverImage:null },
-      { title:'SHAP Values: Making Your ML Models Actually Explainable', brief:'Black-box models are powerful but dangerous. SHAP (SHapley Additive exPlanations) is the standard for model interpretability. Here's how I used it to explain a churn prediction model.', slug:'#', publishedAt:'2025-03-05', tags:[{name:'Machine Learning',slug:'machine-learning'},{name:'Data Science',slug:'data-science'}], readTimeInMinutes:9, coverImage:null },
-      { title:'Why Every Data Scientist Should Think Like a Product Manager', brief:'The best insight means nothing if it never ships. I've been studying product thinking alongside data science, and it's changed how I approach every analysis. Here's what I've learned.', slug:'#', publishedAt:'2025-02-20', tags:[{name:'Startup',slug:'startup'},{name:'Data Science',slug:'data-science'}], readTimeInMinutes:6, coverImage:null },
-      { title:'Optuna for Hyperparameter Optimization: A Beginner Guide', brief:'Grid search is dead. Optuna uses Bayesian optimization to find the best hyperparameters in a fraction of the time. Let me show you how to integrate it with Scikit-learn and XGBoost.', slug:'#', publishedAt:'2025-02-10', tags:[{name:'Machine Learning',slug:'machine-learning'},{name:'Python',slug:'python'}], readTimeInMinutes:8, coverImage:null },
-      { title:'Docker for Data Scientists: What You Actually Need to Know', brief:'You don't need to become a DevOps expert. But knowing how to containerize your ML app with Docker will make you 10x more valuable as a data scientist. Here's the minimal viable knowledge.', slug:'#', publishedAt:'2025-01-28', tags:[{name:'MLOps',slug:'mlops'},{name:'Python',slug:'python'}], readTimeInMinutes:11, coverImage:null },
-    ];
-  }
-
-  // ── Apply filters & search ──
-  function applyFilters() {
-    filteredPosts = allPosts.filter(p => {
-      const tagMatch = currentTag === 'all' || p.tags.some(t => t.slug === currentTag);
-      const searchMatch = !searchQuery ||
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brief.toLowerCase().includes(searchQuery.toLowerCase());
-      return tagMatch && searchMatch;
-    });
-    currentPage = 1;
-    renderFeatured();
-    renderPage();
-    renderPagination();
-  }
-
-  // ── Render featured post ──
-  function renderFeatured() {
-    const feat = filteredPosts[0];
-    const sec = document.getElementById('featuredSection');
-    if (!feat || currentTag !== 'all' || searchQuery) { sec.innerHTML = ''; return; }
-    const url = feat.slug === '#' ? '#' : `https://${HASHNODE_USERNAME}.hashnode.dev/${feat.slug}`;
-    sec.innerHTML = `
-      <div class="featured-post">
-        <div class="featured-cover">${feat.coverImage ? `<img src="${feat.coverImage.url}" alt="${feat.title}" loading="lazy"/>` : '📝'}</div>
-        <div class="featured-body">
-          <div class="featured-label">⭐ Featured Article</div>
-          <h2 class="featured-title">${feat.title}</h2>
-          <p class="featured-brief">${feat.brief}</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
-            ${feat.tags.map(t => `<span class="post-tag">${t.name}</span>`).join('')}
-          </div>
-          <a href="${url}" class="btn btn-primary" target="_blank" rel="noopener">
-            Read Article <i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    `;
-  }
-
-  // ── Render current page ──
-  function renderPage() {
-    const start = (currentPage - 1) * POSTS_PER_PAGE;
-    // skip featured (index 0) only on first page when no filter/search
-    const skipFeatured = currentPage === 1 && currentTag === 'all' && !searchQuery;
-    const slice = skipFeatured ? filteredPosts.slice(1) : filteredPosts;
-    const posts = slice.slice(skipFeatured ? start : start, (skipFeatured ? start : start) + POSTS_PER_PAGE);
-
-    if (!posts.length) {
-      document.getElementById('blogGrid').innerHTML = `
-        <div class="empty-state">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <h3>No articles found</h3>
-          <p style="color:var(--text-muted);font-size:0.88rem;">Try a different tag or search term.</p>
-        </div>`;
-      return;
-    }
-
-    document.getElementById('blogGrid').innerHTML = `
-      <div class="blog-grid">
-        ${posts.map(p => {
-          const url = p.slug === '#' ? '#' : `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`;
-          const date = new Date(p.publishedAt).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
-          return `
-            <div class="post-card">
-              <div class="post-cover">
-                ${p.coverImage ? `<img src="${p.coverImage.url}" alt="${p.title}" loading="lazy"/>` : '📄'}
-              </div>
-              <div class="post-body">
-                <div class="post-tags">${p.tags.map(t=>`<span class="post-tag">${t.name}</span>`).join('')}</div>
-                <h3 class="post-title">${p.title}</h3>
-                <p class="post-brief">${p.brief}</p>
-                <div class="post-meta">
-                  <span class="post-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
-                  <a href="${url}" class="post-read-link" target="_blank" rel="noopener">
-                    Read <i class="fa-solid fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
+  if (filtered.length === 0) {
+    grid.style.display = 'none'; empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none'; grid.style.display = 'grid';
+    filtered.forEach((p, idx) => {
+      const d = new Date(p.dateAdded).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      const imgHtml = p.coverImage ? `<img src="${p.coverImage}" alt="${p.title}" loading="lazy">` : `<div style="color:var(--t3);font-size:3rem;"><i class="fa-solid fa-chart-line"></i></div>`;
+      
+      grid.innerHTML += `
+        <a href="${p.slug}" class="post-card reveal delay-${(idx%3)+1}" target="${p.slug.startsWith('http')?'_blank':''}">
+          <div class="post-img">${imgHtml}</div>
+          <div class="post-body">
+            <div class="post-meta"><span>${d}</span></div>
+            <h3 class="post-title">${p.title}</h3>
+            <p class="post-excerpt">${p.brief.substring(0, 110)}...</p>
+            <div class="post-foot">
+              <div style="display:flex;gap:6px;">${p.tags.slice(0,2).map(t=>`<span class="chip chip-white" style="font-size:0.6rem;padding:2px 8px;">${t}</span>`).join('')}</div>
+              <div class="post-read">Read <i class="fa-solid fa-arrow-right"></i></div>
             </div>
-          `;
-        }).join('')}
-      </div>`;
+          </div>
+        </a>
+      `;
+    });
+    // Trigger reveals for newly added cards
+    document.querySelectorAll('.post-card').forEach(el=>revObs.observe(el));
   }
+}
 
-  // ── Render pagination ──
-  function renderPagination() {
-    const skipFeatured = currentTag === 'all' && !searchQuery;
-    const totalPosts = skipFeatured ? filteredPosts.length - 1 : filteredPosts.length;
-    const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
-    const pag = document.getElementById('pagination');
-    if (totalPages <= 1) { pag.innerHTML = ''; return; }
-
-    let html = `<button class="page-btn arrow" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>
-      <i class="fa-solid fa-chevron-left"></i>
-    </button>`;
-    for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-    }
-    html += `<button class="page-btn arrow" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>
-      <i class="fa-solid fa-chevron-right"></i>
-    </button>`;
-    pag.innerHTML = html;
+async function fetchPosts() {
+  loader.style.display = 'flex'; grid.style.display = 'none'; empty.style.display = 'none';
+  if (HASHNODE_USERNAME === 'YOUR_HASHNODE_USERNAME') {
+    setTimeout(() => { allPosts = demoPosts; loader.style.display='none'; renderPosts(); }, 800);
+    return;
   }
+  
+  const query = `
+    query { user(username: "${HASHNODE_USERNAME}") { publication { posts(page: 0) { title brief slug coverImage dateAdded contentMarkdown } } } }
+  `;
+  try {
+    const res = await fetch('https://api.hashnode.com/', {
+      method: 'POST', headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({query})
+    });
+    const d = await res.json();
+    if (d.data?.user?.publication?.posts) {
+      allPosts = d.data.user.publication.posts.map(p => ({
+        ...p, slug: `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`, tags: ['Data & AI'] // Fallback tag
+      }));
+    } else { allPosts = demoPosts; }
+  } catch(e) { allPosts = demoPosts; }
+  
+  loader.style.display = 'none';
+  renderPosts();
+}
 
-  function goPage(page) {
-    const skipFeatured = currentTag === 'all' && !searchQuery;
-    const total = Math.ceil((filteredPosts.length - (skipFeatured?1:0)) / POSTS_PER_PAGE);
-    if (page < 1 || page > total) return;
-    currentPage = page;
-    renderPage(); renderPagination();
-    window.scrollTo({top: document.querySelector('.search-wrapper').offsetTop - 100, behavior:'smooth'});
-  }
+// Event Listeners
+document.getElementById('searchInput').addEventListener('input', e => { searchQuery = e.target.value; renderPosts(); });
+document.getElementById('tagsRow').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  activeTag = e.target.dataset.tag;
+  renderPosts();
+});
 
-  // ── Filter buttons ──
-  document.getElementById('filterBar').addEventListener('click', e => {
-    if (!e.target.classList.contains('filter-btn')) return;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentTag = e.target.dataset.tag;
-    applyFilters();
-  });
-
-  // ── Search ──
-  let searchTimer;
-  document.getElementById('searchInput').addEventListener('input', e => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); applyFilters(); }, 300);
-  });
-
-  // ── Newsletter ──
-  function handleNewsletterSubmit(e) {
-    e.preventDefault();
-    const msg = document.getElementById('nlMessage');
-    msg.innerHTML = '<span style="color:var(--neon-blue)"><i class="fa-solid fa-check"></i> You\'re subscribed! 🎉</span>';
-    e.target.reset();
-  }
-
-  // ── Init ──
-  fetchPosts();
+fetchPosts();
 </script>
 </body>
 </html>
