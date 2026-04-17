@@ -4,148 +4,146 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — Ritik Mishra</title>
-  <meta name="description" content="Initiate a dialogue for internships or collaborations." />
+  <meta name="description" content="Reach out for roles or collaboration." />
   <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    .contact-hero { padding: calc(var(--nav-h) + 120px) 0 120px; }
+    .page-header { padding: calc(var(--nav-h) + 100px) 0 60px; text-align: center; }
     
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 120px;
-      border-top: 1px solid var(--wire); padding-top: 80px;
-    }
+    .contact-wrapper { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; max-width: 1000px; margin: 0 auto; padding-bottom: 140px; }
     
-    .info-col h3 { font-size: 2rem; margin-bottom: 24px; }
-    .info-col p { font-size: 1.1rem; color: var(--platinum); margin-bottom: 40px; max-width: 400px; }
+    .info-col h2 { margin-bottom: 24px; }
+    .info-col p { margin-bottom: 40px; }
     
-    .info-list { list-style: none; margin-bottom: 60px; }
-    .info-list li { margin-bottom: 20px; }
-    .info-link { font-family: var(--font-lux); font-size: 1.5rem; color: var(--white); transition: color var(--t-fast); }
-    .info-link:hover { color: var(--silver); }
-    
-    .status-indicator { display: inline-flex; align-items: center; gap: 12px; border: 1px solid var(--wire); padding: 12px 24px; border-radius: 0; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--white); box-shadow: 0 0 10px var(--white); animation: blink 2s infinite; }
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    .status-text { font-family: var(--font-tech); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
+    .c-link { display: inline-flex; align-items: center; gap: 12px; font-weight: 500; font-size: 1.1rem; color: var(--fg); text-decoration: none; transition: var(--t-fluid); padding: 16px 24px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); }
+    .c-link i { color: var(--muted); }
+    .c-link:hover { background: rgba(255,255,255,0.05); transform: translateX(8px); border-color: rgba(255,255,255,0.15); }
 
-    .form-col { position: relative; }
-    .lux-form-group { margin-bottom: 40px; position: relative; }
-    .lux-label {
-      display: block; font-family: var(--font-tech); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); margin-bottom: 12px;
+    .form-group { margin-bottom: 24px; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 10px; }
+    .form-input {
+      width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px 20px; color: var(--fg); font-family: var(--font-sans); font-size: 1rem;
+      outline: none; transition: var(--t-fluid);
     }
-    .lux-input {
-      width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--wire-light);
-      padding: 16px 0; color: var(--white); font-family: var(--font-lux); font-size: 1.4rem; outline: none; transition: var(--t-fast); border-radius: 0;
-    }
-    .lux-input:focus { border-color: var(--white); }
-    .lux-input::placeholder { color: var(--wire-light); font-style: italic; }
+    .form-input:focus { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+    .form-textarea { min-height: 140px; resize: none; }
     
-    .lux-textarea { min-height: 120px; resize: none; }
-    
-    .form-status { margin-bottom: 24px; padding: 20px; border: 1px solid var(--wire); display: none; font-family: var(--font-lux); font-size: 1.2rem; }
-    .f-ok { color: var(--white); border-color: var(--white); }
-    .f-err { color: #ff4444; border-color: #ff4444; }
+    .form-status { margin-bottom: 24px; padding: 16px 20px; border-radius: 12px; font-size: 0.95rem; display: none; font-weight: 500; border: 1px solid transparent; }
+    .f-ok { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.3); }
+    .f-err { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
 
     @media (max-width: 900px) {
-      .contact-grid { grid-template-columns: 1fr; gap: 80px; }
+      .contact-wrapper { grid-template-columns: 1fr; gap: 60px; }
     }
   </style>
 </head>
 <body>
 
-<nav class="lux-nav" id="nav">
+<nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link">Intelligence</a></li>
-    <li><a href="courses.html" class="nav-link">Resources</a></li>
+    <li><a href="index.html" class="nav-link">Impact</a></li>
     <li><a href="blog.html" class="nav-link">Journal</a></li>
-    <li><a href="contact.html" class="nav-link active">Contact</a></li>
+    <li><a href="contact.html" class="nav-link active" style="color:var(--bg); background:var(--fg);">Let's Talk</a></li>
   </ul>
 </nav>
 
-<div class="contact-hero">
-  <div class="container container-narrow">
-    <span class="mono-label fade-up" style="text-align:center;">Communication</span>
-    <h1 class="reveal-mask" style="text-align:center;">
-      <span class="reveal-text">Initiate Dialogue.</span>
-    </h1>
-    <p class="fade-up delay-1" style="text-align:center; max-width:500px; margin: 24px auto 0;">
-      Seeking opportunities in Machine Learning and Data Engineering. Open to collaboration on algorithmic systems.
-    </p>
-  </div>
+<div class="page-header container reveal">
+  <div class="pill">Communication</div>
+  <h1>Initiate Dialogue</h1>
 </div>
 
-<div class="container fade-up delay-2" style="margin-bottom: 160px;">
-  <div class="contact-grid">
+<div class="container reveal d-1">
+  <div class="contact-wrapper">
+    
     <div class="info-col">
-      <h3>Direct Line</h3>
-      <p>Located in India. Equipped for remote, asynchronous, and high-velocity engineering environments.</p>
+      <h2>Let's build something.</h2>
+      <p>Whether you're looking to hire an engineer, or just want to collaborate on an open-source tool, my inbox is always open.</p>
       
-      <ul class="info-list">
-        <li><a href="mailto:contact@sentientdata.xyz" class="info-link">contact@sentientdata.xyz</a></li>
-        <li><a href="https://linkedin.com/" class="info-link">LinkedIn Network</a></li>
-        <li><a href="https://github.com/ritikmishra0511" class="info-link">GitHub Repositories</a></li>
-      </ul>
+      <div class="contact-links">
+        <a href="mailto:contact@sentientdata.xyz" class="c-link"><i class="fa-solid fa-envelope"></i> contact@sentientdata.xyz</a>
+        <a href="https://linkedin.com/" class="c-link"><i class="fa-brands fa-linkedin"></i> LinkedIn Network</a>
+        <a href="https://github.com/ritikmishra0511" class="c-link"><i class="fa-brands fa-github"></i> GitHub Repositories</a>
+      </div>
       
-      <div class="status-indicator">
-        <div class="dot"></div>
-        <div class="status-text">Available for Internships</div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top: 16px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 10px #10b981;"></span>
+        <span style="font-size:0.9rem; font-weight:600; color:var(--muted);">Currently available for roles</span>
       </div>
     </div>
     
-    <div class="form-col">
-      <div class="form-status" id="formStatus"></div>
-      
-      <form id="contactForm">
-        <div class="lux-form-group">
-          <label class="lux-label">Identification</label>
-          <input type="text" name="name" class="lux-input" required placeholder="Name or Organization">
+    <div class="form-col spotlight-group">
+      <div class="spotlight-card" style="padding: 40px 32px;">
+        <div class="card-content">
+          <div class="form-status" id="formStatus"></div>
+          
+          <form id="contactForm">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" class="form-input" required placeholder="John Doe">
+              </div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input" required placeholder="john@company.com">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <textarea name="message" class="form-input form-textarea" required placeholder="How can I help you scale?"></textarea>
+            </div>
+            
+            <button type="submit" class="btn-magnetic" id="submitBtn" style="width:100%; border-radius:12px;">
+              <span class="btn-text">Transmit Request</span> <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
         </div>
-        
-        <div class="lux-form-group">
-          <label class="lux-label">Return Address</label>
-          <input type="email" name="email" class="lux-input" required placeholder="contact@domain.com">
-        </div>
-        
-        <div class="lux-form-group">
-          <label class="lux-label">Transmission</label>
-          <textarea name="message" class="lux-input lux-textarea" required placeholder="State your inquiry..."></textarea>
-        </div>
-        
-        <button type="submit" class="btn" id="submitBtn" style="width:100%;">Transmit Message</button>
-      </form>
+      </div>
     </div>
+    
   </div>
 </div>
 
-<footer class="lux-footer">
-  <div class="container">
-    <div class="foot-brand">SentientData</div>
-    <div class="foot-links">
-      <a href="https://github.com/ritikmishra0511">GitHub</a>
-      <a href="https://linkedin.com/">LinkedIn</a>
-      <a href="contact.html">Inquiries</a>
-    </div>
-    <div class="foot-legal">
-      <span>© 2025 RITIK MISHRA.</span><span>INTELLIGENCE ENGINEERED.</span>
+<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+    <span>© 2025 Ritik Mishra.</span>
+    <div style="display:flex; gap:16px;">
+      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
+      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
     </div>
   </div>
 </footer>
 
 <script>
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50); });
+
+const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); }); }, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+setTimeout(() => document.querySelectorAll('.page-header.reveal, .reveal.d-1').forEach(el => el.classList.add('in-view')), 100);
+
+/* Physics */
+document.querySelectorAll('.spotlight-group').forEach(group => {
+  group.addEventListener('mousemove', e => {
+    group.querySelectorAll('.spotlight-card').forEach(card => {
+      const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`); card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
 });
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); }
-    else { entry.target.classList.remove('is-revealed'); }
+document.querySelectorAll('.btn-magnetic').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+    const text = btn.querySelector('.btn-text'); if(text) text.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px)`;
   });
-}, { rootMargin: '0px', threshold: 0.1 });
-document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => observer.observe(el));
-setTimeout(() => document.querySelectorAll('.contact-hero .reveal-mask, .contact-hero .fade-up').forEach(el => el.classList.add('is-revealed')), 100);
+  btn.addEventListener('mouseleave', () => { btn.style.transform = `translate(0px, 0px)`; const text = btn.querySelector('.btn-text'); if(text) text.style.transform = `translate(0px, 0px)`; });
+});
 
-/* Formspree Logic */
+/* Form Logic */
 const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
 const form = document.getElementById('contactForm');
 const btn = document.getElementById('submitBtn');
@@ -155,30 +153,23 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') {
-    stat.className = 'form-status f-ok';
-    stat.innerHTML = 'Transmission Simulated. (Demo Mode: Add Formspree ID to enable actual routing).';
+    stat.className = 'form-status f-ok'; stat.innerHTML = 'Message Simulation Successful. (Add Formspree ID).';
     stat.style.display = 'block'; form.reset(); return;
   }
 
-  btn.textContent = 'Transmitting...'; btn.style.pointerEvents = 'none';
+  const btnText = btn.querySelector('.btn-text');
+  btnText.textContent = 'Transmitting...'; btn.style.pointerEvents = 'none';
   const formData = new FormData(form);
   
   try {
-    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
-    });
-    if (res.ok) {
-      stat.className = 'form-status f-ok';
-      stat.innerHTML = 'Transmission Successful. I will review shortly.';
-      form.reset();
-    } else throw new Error('Failed');
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+    if (res.ok) { stat.className = 'form-status f-ok'; stat.innerHTML = 'Transmission Successful. I will review shortly.'; form.reset(); }
+    else throw new Error('Failed');
   } catch(err) {
-    stat.className = 'form-status f-err';
-    stat.innerHTML = 'Transmission Failed. Subsystem error.';
+    stat.className = 'form-status f-err'; stat.innerHTML = 'Transmission Failed. Subsystem error.';
   }
   
-  stat.style.display = 'block';
-  btn.textContent = 'Transmit Message'; btn.style.pointerEvents = 'all';
+  stat.style.display = 'block'; btnText.textContent = 'Transmit Request'; btn.style.pointerEvents = 'all';
 });
 </script>
 </body>

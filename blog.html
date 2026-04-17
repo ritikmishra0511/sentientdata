@@ -4,118 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Journal — Ritik Mishra</title>
-  <meta name="description" content="Technical literature and studies on Data & AI." />
+  <meta name="description" content="Technical documentation on Machine Learning and Engineering." />
   <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    .journal-hero { padding: calc(var(--nav-h) + 120px) 0 80px; }
+    .page-header { padding: calc(var(--nav-h) + 100px) 0 60px; text-align: center; }
     
-    .filter-bar {
-      display: flex; flex-direction: column; gap: 40px;
-      padding: 60px 40px; border-top: 1px solid var(--wire); border-bottom: 1px solid var(--wire);
-    }
+    .search-wrapper { max-width: 600px; margin: 0 auto 60px; position: relative; }
+    .search-input { width: 100%; padding: 20px 24px; border-radius: 100px; background: var(--card-bg); border: 1px solid var(--border); color: var(--fg); font-family: var(--font-sans); font-size: 1.1rem; outline: none; transition: var(--t-fluid); }
+    .search-input:focus { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 0 4px rgba(255,255,255,0.05); }
     
-    .search-input {
-      width: 100%; max-width: 600px; background: transparent; border: none; border-bottom: 1px solid var(--wire-light);
-      padding: 16px 0; color: var(--white); font-family: var(--font-lux); font-size: 1.5rem; outline: none; transition: var(--t-fast);
-    }
-    .search-input::placeholder { color: var(--silver); font-style: italic; }
-    .search-input:focus { border-color: var(--white); }
+    .tags-row { display: flex; gap: 12px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
     
-    .tags-list { display: flex; gap: 40px; list-style: none; overflow-x: auto; scrollbar-width: none; }
-    .tags-list::-webkit-scrollbar { display: none; }
-    .tag-btn {
-      background: transparent; border: none; color: var(--silver); font-family: var(--font-tech);
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-      cursor: pointer; transition: color var(--t-fast); padding-bottom: 8px; position: relative;
-    }
-    .tag-btn::after {
-      content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: var(--white);
-      transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-lux);
-    }
-    .tag-btn:hover { color: var(--white); }
-    .tag-btn.active { color: var(--white); }
-    .tag-btn.active::after { transform: scaleX(1); transform-origin: left; }
-
-    .articles-list { list-style: none; }
-    .art-item {
-      display: flex; gap: 60px; padding: 60px 40px; border-bottom: 1px solid var(--wire);
-      text-decoration: none; color: var(--white); transition: var(--t-lux); overflow: hidden; position: relative;
-    }
-    .art-bg {
-      position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.03), transparent);
-      opacity: 0; transition: opacity var(--t-lux); z-index: 0;
-    }
-    .art-item:hover .art-bg { opacity: 1; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
     
-    .art-date { width: 120px; flex-shrink: 0; font-size: 0.8rem; color: var(--silver); letter-spacing: 0.1em; padding-top: 10px; position: relative; z-index: 1; }
-    .art-content { flex: 1; position: relative; z-index: 1; }
-    .art-title { font-family: var(--font-lux); font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 16px; transition: transform 0.6s var(--ease-lux); }
-    .art-item:hover .art-title { transform: translateX(10px); }
-    .art-excerpt { font-size: 1rem; color: var(--platinum); line-height: 1.7; max-width: 800px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-    @media (max-width: 768px) {
-      .art-item { flex-direction: column; gap: 20px; padding: 40px 24px; }
-      .art-date { padding-top: 0; width: auto; font-style: italic; }
-      .filter-bar { padding: 40px 24px; }
-    }
+    .blog-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; height: 100%; }
+    .blog-date { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
+    .blog-title { font-size: 1.4rem; margin-bottom: 12px; color: var(--fg); }
+    .blog-brief { font-size: 1rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
     
-    #loadingState { padding: 80px 0; text-align: center; color: var(--silver); font-style: italic; font-family: var(--font-lux); font-size: 1.5rem; }
+    #loadingState { text-align: center; padding: 100px 0; color: var(--muted); }
   </style>
 </head>
 <body>
 
-<nav class="lux-nav" id="nav">
+<nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link">Intelligence</a></li>
-    <li><a href="courses.html" class="nav-link">Resources</a></li>
+    <li><a href="index.html" class="nav-link">Impact</a></li>
     <li><a href="blog.html" class="nav-link active">Journal</a></li>
-    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><a href="contact.html" class="nav-link" style="color:var(--fg); background:rgba(255,255,255,0.1);">Let's Talk</a></li>
   </ul>
 </nav>
 
-<div class="journal-hero">
-  <div class="container container-narrow">
-    <span class="mono-label fade-up" style="text-align:center;">Literature</span>
-    <h1 class="reveal-mask" style="text-align:center;">
-      <span class="reveal-text">The Journal.</span>
-    </h1>
-    <p class="fade-up delay-1" style="text-align:center; max-width:600px; margin: 24px auto 0;">
-      A study in algorithmic thinking. Thoughts on machine learning, data engineering, and startup mechanics.
-    </p>
+<div class="page-header container reveal">
+  <div class="pill">Technical Literature</div>
+  <h1>Engineering Journal</h1>
+  <p style="max-width:500px; margin: 20px auto 0;">Deep-dives into scalable architecture, predictive models, and the reality of shipping AI.</p>
+</div>
+
+<div class="container reveal d-1">
+  <div class="search-wrapper">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search insights..." />
+  </div>
+  
+  <div class="tags-row" id="tagsRow">
+    <button class="pill pill-active" data-tag="all">All Literature</button>
+    <button class="pill" data-tag="machine-learning">Machine Learning</button>
+    <button class="pill" data-tag="engineering">Engineering</button>
   </div>
 </div>
 
-<div class="filter-bar fade-up delay-2">
-  <div class="container" style="display:flex; flex-direction:column; gap:40px;">
-    <input type="text" class="search-input" id="searchInput" placeholder="Search literature..." />
-    <ul class="tags-list" id="tagsRow">
-      <li><button class="tag-btn active" data-tag="all">All Entries</button></li>
-      <li><button class="tag-btn" data-tag="data-science">Data Science</button></li>
-      <li><button class="tag-btn" data-tag="machine-learning">Machine Learning</button></li>
-      <li><button class="tag-btn" data-tag="nlp">NLP / Transformers</button></li>
-    </ul>
-  </div>
-</div>
-
-<div id="blogContainer">
-  <div id="loadingState">Gathering records...</div>
-  <ul class="articles-list" id="blogGrid" style="display:none;"></ul>
-  <div id="emptyState" style="display:none; text-align:center; padding:120px 0; font-family:var(--font-lux); font-size:1.8rem; color:var(--silver);">
-    No records match your criteria.
-  </div>
-</div>
-
-<footer class="lux-footer" style="border-top:none;">
+<section class="section pt-0" style="padding-top:0;">
   <div class="container">
-    <div class="foot-brand">SentientData</div>
-    <div class="foot-links">
-      <a href="https://github.com/ritikmishra0511">GitHub</a>
-      <a href="https://linkedin.com/">LinkedIn</a>
-      <a href="contact.html">Inquiries</a>
-    </div>
-    <div class="foot-legal">
-      <span>© 2025 RITIK MISHRA.</span><span>INTELLIGENCE ENGINEERED.</span>
+    <div id="loadingState">Compiling literature...</div>
+    <div class="blog-grid spotlight-group" id="blogGrid" style="display:none;"></div>
+    <div id="emptyState" style="display:none; text-align:center; padding:100px 0; color:var(--muted); font-size:1.2rem;">No matching literature found in the system.</div>
+  </div>
+</section>
+
+<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+    <span>© 2025 Ritik Mishra.</span>
+    <div style="display:flex; gap:16px;">
+      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
+      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
     </div>
   </div>
 </footer>
@@ -125,26 +78,35 @@ window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); }
-    else { entry.target.classList.remove('is-revealed'); }
-  });
-}, { rootMargin: '0px', threshold: 0.1 });
-document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => observer.observe(el));
-setTimeout(() => document.querySelectorAll('.journal-hero .reveal-mask, .journal-hero .fade-up').forEach(el => el.classList.add('is-revealed')), 100);
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+setTimeout(() => document.querySelectorAll('.page-header.reveal, .reveal.d-1').forEach(el => el.classList.add('in-view')), 100);
 
-/* Hashnode Logic */
+/* Alive Physics: Spotlight Grid */
+document.querySelectorAll('.spotlight-group').forEach(group => {
+  group.addEventListener('mousemove', e => {
+    group.querySelectorAll('.spotlight-card').forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+});
+
+/* Hashnode API Logic */
 const HASHNODE_USERNAME = 'YOUR_HASHNODE_USERNAME';
 let allPosts = [];
 let activeTag = 'all';
 let searchQuery = '';
 
 const demoPosts = [
-  { title: "Building a Customer Churn Predictor with XGBoost", brief: "A complete walkthrough of cleaning telco data, handling class imbalance, training an XGBoost model, and explaining predictions using SHAP values.", slug: "#", dateAdded: new Date().toISOString(), tags: ["Machine Learning", "Data Science"] },
-  { title: "End-to-End NLP: DistilBERT for Sentiment Analysis", brief: "How I fine-tuned a HuggingFace Transformer model on custom Twitter data, containerized it with Docker, and served it using FastAPI.", slug: "#", dateAdded: new Date(Date.now() - 86400000*5).toISOString(), tags: ["NLP", "MLOps", "Machine Learning"] },
-  { title: "Why I'm Moving from Notebooks to Production Code", brief: "Jupyter notebooks are great for exploration, but terrible for engineering. Here are the 5 steps I took to modularize my ML workflows.", slug: "#", dateAdded: new Date(Date.now() - 86400000*12).toISOString(), tags: ["Data Science", "Machine Learning"] },
-  { title: "Global Tech Salaries: An EDA Deep-Dive", brief: "Uncovering insights from 10k+ rows of salary data. What factors actually influence compensation in Data Science roles globally?", slug: "#", dateAdded: new Date(Date.now() - 86400000*20).toISOString(), tags: ["Data Science"] },
+  { title: "Building a Customer Churn Predictor with XGBoost", brief: "A complete walkthrough of cleaning telco data, handling class imbalance, training an XGBoost model, and explaining predictions using SHAP values.", slug: "#", dateAdded: new Date().toISOString(), tags: ["Machine Learning"] },
+  { title: "End-to-End NLP: DistilBERT for Sentiment Analysis", brief: "How I fine-tuned a HuggingFace Transformer model on custom Twitter data, containerized it with Docker, and served it using FastAPI.", slug: "#", dateAdded: new Date(Date.now() - 86400000*5).toISOString(), tags: ["Machine Learning", "Engineering"] },
+  { title: "Moving ML Code from Notebooks to Production", brief: "Jupyter notebooks are great for exploration, but terrible for engineering. The 5 steps I took to modularize my workflows.", slug: "#", dateAdded: new Date(Date.now() - 86400000*12).toISOString(), tags: ["Engineering"] }
 ];
 
 const grid = document.getElementById('blogGrid');
@@ -155,29 +117,31 @@ function renderPosts() {
   grid.innerHTML = '';
   const filtered = allPosts.filter(p => {
     const sMatch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.brief.toLowerCase().includes(searchQuery.toLowerCase());
-    const tMatch = activeTag === 'all' || p.tags.map(t=>t.toLowerCase().replace(/ \/ /g,'-').replace(/ /g,'-')).includes(activeTag);
+    const tMatch = activeTag === 'all' || p.tags.map(t=>t.toLowerCase().replace(/ /g,'-')).includes(activeTag);
     return sMatch && tMatch;
   });
 
   if (filtered.length === 0) {
     grid.style.display = 'none'; empty.style.display = 'block';
   } else {
-    empty.style.display = 'none'; grid.style.display = 'block';
+    empty.style.display = 'none'; grid.style.display = 'grid';
     filtered.forEach((p, idx) => {
-      const d = new Date(p.dateAdded).toLocaleDateString('en-US', { year:'numeric', month:'2-digit', day:'2-digit' });
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <a href="${p.slug}" class="art-item fade-up delay-${(idx%3)+1}">
-          <div class="art-bg"></div>
-          <div class="art-date">${d}</div>
-          <div class="art-content">
-            <h3 class="art-title">${p.title}</h3>
-            <p class="art-excerpt">${p.brief}</p>
+      const d = new Date(p.dateAdded).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      // Build dynamic card with spotlight structure inside href
+      const a = document.createElement('a');
+      a.href = p.slug;
+      a.className = `spotlight-card reveal in-view d-${(idx%3)+1}`;
+      a.innerHTML = `
+        <div class="card-content">
+          <div class="blog-date">${d}</div>
+          <h3 class="blog-title">${p.title}</h3>
+          <p class="blog-brief">${p.brief}</p>
+          <div style="font-size:0.85rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
+            Read Publication <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
           </div>
-        </a>
+        </div>
       `;
-      grid.appendChild(li);
-      observer.observe(li.querySelector('.art-item'));
+      grid.appendChild(a);
     });
   }
 }
@@ -185,29 +149,25 @@ function renderPosts() {
 async function fetchPosts() {
   loader.style.display = 'block'; grid.style.display = 'none'; empty.style.display = 'none';
   if (HASHNODE_USERNAME === 'YOUR_HASHNODE_USERNAME') {
-    setTimeout(() => { allPosts = demoPosts; loader.style.display='none'; renderPosts(); }, 800);
+    setTimeout(() => { allPosts = demoPosts; loader.style.display='none'; renderPosts(); }, 600);
     return;
   }
-  
   const query = `query { user(username: "${HASHNODE_USERNAME}") { publication { posts(page: 0) { title brief slug dateAdded } } } }`;
   try {
-    const res = await fetch('https://api.hashnode.com/', {
-      method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({query})
-    });
+    const res = await fetch('https://api.hashnode.com/', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({query}) });
     const d = await res.json();
     if (d.data?.user?.publication?.posts) {
-      allPosts = d.data.user.publication.posts.map(p => ({ ...p, slug: `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`, tags: ['Data Science'] }));
+      allPosts = d.data.user.publication.posts.map(p => ({ ...p, slug: `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`, tags: ['Machine Learning'] }));
     } else { allPosts = demoPosts; }
   } catch(e) { allPosts = demoPosts; }
-  
   loader.style.display = 'none'; renderPosts();
 }
 
 document.getElementById('searchInput').addEventListener('input', e => { searchQuery = e.target.value; renderPosts(); });
 document.getElementById('tagsRow').addEventListener('click', e => {
-  if (e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
+  if (!e.target.classList.contains('pill')) return;
+  document.querySelectorAll('#tagsRow .pill').forEach(b => b.classList.remove('pill-active'));
+  e.target.classList.add('pill-active');
   activeTag = e.target.dataset.tag; renderPosts();
 });
 

@@ -3,281 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ritik Mishra — Cinematic Intelligence</title>
-  <meta name="description" content="Data Scientist & AI Architect. A study in precision." />
+  <title>Ritik Mishra — Data & AI Engineer</title>
+  <meta name="description" content="Turning raw data into scalable AI systems and predictive revenue models." />
   <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ── PAGE SPECIFIC SYLES ── */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; position: relative; overflow: hidden; }
+    .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
     
-    /* Smooth Scroll / Cinematic Baseline */
-    .lux-hero {
-      height: 100vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 80px;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; background: url('assets/obsidian.png') center/cover no-repeat;
-      z-index: -1; 
-      /* parallax effect via transform added later in JS, but base is here */
-      transform: scale(1.05); filter: brightness(0.65);
-    }
-    .hero-bg::after {
-      content:''; position: absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%);
-    }
-
-    .hero-content { width: 100%; }
-    .lux-huge-title { margin-bottom: 24px; max-width: 1100px; }
+    .hero-content { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 10; max-width: 900px; margin: 0 auto; }
+    .hero-tags { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center; }
     
-    /* Scroll Indicator */
-    .scroll-line {
-      position: absolute; bottom: 0; right: 40px; width: 1px; height: 160px; background: rgba(255,255,255,0.1); overflow: hidden;
-    }
-    .scroll-line-fill {
-      width: 100%; height: 100%; background: var(--white); transform: translateY(-100%); animation: drop 2.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-    }
-    @keyframes drop { 0% { transform: translateY(-100%); } 50% { transform: translateY(0); } 100% { transform: translateY(100%); } }
+    .btn-group { display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap; justify-content: center; }
 
-    /* The Philosophy Section */
-    .phil-section {
-      padding: 240px 0; max-width: 900px; margin: 0 auto; text-align: center;
-    }
-    .lux-quote {
-      font-family: var(--font-lux); font-size: clamp(2rem, 4vw, 3.2rem); 
-      line-height: 1.3; color: var(--white); margin-bottom: 60px;
-    }
-    .lux-quote-sub {
-      font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); margin-bottom: 40px;
-    }
-
-    /* The Work Section */
-    .work-section { padding-bottom: 160px; }
-    .work-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px 60px; border-bottom: 1px solid var(--wire); }
+    /* Custom Project Image sizes */
+    .proj-img { height: 200px; background: rgba(255,255,255,0.02); margin: -40px -32px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--muted); }
     
-    .lux-list { list-style: none; }
-    .lux-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 60px 40px; border-bottom: 1px solid var(--wire); text-decoration: none;
-      position: relative; overflow: hidden; transition: var(--t-lux); cursor: pointer;
-    }
-    .lux-item-bg {
-      position: absolute; inset: 0; background: url('assets/silk.png') center/cover no-repeat;
-      z-index: 0; opacity: 0; filter: grayscale(1) brightness(0.3); transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux); transform: scale(1.1);
-    }
-    .lux-item:hover .lux-item-bg { opacity: 1; transform: scale(1); }
-    .lux-item-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; width: 100%; }
-    
-    .item-title { font-family: var(--font-lux); font-size: clamp(2rem, 3.5vw, 4rem); font-weight: 400; transition: transform 0.6s var(--ease-lux); }
-    .lux-item:hover .item-title { transform: translateX(20px); }
-    .item-meta { text-align: right; }
-    .item-cat { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--silver); margin-bottom: 8px; }
-    .item-year { font-family: var(--font-lux); font-size: 1.4rem; color: var(--white); font-style: italic; }
-
-    /* Imagery Break */
-    .img-break {
-      width: 100%; height: 80vh; background: url('assets/silk.png') center/cover fixed;
-      position: relative;
-    }
-    .img-break::after { content:''; position: absolute; inset:0; background: rgba(0,0,0,0.4); }
-
-    /* Competencies (no stars, no bars. Just stark lists) */
-    .comp-section { padding: 160px 0; }
-    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-    .comp-col h3 { font-size: 2rem; margin-bottom: 40px; border-bottom: 1px solid var(--wire); padding-bottom: 20px; }
-    .comp-list { list-style: none; }
-    .comp-list li { 
-      font-size: 1.1rem; color: var(--platinum); padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-      display: flex; justify-content: space-between;
-    }
-    .comp-list li span { font-family: var(--font-lux); font-style: italic; color: var(--silver); }
-
-    @media(max-width: 768px) {
-      .work-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-      .lux-item { padding: 40px 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
-      .item-meta { text-align: left; }
-      .lux-item:hover .item-title { transform: none; }
-      .comp-grid { grid-template-columns: 1fr; gap: 60px; }
-      .lux-quote { font-size: 1.6rem; }
-      .phil-section { padding: 120px 24px; }
-    }
+    .cta-section { text-align: center; padding: 160px 0; border-top: 1px solid var(--border); }
   </style>
 </head>
 <body>
 
-<nav class="lux-nav" id="nav">
+<nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link active">Intelligence</a></li>
-    <li><a href="courses.html" class="nav-link">Resources</a></li>
+    <li><a href="index.html" class="nav-link active">Impact</a></li>
     <li><a href="blog.html" class="nav-link">Journal</a></li>
-    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><a href="contact.html" class="nav-link" style="color:var(--fg); background:rgba(255,255,255,0.1);">Let's Talk</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="lux-hero">
-  <div class="hero-bg" id="heroBg"></div>
+<section class="hero spotlight-group">
+  <div class="hero-glow"></div>
   <div class="container hero-content">
-    <span class="mono-label fade-up">01. Identity</span>
-    <h1 class="lux-huge-title reveal-mask">
-      <span class="reveal-text">The Architecture</span>
+    <div class="hero-tags reveal">
+      <span class="pill pill-active"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;"></span> Available for Roles</span>
+      <span class="pill">Based in India</span>
+    </div>
+    
+    <h1 class="reveal d-1" style="margin-bottom:24px;">
+      Engineering Intelligence.<br>
+      <span class="text-gradient">Building Impact.</span>
     </h1>
-    <h1 class="lux-huge-title reveal-mask" style="font-style:italic;">
-      <span class="reveal-text delay-1">of Intelligence.</span>
-    </h1>
-    <p class="fade-up delay-2" style="max-width: 500px; margin-top: 40px;">
-      Data Scientist and Machine Learning Engineer. Building monolithic systems that turn raw data into structured truth.
+    
+    <p class="reveal d-2" style="max-width: 600px; font-size: 1.25rem;">
+      I help startups and businesses turn scattered datasets into <span style="color:var(--fg); font-weight:500;">predictive models</span> and scalable <span style="color:var(--fg); font-weight:500;">AI pipelines</span>.
     </p>
-  </div>
-  <div class="scroll-line"><div class="scroll-line-fill"></div></div>
-</section>
 
-<!-- PHILOSOPHY / NARRATIVE -->
-<section class="section section-no-border phil-section">
-  <span class="mono-label fade-up">02. Philosophy</span>
-  <h2 class="lux-quote reveal-mask">
-    <span class="reveal-text">"Algorithms without context are merely math. True engineering occurs when data meets intuition."</span>
-  </h2>
-  <div class="lux-quote-sub fade-up delay-1">— Ritik Mishra</div>
-  <div class="fade-up delay-2" style="max-width:600px; margin: 0 auto;">
-    <p style="margin-bottom:20px;">I don't just build models; I construct pipelines of logic. From exploratory data analysis to deploying containerized FastAPI endpoints, my approach is rooted in absolute structural integrity and uncompromising elegance.</p>
-    <a href="contact.html" class="btn">Initiate Dialogue</a>
-  </div>
-</section>
-
-<!-- ASSET BREAK -->
-<div class="img-break"></div>
-
-<!-- THE WORK -->
-<section class="work-section section-no-border" id="work">
-  <div class="work-header container">
-    <h2 class="reveal-mask"><span class="reveal-text">Selected Work.</span></h2>
-    <span class="mono-label" style="margin:0;">03. Output</span>
-  </div>
-  
-  <ul class="lux-list">
-    <li class="lux-item fade-up">
-      <div class="lux-item-bg"></div>
-      <div class="lux-item-content container">
-        <h3 class="item-title">SentimentScope</h3>
-        <div class="item-meta">
-          <div class="item-cat">ML Engineering / NLP</div>
-          <div class="item-year">2024</div>
-        </div>
-      </div>
-    </li>
-    
-    <li class="lux-item fade-up">
-      <div class="lux-item-bg"></div>
-      <div class="lux-item-content container">
-        <h3 class="item-title">Global Salary Insights</h3>
-        <div class="item-meta">
-          <div class="item-cat">Data Architecture / EDA</div>
-          <div class="item-year">2024</div>
-        </div>
-      </div>
-    </li>
-    
-    <li class="lux-item fade-up">
-      <div class="lux-item-bg"></div>
-      <div class="lux-item-content container">
-        <h3 class="item-title">Customer Churn Oracle</h3>
-        <div class="item-meta">
-          <div class="item-cat">XGBoost / Predictive Modeling</div>
-          <div class="item-year">2023</div>
-        </div>
-      </div>
-    </li>
-  </ul>
-</section>
-
-<!-- COMPETENCIES -->
-<section class="section comp-section">
-  <div class="container container-narrow">
-    <span class="mono-label fade-up" style="text-align:center;">04. Framework</span>
-    <h2 class="reveal-mask" style="text-align:center; margin-bottom: 80px;">
-      <span class="reveal-text">Technical Prowess</span>
-    </h2>
-    
-    <div class="comp-grid">
-      <div class="comp-col fade-up delay-1">
-        <h3>Languages & Logic</h3>
-        <ul class="comp-list">
-          <li>Python <span>Primary</span></li>
-          <li>SQL <span>Extraction</span></li>
-          <li>PostgreSQL <span>Persistence</span></li>
-          <li>Git <span>Versioning</span></li>
-        </ul>
-      </div>
-      
-      <div class="comp-col fade-up delay-2">
-        <h3>Intelligence Systems</h3>
-        <ul class="comp-list">
-          <li>PyTorch <span>Deep Logic</span></li>
-          <li>Scikit-Learn <span>Classical</span></li>
-          <li>HuggingFace <span>Transformers</span></li>
-          <li>FastAPI <span>Distribution</span></li>
-        </ul>
-      </div>
+    <div class="btn-group reveal d-3">
+      <a href="contact.html" class="btn-magnetic">
+        <span class="btn-text">Initiate Dialogue</span> <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      <a href="#work" class="btn-magnetic btn-secondary">
+        <span class="btn-text">View Output</span>
+      </a>
     </div>
   </div>
 </section>
 
-<footer class="lux-footer">
+<!-- Value Proposition -->
+<section class="section" style="background: rgba(255,255,255,0.01); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
-    <div class="foot-brand">SentientData</div>
-    <div class="foot-links">
-      <a href="https://github.com/ritikmishra0511">GitHub</a>
-      <a href="https://linkedin.com/">LinkedIn</a>
-      <a href="contact.html">Inquiries</a>
+    <div style="margin-bottom: 64px;" class="reveal">
+      <div class="pill">Capability Vector</div>
+      <h2>How I can help you scale</h2>
     </div>
-    <div class="foot-legal">
-      <span>© 2025 RITIK MISHRA. ALL RIGHTS RESERVED.</span>
-      <span>INTELLIGENCE ENGINEERED.</span>
+
+    <div class="cards-grid spotlight-group">
+      <!-- Value 1 -->
+      <div class="spotlight-card reveal d-1">
+        <div class="card-content">
+          <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3 style="margin-bottom:12px;">Predicting User Behavior</h3>
+          <p>I build ML models (XGBoost, Random Forests) that predict churn, CLV, and engagement, allowing you to intercept failing users before they drop off.</p>
+        </div>
+      </div>
+      <!-- Value 2 -->
+      <div class="spotlight-card reveal d-2">
+        <div class="card-content">
+          <div class="card-icon"><i class="fa-solid fa-server"></i></div>
+          <h3 style="margin-bottom:12px;">Scalable AI APIs</h3>
+          <p>Notebooks don't scale. I containerize raw machine learning logic using Docker and serve it globally via high-concurrency FastAPI endpoints.</p>
+        </div>
+      </div>
+      <!-- Value 3 -->
+      <div class="spotlight-card reveal d-3">
+        <div class="card-content">
+          <div class="card-icon"><i class="fa-solid fa-language"></i></div>
+          <h3 style="margin-bottom:12px;">Applied NLP</h3>
+          <p>Text classification, sentiment analysis, and fine-tuning HuggingFace transformers (BERT) to understand exactly what your customers are saying.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section class="section" id="work">
+  <div class="container">
+    <div style="margin-bottom: 64px;" class="reveal">
+      <div class="pill">Proof of Scale</div>
+      <h2>Engineered Output</h2>
+    </div>
+
+    <div class="cards-grid spotlight-group">
+      <!-- Project 1 -->
+      <a href="#" class="spotlight-card reveal d-1" style="text-decoration:none;">
+        <div class="card-content">
+          <div class="proj-img"><i class="fa-brands fa-twitter"></i></div>
+          <div class="card-badge">NLP Pipeline</div>
+          <h3 style="margin-bottom:12px; color:var(--fg);">SentimentScope API</h3>
+          <p style="margin-bottom:24px;">Fine-tuned DistilBERT analyzing Twitter data. Packaged via Docker and served through FastAPI for a production-ready sentiment engine.</p>
+          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
+            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Project 2 -->
+      <a href="#" class="spotlight-card reveal d-2" style="text-decoration:none;">
+        <div class="card-content">
+          <div class="proj-img"><i class="fa-solid fa-users-viewfinder"></i></div>
+          <div class="card-badge">Predictive ML</div>
+          <h3 style="margin-bottom:12px; color:var(--fg);">Customer Churn Oracle</h3>
+          <p style="margin-bottom:24px;">XGBoost classifier analyzing 10k+ rows of Telco data. Delivered full SHAP explainability to highlight exactly why users were leaving.</p>
+          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
+            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Project 3 -->
+      <a href="#" class="spotlight-card reveal d-3" style="text-decoration:none;">
+        <div class="card-content">
+          <div class="proj-img"><i class="fa-solid fa-earth-americas"></i></div>
+          <div class="card-badge">Analytics Insight</div>
+          <h3 style="margin-bottom:12px; color:var(--fg);">Global Salary Economics</h3>
+          <p style="margin-bottom:24px;">Comprehensive Exploratory Data Analysis using Pandas and Seaborn to parse complex global tech compensation mechanics.</p>
+          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
+            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer/CTA -->
+<section class="cta-section">
+  <div class="container reveal">
+    <h2 style="margin-bottom: 24px;">Ready to build logical systems?</h2>
+    <p style="margin: 0 auto 40px; max-width: 500px;">I am currently seeking software and data roles. Let's engineer something highly profitable together.</p>
+    <a href="contact.html" class="btn-magnetic">
+      <span class="btn-text">Contact Me</span> <i class="fa-solid fa-envelope"></i>
+    </a>
+  </div>
+</section>
+
+<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+    <span>© 2025 Ritik Mishra.</span>
+    <div style="display:flex; gap:16px;">
+      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
+      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
     </div>
   </div>
 </footer>
 
 <script>
-/* ── SCROLL NAV ── */
+/* ── NAVBAR SCROLL ── */
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-/* ── PARALLAX HERO ── */
-const heroBg = document.getElementById('heroBg');
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  if(scrolled < window.innerHeight) {
-    heroBg.style.transform = `scale(${(1.05 + scrolled * 0.0002)}) translateY(${scrolled * 0.3}px)`;
-  }
+/* ── REVEAL OBSERVER ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) { entry.target.classList.add('in-view'); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('in-view')), 100);
+
+/* ── ALIVE PHYSICS: SPOTLIGHT ── */
+document.querySelectorAll('.spotlight-group').forEach(group => {
+  group.addEventListener('mousemove', e => {
+    group.querySelectorAll('.spotlight-card').forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
 });
 
-/* ── REVEAL OBSERVERS ── */
-// Using IntersectionObserver to trigger animations precisely when elements enter the viewport
-const observerOptions = {
-  root: null,
-  rootMargin: '0px 0px -10% 0px',
-  threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-revealed');
-      // Uncomment the line below if you want animations to only trigger once
-      // observer.unobserve(entry.target);
-    } else {
-      // remove class when out of view so it animates back in when scrolled back up (luxury touch)
-      entry.target.classList.remove('is-revealed');
-    }
+/* ── ALIVE PHYSICS: MAGNETIC BUTTONS ── */
+document.querySelectorAll('.btn-magnetic').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Pull the button slightly towards cursor
+    btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    // Pull the inner text slightly further to create parallax
+    const text = btn.querySelector('.btn-text');
+    if(text) text.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
   });
-}, observerOptions);
-
-document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => observer.observe(el));
-
-// Trigger immediately on load for hero elements
-setTimeout(() => {
-  document.querySelectorAll('.lux-hero .reveal-mask, .lux-hero .fade-up').forEach(el => el.classList.add('is-revealed'));
-}, 100);
+  
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = `translate(0px, 0px)`;
+    const text = btn.querySelector('.btn-text');
+    if(text) text.style.transform = `translate(0px, 0px)`;
+  });
+});
 </script>
 </body>
 </html>
