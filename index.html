@@ -3,220 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ritik Mishra — Data & AI Engineer</title>
-  <meta name="description" content="Turning raw data into scalable AI systems and predictive revenue models." />
+  <title>Ritik Mishra — 3D Interactive Portfolio</title>
+  <meta name="description" content="Data Scientist & ML Engineer. Personal Portfolio." />
   <link rel="stylesheet" href="shared.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; position: relative; overflow: hidden; }
-    .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    /* 3D Canvas Background */
+    #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
     
-    .hero-content { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 10; max-width: 900px; margin: 0 auto; }
-    .hero-tags { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center; }
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; align-items: center; }
+    .hero-content { max-width: 800px; }
+    .hero-buttons { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
     
-    .btn-group { display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap; justify-content: center; }
+    /* Timeline */
+    .timeline { position: relative; margin-top: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: var(--wire); }
+    .tl-item { position: relative; padding-left: 80px; margin-bottom: 60px; }
+    .tl-dot { position: absolute; left: 16px; top: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); border: 4px solid var(--bg); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
+    .tl-date { font-family: var(--font-head); font-size: 1.2rem; font-weight: 800; color: var(--fg); margin-bottom: 8px; }
+    .tl-title { font-size: 1.5rem; font-weight: 600; color: var(--fg); margin-bottom: 8px; }
+    
+    /* Tech Grid (3D Logos) */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px; margin-top: 40px; }
+    .tech-card { 
+      background: rgba(255,255,255,0.03); border: 1px solid var(--wire); border-radius: 20px; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;
+      transform-style: preserve-3d; cursor: pointer;
+    }
+    .tech-card i { font-size: 4rem; color: var(--fg); transform: translateZ(40px); margin-bottom: 16px; transition: color 0.3s; }
+    .tech-card:hover i { color: #10b981; }
+    .tech-card span { font-weight: 600; font-size: 0.9rem; transform: translateZ(20px); }
 
-    /* Custom Project Image sizes */
-    .proj-img { height: 200px; background: rgba(255,255,255,0.02); margin: -40px -32px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--muted); }
-    
-    .cta-section { text-align: center; padding: 160px 0; border-top: 1px solid var(--border); }
+    /* Work Grid */
+    .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 40px; margin-top: 40px; }
+    .proj-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--bg); background: var(--fg); padding: 4px 10px; border-radius: 100px; display: inline-block; margin-bottom: 16px; transform: translateZ(50px); }
   </style>
 </head>
 <body>
 
+<!-- Three.js Interactive Background -->
+<div id="canvas-container"></div>
+
 <nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link active">Impact</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#stack" class="nav-link">Tech</a></li>
+    <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
     <li><a href="blog.html" class="nav-link">Journal</a></li>
-    <li><a href="contact.html" class="nav-link" style="color:var(--fg); background:rgba(255,255,255,0.1);">Let's Talk</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
   </ul>
 </nav>
 
-<section class="hero spotlight-group">
-  <div class="hero-glow"></div>
+<!-- HERO -->
+<section class="hero">
   <div class="container hero-content">
-    <div class="hero-tags reveal">
-      <span class="pill pill-active"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;"></span> Available for Roles</span>
-      <span class="pill">Based in India</span>
-    </div>
-    
-    <h1 class="reveal d-1" style="margin-bottom:24px;">
-      Engineering Intelligence.<br>
-      <span class="text-gradient">Building Impact.</span>
-    </h1>
-    
-    <p class="reveal d-2" style="max-width: 600px; font-size: 1.25rem;">
-      I help startups and businesses turn scattered datasets into <span style="color:var(--fg); font-weight:500;">predictive models</span> and scalable <span style="color:var(--fg); font-weight:500;">AI pipelines</span>.
+    <div class="pill reveal">Data Scientist & ML Engineer</div>
+    <h1 class="reveal d-1" style="margin-bottom: 24px;">Hi, I'm Ritik Mishra.</h1>
+    <h3 class="text-gradient reveal d-2" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 24px; font-weight:500;">
+      I engineer scalable intelligence.
+    </h3>
+    <p class="reveal d-3" style="max-width: 600px; font-size: 1.25rem;">
+      Bridging the gap between exploratory data science and production-grade machine learning APIs.
     </p>
 
-    <div class="btn-group reveal d-3">
-      <a href="contact.html" class="btn-magnetic">
-        <span class="btn-text">Initiate Dialogue</span> <i class="fa-solid fa-arrow-right"></i>
+    <div class="hero-buttons reveal d-3">
+      <a href="#" class="btn" style="box-shadow: 0 0 30px rgba(255,255,255,0.2);">
+        Download Resume <i class="fa-solid fa-file-arrow-down"></i>
       </a>
-      <a href="#work" class="btn-magnetic btn-secondary">
-        <span class="btn-text">View Output</span>
+      <a href="#portfolio" class="btn btn-outline">
+        View Portfolio
       </a>
     </div>
   </div>
 </section>
 
-<!-- Value Proposition -->
-<section class="section" style="background: rgba(255,255,255,0.01); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<!-- ABOUT / TIMELINE -->
+<section class="section" id="about">
   <div class="container">
-    <div style="margin-bottom: 64px;" class="reveal">
-      <div class="pill">Capability Vector</div>
-      <h2>How I can help you scale</h2>
-    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;">
+      <div class="reveal">
+        <h2 class="text-gradient">My Journey</h2>
+        <p style="margin-bottom: 24px;">I started as a pure data enthusiast, fascinated by what tabular data could reveal using Pandas and Seaborn. Over time, that evolved into building predictive models.</p>
+        <p>I realized that a model alone isn't a product. Today, my focus is strictly on Machine Learning Engineering—containerizing logic in Docker and serving it via highly concurrent FastAPI endpoints.</p>
+      </div>
 
-    <div class="cards-grid spotlight-group">
-      <!-- Value 1 -->
-      <div class="spotlight-card reveal d-1">
-        <div class="card-content">
-          <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <h3 style="margin-bottom:12px;">Predicting User Behavior</h3>
-          <p>I build ML models (XGBoost, Random Forests) that predict churn, CLV, and engagement, allowing you to intercept failing users before they drop off.</p>
+      <div class="timeline reveal d-1">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Present</div>
+          <div class="tl-title">Freelance ML Engineer</div>
+          <p>Architecting backend AI systems, fine-tuning LLMs, and building predictive analytics pipelines for startups.</p>
         </div>
-      </div>
-      <!-- Value 2 -->
-      <div class="spotlight-card reveal d-2">
-        <div class="card-content">
-          <div class="card-icon"><i class="fa-solid fa-server"></i></div>
-          <h3 style="margin-bottom:12px;">Scalable AI APIs</h3>
-          <p>Notebooks don't scale. I containerize raw machine learning logic using Docker and serve it globally via high-concurrency FastAPI endpoints.</p>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">2024</div>
+          <div class="tl-title">Data Science Intern</div>
+          <p>Handled massive EDA and predictive modeling tasks utilizing XGBoost and Scikit-Learn.</p>
         </div>
-      </div>
-      <!-- Value 3 -->
-      <div class="spotlight-card reveal d-3">
-        <div class="card-content">
-          <div class="card-icon"><i class="fa-solid fa-language"></i></div>
-          <h3 style="margin-bottom:12px;">Applied NLP</h3>
-          <p>Text classification, sentiment analysis, and fine-tuning HuggingFace transformers (BERT) to understand exactly what your customers are saying.</p>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">2021 — 2025</div>
+          <div class="tl-title">BS in Computer Science</div>
+          <p>Focus on Data Structures, Algorithms, Mathematics, and Artificial Intelligence.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Projects -->
-<section class="section" id="work">
+<!-- 3D TECH STACK -->
+<section class="section" id="stack" style="background: rgba(255,255,255,0.01); border-top: 1px solid var(--wire); border-bottom: 1px solid var(--wire);">
+  <div class="container text-center" style="display:flex; flex-direction:column; align-items:center;">
+    <h2 class="reveal text-gradient">The Engine Room</h2>
+    <p class="reveal d-1" style="max-width:500px; text-align:center;">The core technologies I utilize to construct and deploy intelligent systems.</p>
+
+    <!-- 3D Tilt Cards Grid -->
+    <div class="tech-grid w-100" style="width: 100%;">
+      <!-- Python -->
+      <div class="tech-card reveal d-1" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+        <i class="fa-brands fa-python"></i>
+        <span>Python</span>
+      </div>
+      <!-- Database -->
+      <div class="tech-card reveal d-2" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+        <i class="fa-solid fa-server"></i>
+        <span>PostgreSQL</span>
+      </div>
+      <!-- Docker (simulated icon) -->
+      <div class="tech-card reveal d-3" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+        <i class="fa-brands fa-docker"></i>
+        <span>Docker</span>
+      </div>
+      <!-- FastAPI / Code -->
+      <div class="tech-card reveal d-2" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+        <i class="fa-solid fa-bolt"></i>
+        <span>FastAPI</span>
+      </div>
+      <!-- Git -->
+      <div class="tech-card reveal d-1" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5">
+        <i class="fa-brands fa-git-alt"></i>
+        <span>Git & CI/CD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO PROJECTS -->
+<section class="section" id="portfolio">
   <div class="container">
-    <div style="margin-bottom: 64px;" class="reveal">
-      <div class="pill">Proof of Scale</div>
-      <h2>Engineered Output</h2>
-    </div>
-
-    <div class="cards-grid spotlight-group">
-      <!-- Project 1 -->
-      <a href="#" class="spotlight-card reveal d-1" style="text-decoration:none;">
-        <div class="card-content">
-          <div class="proj-img"><i class="fa-brands fa-twitter"></i></div>
-          <div class="card-badge">NLP Pipeline</div>
-          <h3 style="margin-bottom:12px; color:var(--fg);">SentimentScope API</h3>
-          <p style="margin-bottom:24px;">Fine-tuned DistilBERT analyzing Twitter data. Packaged via Docker and served through FastAPI for a production-ready sentiment engine.</p>
-          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
-            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
-          </div>
-        </div>
+    <h2 class="reveal text-gradient" style="text-align: center;">Featured Engineering</h2>
+    
+    <div class="work-grid">
+      <!-- Card Template utilizing Vanilla Tilt -->
+      <a href="#" class="glass-card reveal d-1" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" style="text-decoration:none;">
+        <div class="proj-badge">NLP Pipeline</div>
+        <h3 style="color:var(--fg); transform: translateZ(40px);">SentimentScope API</h3>
+        <p style="transform: translateZ(30px); margin-bottom:32px;">Fine-tuned DistilBERT containerized in Docker and served through FastAPI for a production-ready sentiment engine.</p>
+        <div style="font-weight:700; color:var(--fg); transform: translateZ(20px);">Inspect System <i class="fa-solid fa-arrow-right"></i></div>
       </a>
 
-      <!-- Project 2 -->
-      <a href="#" class="spotlight-card reveal d-2" style="text-decoration:none;">
-        <div class="card-content">
-          <div class="proj-img"><i class="fa-solid fa-users-viewfinder"></i></div>
-          <div class="card-badge">Predictive ML</div>
-          <h3 style="margin-bottom:12px; color:var(--fg);">Customer Churn Oracle</h3>
-          <p style="margin-bottom:24px;">XGBoost classifier analyzing 10k+ rows of Telco data. Delivered full SHAP explainability to highlight exactly why users were leaving.</p>
-          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
-            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
-          </div>
-        </div>
-      </a>
-
-      <!-- Project 3 -->
-      <a href="#" class="spotlight-card reveal d-3" style="text-decoration:none;">
-        <div class="card-content">
-          <div class="proj-img"><i class="fa-solid fa-earth-americas"></i></div>
-          <div class="card-badge">Analytics Insight</div>
-          <h3 style="margin-bottom:12px; color:var(--fg);">Global Salary Economics</h3>
-          <p style="margin-bottom:24px;">Comprehensive Exploratory Data Analysis using Pandas and Seaborn to parse complex global tech compensation mechanics.</p>
-          <div style="margin-top:auto; font-size:0.8rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
-            Inspect Architecture <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
-          </div>
-        </div>
+      <a href="#" class="glass-card reveal d-2" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" style="text-decoration:none;">
+        <div class="proj-badge">Data Science</div>
+        <h3 style="color:var(--fg); transform: translateZ(40px);">Customer Churn Oracle</h3>
+        <p style="transform: translateZ(30px); margin-bottom:32px;">XGBoost classifier analyzing 10k+ rows of Telco data with SHAP explanatory analytics for business logic.</p>
+        <div style="font-weight:700; color:var(--fg); transform: translateZ(20px);">Inspect System <i class="fa-solid fa-arrow-right"></i></div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- Footer/CTA -->
-<section class="cta-section">
-  <div class="container reveal">
-    <h2 style="margin-bottom: 24px;">Ready to build logical systems?</h2>
-    <p style="margin: 0 auto 40px; max-width: 500px;">I am currently seeking software and data roles. Let's engineer something highly profitable together.</p>
-    <a href="contact.html" class="btn-magnetic">
-      <span class="btn-text">Contact Me</span> <i class="fa-solid fa-envelope"></i>
-    </a>
-  </div>
-</section>
-
-<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
-  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
-    <span>© 2025 Ritik Mishra.</span>
-    <div style="display:flex; gap:16px;">
-      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
-      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
-    </div>
-  </div>
-</footer>
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
 <script>
-/* ── NAVBAR SCROLL ── */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-});
+/* ── SCROLL NAVBAR ── */
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50); });
 
 /* ── REVEAL OBSERVER ── */
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting) { entry.target.classList.add('in-view'); }
-  });
+  entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
 setTimeout(() => document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('in-view')), 100);
 
-/* ── ALIVE PHYSICS: SPOTLIGHT ── */
-document.querySelectorAll('.spotlight-group').forEach(group => {
-  group.addEventListener('mousemove', e => {
-    group.querySelectorAll('.spotlight-card').forEach(card => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
+/* ── THREE.JS 3D BACKGROUND (ALIVE INTERACTION) ── */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+// Create Particle Constellation
+const particlesGeometry = new THREE.BufferGeometry();
+const particlesCount = 800; // lots of particles for rich 3D space
+const posArray = new Float32Array(particlesCount * 3);
+for(let i=0; i<particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+// Create Material connecting them
+const material = new THREE.PointsMaterial({ size: 0.02, color: 0xffffff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+const particlesMesh = new THREE.Points(particlesGeometry, material);
+scene.add(particlesMesh);
+
+camera.position.z = 3;
+
+// Mouse Interactivity
+let mouseX = 0; let mouseY = 0;
+let targetX = 0; let targetY = 0;
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
+
+document.addEventListener('mousemove', (event) => {
+  mouseX = (event.clientX - windowHalfX);
+  mouseY = (event.clientY - windowHalfY);
 });
 
-/* ── ALIVE PHYSICS: MAGNETIC BUTTONS ── */
-document.querySelectorAll('.btn-magnetic').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    // Pull the button slightly towards cursor
-    btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-    // Pull the inner text slightly further to create parallax
-    const text = btn.querySelector('.btn-text');
-    if(text) text.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-  });
+// Scroll Parallax connection
+let scrollY = window.scrollY;
+window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+// Animation Loop
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const elapsedTime = clock.getElapsedTime();
   
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = `translate(0px, 0px)`;
-    const text = btn.querySelector('.btn-text');
-    if(text) text.style.transform = `translate(0px, 0px)`;
-  });
+  targetX = mouseX * 0.001;
+  targetY = mouseY * 0.001;
+
+  // Slowly rotate naturally
+  particlesMesh.rotation.y = elapsedTime * 0.05;
+  particlesMesh.rotation.x = elapsedTime * 0.02;
+
+  // React to mouse instantly but smoothly
+  particlesMesh.rotation.y += 0.5 * (targetX - particlesMesh.rotation.y);
+  particlesMesh.rotation.x += 0.5 * (targetY - particlesMesh.rotation.x);
+  
+  // Parallax Z-index on scroll
+  camera.position.y = -(scrollY * 0.001);
+
+  renderer.render(scene, camera);
+}
+animate();
+
+// Resize Handle
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
 </body>

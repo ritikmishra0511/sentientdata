@@ -8,169 +8,135 @@
   <link rel="stylesheet" href="shared.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    /* 3D Background */
+    #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; opacity: 0.5; }
+    
     .page-header { padding: calc(var(--nav-h) + 100px) 0 60px; text-align: center; }
     
-    .contact-wrapper { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; max-width: 1000px; margin: 0 auto; padding-bottom: 140px; }
+    .contact-wrapper { max-width: 700px; margin: 0 auto 140px; position: relative; z-index: 10; }
     
-    .info-col h2 { margin-bottom: 24px; }
-    .info-col p { margin-bottom: 40px; }
+    .form-col { 
+      background: rgba(255,255,255,0.02); border: 1px solid var(--wire); border-radius: 24px; padding: 60px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+      transform-style: preserve-3d;
+    }
+    .form-title { font-size: 2.2rem; margin-bottom: 32px; transform: translateZ(40px); }
     
-    .contact-links { display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
-    .c-link { display: inline-flex; align-items: center; gap: 12px; font-weight: 500; font-size: 1.1rem; color: var(--fg); text-decoration: none; transition: var(--t-fluid); padding: 16px 24px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); }
-    .c-link i { color: var(--muted); }
-    .c-link:hover { background: rgba(255,255,255,0.05); transform: translateX(8px); border-color: rgba(255,255,255,0.15); }
-
-    .form-group { margin-bottom: 24px; }
+    .form-group { margin-bottom: 24px; transform: translateZ(30px); }
     .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 10px; }
     .form-input {
-      width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px;
+      width: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid var(--wire); border-radius: 12px;
       padding: 16px 20px; color: var(--fg); font-family: var(--font-sans); font-size: 1rem;
-      outline: none; transition: var(--t-fluid);
+      outline: none; transition: 0.3s;
     }
-    .form-input:focus { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+    .form-input:focus { border-color: var(--fg); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
     .form-textarea { min-height: 140px; resize: none; }
     
-    .form-status { margin-bottom: 24px; padding: 16px 20px; border-radius: 12px; font-size: 0.95rem; display: none; font-weight: 500; border: 1px solid transparent; }
-    .f-ok { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.3); }
-    .f-err { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+    .btn-3d { margin-top: 16px; width: 100%; transform: translateZ(50px) !important; }
+    
+    .form-status { margin-bottom: 24px; padding: 16px 20px; border-radius: 12px; font-size: 0.95rem; display: none; font-weight: 500; transform: translateZ(40px); }
+    .f-ok { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .f-err { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-    @media (max-width: 900px) {
-      .contact-wrapper { grid-template-columns: 1fr; gap: 60px; }
-    }
+    @media (max-width: 768px) { .form-col { padding: 40px 24px; } }
   </style>
 </head>
 <body>
 
+<div id="canvas-container"></div>
+
 <nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link">Impact</a></li>
+    <li><a href="index.html" class="nav-link">Portfolio</a></li>
     <li><a href="blog.html" class="nav-link">Journal</a></li>
-    <li><a href="contact.html" class="nav-link active" style="color:var(--bg); background:var(--fg);">Let's Talk</a></li>
+    <li><a href="contact.html" class="nav-link active">Contact</a></li>
   </ul>
 </nav>
 
 <div class="page-header container reveal">
   <div class="pill">Communication</div>
   <h1>Initiate Dialogue</h1>
+  <p style="margin-top:20px;">Open for roles, consulting, and collaboration.</p>
 </div>
 
 <div class="container reveal d-1">
   <div class="contact-wrapper">
-    
-    <div class="info-col">
-      <h2>Let's build something.</h2>
-      <p>Whether you're looking to hire an engineer, or just want to collaborate on an open-source tool, my inbox is always open.</p>
+    <!-- Massive 3D Tilt Contact Form -->
+    <div class="form-col" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+      <h2 class="form-title text-gradient">Let's build something.</h2>
       
-      <div class="contact-links">
-        <a href="mailto:contact@sentientdata.xyz" class="c-link"><i class="fa-solid fa-envelope"></i> contact@sentientdata.xyz</a>
-        <a href="https://linkedin.com/" class="c-link"><i class="fa-brands fa-linkedin"></i> LinkedIn Network</a>
-        <a href="https://github.com/ritikmishra0511" class="c-link"><i class="fa-brands fa-github"></i> GitHub Repositories</a>
-      </div>
+      <div class="form-status" id="formStatus"></div>
       
-      <div style="display:flex; align-items:center; gap:12px; margin-top: 16px;">
-        <span style="width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 10px #10b981;"></span>
-        <span style="font-size:0.9rem; font-weight:600; color:var(--muted);">Currently available for roles</span>
-      </div>
-    </div>
-    
-    <div class="form-col spotlight-group">
-      <div class="spotlight-card" style="padding: 40px 32px;">
-        <div class="card-content">
-          <div class="form-status" id="formStatus"></div>
-          
-          <form id="contactForm">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group" style="margin-bottom:16px;">
-                <label class="form-label">Name</label>
-                <input type="text" name="name" class="form-input" required placeholder="John Doe">
-              </div>
-              <div class="form-group" style="margin-bottom:16px;">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-input" required placeholder="john@company.com">
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Message</label>
-              <textarea name="message" class="form-input form-textarea" required placeholder="How can I help you scale?"></textarea>
-            </div>
-            
-            <button type="submit" class="btn-magnetic" id="submitBtn" style="width:100%; border-radius:12px;">
-              <span class="btn-text">Transmit Request</span> <i class="fa-solid fa-paper-plane"></i>
-            </button>
-          </form>
+      <form id="contactForm">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-input" required placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" required placeholder="contact@company.com">
+          </div>
         </div>
-      </div>
+        
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-input form-textarea" required placeholder="How can we help each other grow?"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-3d" id="submitBtn">
+          Transmit Message <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
     </div>
-    
   </div>
 </div>
 
-<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
-  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
-    <span>© 2025 Ritik Mishra.</span>
-    <div style="display:flex; gap:16px;">
-      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
-      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
-    </div>
-  </div>
-</footer>
-
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 <script>
 window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50); });
 
+/* Reveal Physics */
 const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); }); }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 setTimeout(() => document.querySelectorAll('.page-header.reveal, .reveal.d-1').forEach(el => el.classList.add('in-view')), 100);
 
-/* Physics */
-document.querySelectorAll('.spotlight-group').forEach(group => {
-  group.addEventListener('mousemove', e => {
-    group.querySelectorAll('.spotlight-card').forEach(card => {
-      const rect = card.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`); card.style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
-});
-
-document.querySelectorAll('.btn-magnetic').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2;
-    btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-    const text = btn.querySelector('.btn-text'); if(text) text.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px)`;
-  });
-  btn.addEventListener('mouseleave', () => { btn.style.transform = `translate(0px, 0px)`; const text = btn.querySelector('.btn-text'); if(text) text.style.transform = `translate(0px, 0px)`; });
-});
-
 /* Form Logic */
 const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
-const form = document.getElementById('contactForm');
-const btn = document.getElementById('submitBtn');
-const stat = document.getElementById('formStatus');
+const form = document.getElementById('contactForm'); const btn = document.getElementById('submitBtn'); const stat = document.getElementById('formStatus');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
   if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') {
-    stat.className = 'form-status f-ok'; stat.innerHTML = 'Message Simulation Successful. (Add Formspree ID).';
+    stat.className = 'form-status f-ok'; stat.innerHTML = 'Transmission Simulated. (Demo Mode).';
     stat.style.display = 'block'; form.reset(); return;
   }
-
-  const btnText = btn.querySelector('.btn-text');
-  btnText.textContent = 'Transmitting...'; btn.style.pointerEvents = 'none';
-  const formData = new FormData(form);
-  
+  btn.innerHTML = 'Transmitting...'; btn.style.pointerEvents = 'none';
   try {
-    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-    if (res.ok) { stat.className = 'form-status f-ok'; stat.innerHTML = 'Transmission Successful. I will review shortly.'; form.reset(); }
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+    if (res.ok) { stat.className = 'form-status f-ok'; stat.innerHTML = 'Transmission Successful.'; form.reset(); }
     else throw new Error('Failed');
-  } catch(err) {
-    stat.className = 'form-status f-err'; stat.innerHTML = 'Transmission Failed. Subsystem error.';
-  }
-  
-  stat.style.display = 'block'; btnText.textContent = 'Transmit Request'; btn.style.pointerEvents = 'all';
+  } catch(err) { stat.className = 'form-status f-err'; stat.innerHTML = 'Transmission Failed.'; }
+  stat.style.display = 'block'; btn.innerHTML = 'Transmit Message <i class="fa-solid fa-paper-plane"></i>'; btn.style.pointerEvents = 'all';
 });
+
+/* ── THREE.JS 3D BACKGROUND (Ambient) ── */
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); renderer.setSize(window.innerWidth, window.innerHeight); document.getElementById('canvas-container').appendChild(renderer.domElement);
+const particlesGeometry = new THREE.BufferGeometry(); const particlesCount = 400; const posArray = new Float32Array(particlesCount*3);
+for(let i=0; i<particlesCount*3; i++) posArray[i] = (Math.random()-0.5)*15;
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+const material = new THREE.PointsMaterial({ size: 0.02, color: 0x888888, transparent: true, blending: THREE.AdditiveBlending });
+const particlesMesh = new THREE.Points(particlesGeometry, material); scene.add(particlesMesh);
+camera.position.z = 3;
+let scrollY = window.scrollY; window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+function animate() {
+  requestAnimationFrame(animate); particlesMesh.rotation.y += 0.001; particlesMesh.rotation.x += 0.0005;
+  camera.position.y = -(scrollY * 0.001); renderer.render(scene, camera);
+} animate();
+window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 </body>
 </html>

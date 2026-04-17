@@ -8,110 +8,94 @@
   <link rel="stylesheet" href="shared.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    /* 3D Background */
+    #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; opacity: 0.5; }
+    
     .page-header { padding: calc(var(--nav-h) + 100px) 0 60px; text-align: center; }
     
     .search-wrapper { max-width: 600px; margin: 0 auto 60px; position: relative; }
-    .search-input { width: 100%; padding: 20px 24px; border-radius: 100px; background: var(--card-bg); border: 1px solid var(--border); color: var(--fg); font-family: var(--font-sans); font-size: 1.1rem; outline: none; transition: var(--t-fluid); }
-    .search-input:focus { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 0 4px rgba(255,255,255,0.05); }
+    .search-input { width: 100%; padding: 20px 24px; border-radius: 100px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border: 2px solid var(--wire); color: var(--fg); font-family: var(--font-sans); font-size: 1.1rem; outline: none; transition: 0.3s; }
+    .search-input:focus { border-color: var(--fg); box-shadow: 0 0 20px rgba(255,255,255,0.1); }
     
     .tags-row { display: flex; gap: 12px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
+    .pill-active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
     
-    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 40px; margin-bottom: 80px; }
     
-    .blog-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; height: 100%; }
-    .blog-date { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
-    .blog-title { font-size: 1.4rem; margin-bottom: 12px; color: var(--fg); }
-    .blog-brief { font-size: 1rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
+    /* 3D Blog Card */
+    .blog-card {
+      display: flex; flex-direction: column; text-decoration: none; color: inherit; height: 100%;
+      background: rgba(255,255,255,0.02); border: 1px solid var(--wire); border-radius: 24px;
+      padding: 40px; transform-style: preserve-3d;
+    }
     
-    #loadingState { text-align: center; padding: 100px 0; color: var(--muted); }
+    .blog-date { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; transform: translateZ(20px); }
+    .blog-title { font-size: 1.8rem; margin-bottom: 12px; color: var(--fg); font-weight: 800; font-family: var(--font-head); transform: translateZ(40px); }
+    .blog-brief { font-size: 1rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; transform: translateZ(30px); }
+    .blog-link { font-weight: 700; color: var(--fg); transform: translateZ(20px); display: flex; align-items: center; gap: 8px; }
+    
+    #loadingState { text-align: center; padding: 100px 0; color: var(--muted); font-size: 1.2rem; }
   </style>
 </head>
 <body>
 
+<div id="canvas-container"></div>
+
 <nav class="navbar" id="nav">
   <a href="index.html" class="nav-brand">Ritik Mishra.</a>
   <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link">Impact</a></li>
+    <li><a href="index.html" class="nav-link">Portfolio</a></li>
     <li><a href="blog.html" class="nav-link active">Journal</a></li>
-    <li><a href="contact.html" class="nav-link" style="color:var(--fg); background:rgba(255,255,255,0.1);">Let's Talk</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
   </ul>
 </nav>
 
 <div class="page-header container reveal">
   <div class="pill">Technical Literature</div>
   <h1>Engineering Journal</h1>
-  <p style="max-width:500px; margin: 20px auto 0;">Deep-dives into scalable architecture, predictive models, and the reality of shipping AI.</p>
 </div>
 
 <div class="container reveal d-1">
   <div class="search-wrapper">
-    <input type="text" class="search-input" id="searchInput" placeholder="Search insights..." />
+    <input type="text" class="search-input" id="searchInput" placeholder="Search literature..." />
   </div>
-  
   <div class="tags-row" id="tagsRow">
-    <button class="pill pill-active" data-tag="all">All Literature</button>
-    <button class="pill" data-tag="machine-learning">Machine Learning</button>
-    <button class="pill" data-tag="engineering">Engineering</button>
+    <button class="pill pill-active" data-tag="all" style="cursor:pointer;">All Literature</button>
+    <button class="pill" data-tag="machine-learning" style="cursor:pointer;">Machine Learning</button>
+    <button class="pill" data-tag="engineering" style="cursor:pointer;">Engineering</button>
   </div>
 </div>
 
 <section class="section pt-0" style="padding-top:0;">
   <div class="container">
-    <div id="loadingState">Compiling literature...</div>
-    <div class="blog-grid spotlight-group" id="blogGrid" style="display:none;"></div>
+    <div id="loadingState">Compiling 3D literature grid...</div>
+    <div class="blog-grid" id="blogGrid" style="display:none;"></div>
     <div id="emptyState" style="display:none; text-align:center; padding:100px 0; color:var(--muted); font-size:1.2rem;">No matching literature found in the system.</div>
   </div>
 </section>
 
-<footer style="padding: 40px; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);">
-  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
-    <span>© 2025 Ritik Mishra.</span>
-    <div style="display:flex; gap:16px;">
-      <a href="https://github.com/ritikmishra0511" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-github"></i></a>
-      <a href="https://linkedin.com/" style="color:var(--muted); transition:0.3s;"><i class="fa-brands fa-linkedin"></i></a>
-    </div>
-  </div>
-</footer>
-
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 <script>
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-});
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50); });
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
-}, { threshold: 0.1 });
+/* Reveal Physics */
+const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); }); }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 setTimeout(() => document.querySelectorAll('.page-header.reveal, .reveal.d-1').forEach(el => el.classList.add('in-view')), 100);
 
-/* Alive Physics: Spotlight Grid */
-document.querySelectorAll('.spotlight-group').forEach(group => {
-  group.addEventListener('mousemove', e => {
-    group.querySelectorAll('.spotlight-card').forEach(card => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
-});
-
-/* Hashnode API Logic */
+/* Hashnode Logic + Rebinding Vanilla Tilt */
 const HASHNODE_USERNAME = 'YOUR_HASHNODE_USERNAME';
-let allPosts = [];
-let activeTag = 'all';
-let searchQuery = '';
+let allPosts = []; let activeTag = 'all'; let searchQuery = '';
 
 const demoPosts = [
-  { title: "Building a Customer Churn Predictor with XGBoost", brief: "A complete walkthrough of cleaning telco data, handling class imbalance, training an XGBoost model, and explaining predictions using SHAP values.", slug: "#", dateAdded: new Date().toISOString(), tags: ["Machine Learning"] },
-  { title: "End-to-End NLP: DistilBERT for Sentiment Analysis", brief: "How I fine-tuned a HuggingFace Transformer model on custom Twitter data, containerized it with Docker, and served it using FastAPI.", slug: "#", dateAdded: new Date(Date.now() - 86400000*5).toISOString(), tags: ["Machine Learning", "Engineering"] },
-  { title: "Moving ML Code from Notebooks to Production", brief: "Jupyter notebooks are great for exploration, but terrible for engineering. The 5 steps I took to modularize my workflows.", slug: "#", dateAdded: new Date(Date.now() - 86400000*12).toISOString(), tags: ["Engineering"] }
+  { title: "Building a Customer Churn Predictor with XGBoost", brief: "A complete walkthrough of cleaning telco data and handling class imbalance.", slug: "#", dateAdded: new Date().toISOString(), tags: ["Machine Learning"] },
+  { title: "End-to-End NLP: DistilBERT for Sentiment Analysis", brief: "Fine-tuning a HuggingFace Transformer model on custom Twitter data.", slug: "#", dateAdded: new Date(Date.now() - 86400000*5).toISOString(), tags: ["Machine Learning", "Engineering"] },
+  { title: "Moving ML Code from Notebooks to Production", brief: "Jupyter notebooks are great for exploration, but terrible for engineering.", slug: "#", dateAdded: new Date(Date.now() - 86400000*12).toISOString(), tags: ["Engineering"] }
 ];
 
-const grid = document.getElementById('blogGrid');
-const loader = document.getElementById('loadingState');
-const empty = document.getElementById('emptyState');
+const grid = document.getElementById('blogGrid'); const loader = document.getElementById('loadingState'); const empty = document.getElementById('emptyState');
 
 function renderPosts() {
   grid.innerHTML = '';
@@ -121,44 +105,30 @@ function renderPosts() {
     return sMatch && tMatch;
   });
 
-  if (filtered.length === 0) {
-    grid.style.display = 'none'; empty.style.display = 'block';
-  } else {
+  if (filtered.length === 0) { grid.style.display = 'none'; empty.style.display = 'block'; } 
+  else {
     empty.style.display = 'none'; grid.style.display = 'grid';
     filtered.forEach((p, idx) => {
       const d = new Date(p.dateAdded).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-      // Build dynamic card with spotlight structure inside href
-      const a = document.createElement('a');
-      a.href = p.slug;
-      a.className = `spotlight-card reveal in-view d-${(idx%3)+1}`;
-      a.innerHTML = `
-        <div class="card-content">
-          <div class="blog-date">${d}</div>
-          <h3 class="blog-title">${p.title}</h3>
-          <p class="blog-brief">${p.brief}</p>
-          <div style="font-size:0.85rem; font-weight:600; color:var(--fg); display:flex; align-items:center; gap:8px;">
-            Read Publication <i class="fa-solid fa-arrow-right" style="font-size:0.7em;"></i>
-          </div>
-        </div>
-      `;
+      const a = document.createElement('a'); a.href = p.slug;
+      a.className = `blog-card reveal in-view d-${(idx%3)+1}`;
+      a.innerHTML = `<div class="blog-date">${d}</div><h3 class="blog-title">${p.title}</h3><p class="blog-brief">${p.brief}</p><div class="blog-link">Read Publication <i class="fa-solid fa-arrow-right"></i></div>`;
       grid.appendChild(a);
     });
+    // Re-initialize Vanilla-tilt on new dynamic elements
+    VanillaTilt.init(document.querySelectorAll(".blog-card"), { max: 15, speed: 400, glare: true, "max-glare": 0.4 });
   }
 }
 
 async function fetchPosts() {
   loader.style.display = 'block'; grid.style.display = 'none'; empty.style.display = 'none';
-  if (HASHNODE_USERNAME === 'YOUR_HASHNODE_USERNAME') {
-    setTimeout(() => { allPosts = demoPosts; loader.style.display='none'; renderPosts(); }, 600);
-    return;
-  }
+  if (HASHNODE_USERNAME === 'YOUR_HASHNODE_USERNAME') { setTimeout(() => { allPosts = demoPosts; loader.style.display='none'; renderPosts(); }, 600); return; }
   const query = `query { user(username: "${HASHNODE_USERNAME}") { publication { posts(page: 0) { title brief slug dateAdded } } } }`;
   try {
     const res = await fetch('https://api.hashnode.com/', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({query}) });
     const d = await res.json();
-    if (d.data?.user?.publication?.posts) {
-      allPosts = d.data.user.publication.posts.map(p => ({ ...p, slug: `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`, tags: ['Machine Learning'] }));
-    } else { allPosts = demoPosts; }
+    if (d.data?.user?.publication?.posts) { allPosts = d.data.user.publication.posts.map(p => ({ ...p, slug: `https://${HASHNODE_USERNAME}.hashnode.dev/${p.slug}`, tags: ['Machine Learning'] })); } 
+    else { allPosts = demoPosts; }
   } catch(e) { allPosts = demoPosts; }
   loader.style.display = 'none'; renderPosts();
 }
@@ -167,11 +137,25 @@ document.getElementById('searchInput').addEventListener('input', e => { searchQu
 document.getElementById('tagsRow').addEventListener('click', e => {
   if (!e.target.classList.contains('pill')) return;
   document.querySelectorAll('#tagsRow .pill').forEach(b => b.classList.remove('pill-active'));
-  e.target.classList.add('pill-active');
-  activeTag = e.target.dataset.tag; renderPosts();
+  e.target.classList.add('pill-active'); activeTag = e.target.dataset.tag; renderPosts();
 });
-
 fetchPosts();
+
+/* ── THREE.JS 3D BACKGROUND (Ambient) ── */
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); renderer.setSize(window.innerWidth, window.innerHeight); document.getElementById('canvas-container').appendChild(renderer.domElement);
+const particlesGeometry = new THREE.BufferGeometry(); const particlesCount = 400; const posArray = new Float32Array(particlesCount*3);
+for(let i=0; i<particlesCount*3; i++) posArray[i] = (Math.random()-0.5)*15;
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+const material = new THREE.PointsMaterial({ size: 0.02, color: 0x888888, transparent: true, blending: THREE.AdditiveBlending });
+const particlesMesh = new THREE.Points(particlesGeometry, material); scene.add(particlesMesh);
+camera.position.z = 3;
+let scrollY = window.scrollY; window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+function animate() {
+  requestAnimationFrame(animate); particlesMesh.rotation.y += 0.001; particlesMesh.rotation.x += 0.0005;
+  camera.position.y = -(scrollY * 0.001); renderer.render(scene, camera);
+} animate();
+window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 </body>
 </html>

@@ -1,25 +1,22 @@
 /* ============================================================
-   SentientData.xyz — Dynamic Alive Redesign Focus
+   SentientData.xyz — 3D Interactive Portfolio
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
 
 :root {
-  /* Dynamic Dark Palette */
-  --bg: #09090b; /* Zinc 950 */
-  --fg: #fafafa;
+  /* Dark High-Contrast Palette */
+  --bg: #050505;
+  --fg: #ffffff;
   --muted: #a1a1aa;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.2);
-  --card-bg: rgba(255, 255, 255, 0.02);
-  --accent: #e4e4e7;
+  --wire: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.03);
   
   --font-sans: 'Inter', sans-serif;
   --font-head: 'Outfit', sans-serif;
 
   --nav-h: 80px;
-  --t-fluid: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --t-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-3d: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* ══════════════════ RESET ══════════════════ */
@@ -31,103 +28,72 @@ body {
 }
 
 /* ══════════════════ TYPOGRAPHY ══════════════════ */
-h1, h2, h3 { font-family: var(--font-head); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
-h1 { font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; }
-h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
-h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+h1 { font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; }
+h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 24px; }
+h3 { font-size: clamp(1.2rem, 2vw, 1.8rem); margin-bottom: 16px; }
 p { font-size: 1.1rem; color: var(--muted); }
 a { color: inherit; text-decoration: none; }
 
-.text-gradient {
-  background: linear-gradient(135deg, #fff 0%, #71717a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
 .pill {
-  display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 500;
-  padding: 8px 16px; border-radius: 100px; background: var(--card-bg); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 8px 16px; border-radius: 100px; background: var(--card-bg); border: 1px solid var(--wire);
   color: var(--muted); margin-bottom: 24px;
 }
-.pill-active { background: rgba(255,255,255,0.05); color: var(--fg); border-color: rgba(255,255,255,0.15); }
+.text-gradient {
+  background: linear-gradient(135deg, #fff 0%, #555 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
 
 /* ══════════════════ LAYOUT ══════════════════ */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-.section { padding: 140px 0; position: relative; z-index: 1; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 10; }
+.section { padding: 160px 0; position: relative; z-index: 10; }
 
 /* ══════════════════ NAVBAR ══════════════════ */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
-  z-index: 100; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; transition: var(--t-fluid); border-bottom: 1px solid transparent;
+  z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; transition: var(--t-3d); border-bottom: 1px solid transparent;
 }
-.navbar.scrolled {
-  background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
-}
-.nav-brand { font-family: var(--font-head); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; }
+.navbar.scrolled { background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--wire); }
+.nav-brand { font-family: var(--font-head); font-weight: 900; font-size: 1.4rem; letter-spacing: -0.02em; }
 .nav-menu { display: flex; gap: 8px; list-style: none; }
-.nav-link {
-  font-size: 0.9rem; font-weight: 500; color: var(--muted); padding: 8px 16px; border-radius: 100px;
-  transition: var(--t-fluid);
-}
+.nav-link { font-size: 0.9rem; font-weight: 500; color: var(--muted); padding: 8px 16px; border-radius: 100px; transition: var(--t-3d); }
 .nav-link:hover, .nav-link.active { color: var(--fg); background: var(--card-bg); }
 
-/* ══════════════════ ALIVE INTERACTIVE ELEMENTS ══════════════════ */
+/* ══════════════════ UI COMPONENTS ══════════════════ */
 
-/* Magnetic Button */
-.btn-magnetic {
+/* Button */
+.btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 18px 36px; border-radius: 100px; font-weight: 600; font-size: 1rem;
+  padding: 16px 36px; border-radius: 100px; font-family: var(--font-head); font-weight: 700; font-size: 1.1rem;
   background: var(--fg); color: var(--bg); border: none; cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow var(--t-fluid);
-  will-change: transform;
+  transition: transform 0.2s, box-shadow 0.2s; will-change: transform;
 }
-.btn-magnetic:hover { box-shadow: 0 8px 30px rgba(255,255,255,0.2); }
-.btn-secondary { background: var(--card-bg); color: var(--fg); border: 1px solid var(--border); }
-.btn-secondary:hover { background: rgba(255,255,255,0.05); box-shadow: 0 8px 30px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.15); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(255,255,255,0.25); }
+.btn-outline { background: transparent; color: var(--fg); border: 2px solid var(--wire); }
+.btn-outline:hover { background: var(--card-bg); border-color: var(--fg); box-shadow: 0 10px 40px rgba(255,255,255,0.05); }
 
-/* Spotlight Cards */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
-
-/* The container holding spotlight cards */
-.spotlight-group { position: relative; }
-.spotlight-group:hover .spotlight-card::after { opacity: 1; }
-
-.spotlight-card {
-  position: relative; background: rgba(255,255,255,0.015); border: 1px solid var(--border);
-  border-radius: 24px; padding: 40px 32px; overflow: hidden; transition: transform var(--t-spring), border-color var(--t-fluid);
+/* 3D Glass Cards (Vanilla-Tilt targets) */
+.glass-card {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--wire); border-radius: 24px;
+  padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  transform-style: preserve-3d; /* crucial for 3D sub-elements */
 }
-.spotlight-card::before, .spotlight-card::after {
-  content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  border-radius: inherit; opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 0;
-}
-/* Base inner glow (background) */
-.spotlight-card::before {
-  background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);
-  z-index: 1;
-}
-/* Border highlight */
-.spotlight-card::after {
-  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.4), transparent 40%);
-  z-index: -1;
-  /* Clip padding box to let border show */
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
-}
-.spotlight-card:hover { transform: translateY(-4px); }
-.spotlight-card:hover::before { opacity: 1; }
-
-.card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
-.card-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; border: 1px solid var(--border); }
-.card-badge { align-self: flex-start; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg); background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 100px; margin-bottom: 20px; }
+/* Items inside card pop out */
+.glass-card > * { transform: translateZ(30px); }
 
 /* Reveal Animations */
-.reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 .d-1 { transition-delay: 0.1s; } .d-2 { transition-delay: 0.2s; } .d-3 { transition-delay: 0.3s; }
 
 /* ══════════════════ RESPONSIVE ══════════════════ */
 @media (max-width: 768px) {
-  .section { padding: 80px 0; }
+  .section { padding: 100px 0; }
   .navbar { padding: 0 24px; }
   .nav-menu { display: none; }
-  .cards-grid { grid-template-columns: 1fr; }
+  .container { padding: 0 24px; }
+  .glass-card > * { transform: translateZ(10px); } /* reduce 3D pop on mobile */
 }
